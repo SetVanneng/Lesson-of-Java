@@ -1832,3 +1832,1530 @@ Index: 0
     "បង្កើត Unit Test សាមញ្ញសម្រាប់ TaskManager។"
   ]
 });
+
+window.JAVA_PROJECTS.push({
+  id: "temperature-converter",
+  num: 17,
+  title: "Temperature Converter",
+  short: "បម្លែងសីតុណ្ហភាពពី Celsius ទៅ Fahrenheit និង Kelvin។",
+  intro: "Project ខ្លីសម្រាប់អនុវត្ត Variable, Scanner, Arithmetic Operator និងការបង្ហាញទសភាគដោយ printf។",
+  time: "៤៥ នាទី",
+  level: 1,
+  concepts: ["Scanner", "double", "Arithmetic", "printf"],
+  objectives: [
+    "អានលេខទសភាគពី Console។",
+    "ប្រើរូបមន្តបម្លែងសីតុណ្ហភាព។",
+    "បង្ហាញលទ្ធផលជាមួយចំនួនខ្ទង់ទសភាគកំណត់។"
+  ],
+  requirements: [
+    "អាន Celsius ជា double។",
+    "គណនា Fahrenheit = C * 9 / 5 + 32។",
+    "គណនា Kelvin = C + 273.15។",
+    "បង្ហាញ Fahrenheit ១ ខ្ទង់ និង Kelvin ២ ខ្ទង់។"
+  ],
+  steps: [
+    "បង្កើត File <code>TemperatureConverter.java</code>។",
+    "Import <code>java.util.Scanner</code>។",
+    "អាន Celsius ដោយ <code>nextDouble()</code>។",
+    "គណនា Fahrenheit និង Kelvin។",
+    "បង្ហាញដោយ <code>printf</code> រួច Run។"
+  ],
+  file: "TemperatureConverter.java",
+  code: `import java.util.Scanner;
+
+public class TemperatureConverter {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Celsius: ");
+        double celsius = sc.nextDouble();
+
+        double fahrenheit = celsius * 9 / 5 + 32;
+        double kelvin = celsius + 273.15;
+
+        System.out.printf("Fahrenheit: %.1f%n", fahrenheit);
+        System.out.printf("Kelvin: %.2f%n", kelvin);
+        sc.close();
+    }
+}`,
+  explanation: [
+    "<code>nextDouble()</code> អានលេខទសភាគពី Console។",
+    "<code>9 / 5</code> ជា Integer Division ប៉ុន្តែ <code>celsius</code> ជា double ដូច្នេះការគណនាក្លាយជា double។",
+    "<code>%.1f</code> បង្ហាញមួយខ្ទង់ទសភាគ ហើយ <code>%n</code> ជា New Line។",
+    "Kelvin គឺ Celsius បូក 273.15។"
+  ],
+  output: `Celsius: 37.5
+Fahrenheit: 99.5
+Kelvin: 310.65`,
+  improvements: [
+    "អនុញ្ញាតឱ្យអ្នកប្រើជ្រើសរើសទិសបម្លែង។",
+    "ពិនិត្យ Input មិនត្រឹមត្រូវដោយ try-catch។",
+    "បង្កើត Method ដាច់ដោយឡែកសម្រាប់ការបម្លែង។"
+  ],
+  challenges: [
+    "បន្ថែមការបម្លែងពី Fahrenheit ទៅ Celsius។",
+    "បង្ហាញតារាងបម្លែងពី 0 ដល់ 100 ដោយប្រើ Loop។"
+  ]
+});
+
+window.JAVA_PROJECTS.push({
+  id: "bmi-calculator",
+  num: 18,
+  title: "BMI Calculator",
+  short: "គណនា BMI និងចាត់ថ្នាក់សុខភាពពីទម្ងន់ និងកម្ពស់។",
+  intro: "អនុវត្ត Input ទសភាគ, Arithmetic, if-else និង Formatted Output ដើម្បីបង្កើត App គណនា BMI។",
+  time: "៦០ នាទី",
+  level: 1,
+  concepts: ["Scanner", "double", "if-else", "printf"],
+  objectives: [
+    "អានទម្ងន់ និងកម្ពស់ពី Console។",
+    "គណនា BMI តាមរូបមន្ត។",
+    "ចាត់ថ្នាក់លទ្ធផលដោយ if-else។"
+  ],
+  requirements: [
+    "អាន weight (kg) និង height (m)។",
+    "គណនា weight / (height * height)។",
+    "ចាត់ថ្នាក់ Underweight, Normal, Overweight, Obese។",
+    "បង្ហាញ BMI មួយខ្ទង់ទសភាគ។"
+  ],
+  steps: [
+    "បង្កើត File <code>BmiCalculator.java</code>។",
+    "Import Scanner និងអានតម្លៃ double ពីរ។",
+    "គណនា BMI។",
+    "ប្រើ if-else ដើម្បីកំណត់ Category។",
+    "បង្ហាញលទ្ធផលដោយ printf។"
+  ],
+  file: "BmiCalculator.java",
+  code: `import java.util.Scanner;
+
+public class BmiCalculator {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Weight (kg): ");
+        double weight = sc.nextDouble();
+        System.out.print("Height (m): ");
+        double height = sc.nextDouble();
+
+        double bmi = weight / (height * height);
+        String category;
+        if (bmi < 18.5) category = "Underweight";
+        else if (bmi < 25) category = "Normal";
+        else if (bmi < 30) category = "Overweight";
+        else category = "Obese";
+
+        System.out.printf("BMI: %.1f%n", bmi);
+        System.out.println("Category: " + category);
+        sc.close();
+    }
+}`,
+  explanation: [
+    "BMI គឺទម្ងន់ចែកនឹងកម្ពស់ការេ។",
+    "if-else if ពិនិត្យតាមលំដាប់ចន្លោះតម្លៃ។",
+    "លក្ខខណ្ឌដំបូងដែលពិតនឹងដំណើរការ ហើយរំលងលក្ខខណ្ឌបន្ទាប់។",
+    "<code>%.1f</code> បង្ហាញទសភាគមួយខ្ទង់។"
+  ],
+  output: `Weight (kg): 65
+Height (m): 1.7
+BMI: 22.5
+Category: Normal`,
+  improvements: [
+    "ពិនិត្យថាកម្ពស់ធំជាង 0។",
+    "បន្ថែមការណែនាំសុខភាពតាម Category។",
+    "គាំទ្រឯកតាផ្សេងទៀតដូចជា cm។"
+  ],
+  challenges: [
+    "បង្កើត Method <code>category(double bmi)</code>។",
+    "រក្សាទុកលទ្ធផលច្រើនក្នុង Array រួចបង្ហាញរបាយការណ៍។"
+  ]
+});
+
+window.JAVA_PROJECTS.push({
+  id: "leap-year-checker",
+  num: 19,
+  title: "Leap Year Checker",
+  short: "ពិនិត្យថាឆ្នាំណាមួយជាឆ្នាំបង្គោល (Leap Year) ឬអត់។",
+  intro: "អនុវត្ត Logical Operators, Modulo និង if-else ដើម្បីពិនិត្យឆ្នាំបង្គោលតាមច្បាប់ Gregorian។",
+  time: "៤៥ នាទី",
+  level: 1,
+  concepts: ["Scanner", "Modulo", "Logical operators", "if-else"],
+  objectives: [
+    "អានឆ្នាំពី Console។",
+    "ប្រើ Modulo ដើម្បីពិនិត្យការចែកដាច់។",
+    "រួមបញ្ចូលលក្ខខណ្ឌដោយ <code>&&</code> និង <code>||</code>។"
+  ],
+  requirements: [
+    "អាន year ជា int។",
+    "ឆ្នាំចែក 400 ដាច់ ជា Leap Year។",
+    "ឆ្នាំចែក 4 ដាច់ ប៉ុន្តែមិនចែក 100 ដាច់ ក៏ជា Leap Year។",
+    "បង្ហាញ true ឬ false។"
+  ],
+  steps: [
+    "បង្កើត File <code>LeapYearChecker.java</code>។",
+    "អានឆ្នាំដោយ Scanner។",
+    "បង្កើត boolean leap ដោយប្រើ Modulo និង Logical Operators។",
+    "បង្ហាញលទ្ធផល។"
+  ],
+  file: "LeapYearChecker.java",
+  code: `import java.util.Scanner;
+
+public class LeapYearChecker {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Year: ");
+        int year = sc.nextInt();
+
+        boolean leap = (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0);
+        System.out.println(year + " is leap year: " + leap);
+        sc.close();
+    }
+}`,
+  explanation: [
+    "<code>year % 400 == 0</code> គ្រប់ដណ្តប់ឆ្នាំដូចជា 2000។",
+    "<code>year % 4 == 0 && year % 100 != 0</code> គ្រប់ដណ្តប់ឆ្នាំធម្មតាដូចជា 2024។",
+    "<code>||</code> បញ្ចូលលក្ខខណ្ឌទាំងពីរឱ្យពិតបើមួយពិត។",
+    "លទ្ធផល boolean អាចភ្ជាប់ជាមួយ String ដោយ <code>+</code>។"
+  ],
+  output: `Year: 2024
+2024 is leap year: true`,
+  improvements: [
+    "បង្ហាញចំនួនថ្ងៃក្នុងខែកុម្ភៈ។",
+    "ពិនិត្យឆ្នាំជាច្រើនក្នុង Loop។",
+    "បង្កើត Method <code>isLeap(int year)</code>។"
+  ],
+  challenges: [
+    "បង្កើតប្រតិទិនខែកុម្ភៈសម្រាប់ឆ្នាំដែលបញ្ចូល។",
+    "គណនាចំនួនថ្ងៃរវាងឆ្នាំពីរ ដោយគិតឆ្នាំបង្គោល។"
+  ]
+});
+
+window.JAVA_PROJECTS.push({
+  id: "multiplication-table-generator",
+  num: 20,
+  title: "Multiplication Table Generator",
+  short: "បង្កើតតារាងគុណសម្រាប់លេខដែលអ្នកប្រើបញ្ចូល។",
+  intro: "អនុវត្ត for Loop, printf និង Scanner ដើម្បីបង្ហាញតារាងគុណពី 1 ដល់ 12។",
+  time: "៤៥ នាទី",
+  level: 1,
+  concepts: ["Scanner", "for loop", "printf"],
+  objectives: [
+    "អានចំនួនគត់ពី Console។",
+    "ប្រើ Loop ដើម្បីបង្ហាញជួរដេកច្រើន។",
+    "បង្ហាញលទ្ធផលជាទម្រង់តារាង។"
+  ],
+  requirements: [
+    "អាន n ជា int។",
+    "Loop ពី 1 ដល់ 12។",
+    "បង្ហាញទម្រង់ <code>n x i = result</code>។"
+  ],
+  steps: [
+    "បង្កើត File <code>MultiplicationTableGenerator.java</code>។",
+    "អាន n ដោយ Scanner។",
+    "ប្រើ for loop ពី 1 ដល់ 12។",
+    "បង្ហាញដោយ printf។"
+  ],
+  file: "MultiplicationTableGenerator.java",
+  code: `import java.util.Scanner;
+
+public class MultiplicationTableGenerator {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Number: ");
+        int n = sc.nextInt();
+
+        for (int i = 1; i <= 12; i++) {
+            System.out.printf("%d x %d = %d%n", n, i, n * i);
+        }
+        sc.close();
+    }
+}`,
+  explanation: [
+    "for loop កំណត់ចំនួនជុំច្បាស់លាស់។",
+    "តម្លៃ <code>i</code> ចាប់ពី 1 ដល់ 12។",
+    "<code>%d</code> ជា Placeholder សម្រាប់ចំនួនគត់ក្នុង printf។",
+    "ការគុណ <code>n * i</code> គណនាលទ្ធផលរាល់ជុំ។"
+  ],
+  output: `Number: 3
+3 x 1 = 3
+3 x 2 = 6
+3 x 3 = 9
+3 x 4 = 12
+3 x 5 = 15
+3 x 6 = 18
+3 x 7 = 21
+3 x 8 = 24
+3 x 9 = 27
+3 x 10 = 30
+3 x 11 = 33
+3 x 12 = 36`,
+  improvements: [
+    "អនុញ្ញាតឱ្យកំណត់ដែនកំណត់ខ្លួនឯង។",
+    "បង្ហាញតារាងគុណសម្រាប់លេខ 1 ដល់ 10។",
+    "តម្រឹមជួរឈរដោយ <code>%-10s</code>។"
+  ],
+  challenges: [
+    "បង្កើតតារាងគុណជា Grid ពី 1 ដល់ 10។",
+    "បន្ថែមការជ្រើសរើសតារាងបូក ដក ឬចែក។"
+  ]
+});
+
+window.JAVA_PROJECTS.push({
+  id: "prime-number-finder",
+  num: 21,
+  title: "Prime Number Finder",
+  short: "រកលេខបឋមទាំងអស់រហូតដល់ដែនកំណត់ដែលកំណត់។",
+  intro: "អនុវត្ត Method, Loop និង Math.sqrt ដើម្បីពិនិត្យ និងបង្ហាញលេខបឋម។",
+  time: "៦០ នាទី",
+  level: 2,
+  concepts: ["Methods", "for loop", "Math.sqrt", "Modulo"],
+  objectives: [
+    "សរសេរ Method ពិនិត្យលេខបឋម។",
+    "ប្រើ Loop ស្វែងរកលេខបឋម។",
+    "បង្កើនប្រសិទ្ធភាពដោយពិនិត្យរហូត sqrt។"
+  ],
+  requirements: [
+    "Method <code>isPrime(int n)</code> ត្រឡប់ boolean។",
+    "លេខតិចជាង 2 មិនមែនលេខបឋម។",
+    "បង្ហាញលេខបឋមរហូតដល់ 30។"
+  ],
+  steps: [
+    "បង្កើត File <code>PrimeNumberFinder.java</code>។",
+    "សរសេរ Method isPrime។",
+    "Loop ពី 2 ដល់ limit ហើយហៅ isPrime។",
+    "បង្ហាញលទ្ធផលក្នុងបន្ទាត់តែមួយ។"
+  ],
+  file: "PrimeNumberFinder.java",
+  code: `public class PrimeNumberFinder {
+    static boolean isPrime(int n) {
+        if (n < 2) return false;
+        for (int i = 2; i <= Math.sqrt(n); i++) {
+            if (n % i == 0) return false;
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        int limit = 30;
+        System.out.print("Primes: ");
+        for (int i = 2; i <= limit; i++) {
+            if (isPrime(i)) {
+                System.out.print(i + " ");
+            }
+        }
+        System.out.println();
+    }
+}`,
+  explanation: [
+    "Method isPrime បំបែក Logic ឱ្យអានងាយ និងអាចហៅឡើងវិញបាន។",
+    "បើ <code>n % i == 0</code> នោះ n មានចែកដាច់ ដូច្នេះមិនមែនលេខបឋម។",
+    "ពិនិត្យរហូត <code>Math.sqrt(n)</code> គឺគ្រប់គ្រាន់ និងលឿនជាង។",
+    "<code>print</code> មិនបំបែកបន្ទាត់ ដូច្នេះលេខនៅជាបន្ទាត់តែមួយ។"
+  ],
+  output: `Primes: 2 3 5 7 11 13 17 19 23 29`,
+  improvements: [
+    "អាន limit ពីអ្នកប្រើ។",
+    "បង្ហាញចំនួនលេខបឋមសរុប។",
+    "ប្រើ Sieve of Eratosthenes សម្រាប់ដែនកំណត់ធំ។"
+  ],
+  challenges: [
+    "រកលេខបឋមគូ (Twin Primes) ដែលខុសគ្នា 2។",
+    "បង្ហាញកត្តាបឋម (Prime Factorization) នៃលេខមួយ។"
+  ]
+});
+
+window.JAVA_PROJECTS.push({
+  id: "factorial-fibonacci",
+  num: 22,
+  title: "Factorial & Fibonacci",
+  short: "គណនា Factorial និងលំដាប់ Fibonacci ដោយប្រើ Recursion។",
+  intro: "អនុវត្ត Recursion តាមរយៈ Method ពីរ៖ Factorial និង Fibonacci ព្រមទាំងសង្កេត Base Case។",
+  time: "៦០ នាទី",
+  level: 2,
+  concepts: ["Recursion", "Methods", "long", "Base case"],
+  objectives: [
+    "យល់ពី Base Case និង Recursive Call។",
+    "សរសេរ Method Factorial បែប Recursive។",
+    "បង្ហាញលំដាប់ Fibonacci ដោយ Recursion។"
+  ],
+  requirements: [
+    "Method <code>factorial(int n)</code> ត្រឡប់ long។",
+    "Method <code>fib(int n)</code> ត្រឡប់ int។",
+    "បង្ហាញ factorial(5) និង Fibonacci 10 តួដំបូង។"
+  ],
+  steps: [
+    "បង្កើត File <code>FactorialFibonacci.java</code>។",
+    "សរសេរ factorial ជាមួយ Base Case <code>n &lt;= 1</code>។",
+    "សរសេរ fib ជាមួយ Base Case <code>n &lt;= 1</code>។",
+    "ហៅ Method ទាំងពីរក្នុង main។"
+  ],
+  file: "FactorialFibonacci.java",
+  code: `public class FactorialFibonacci {
+    static long factorial(int n) {
+        if (n <= 1) return 1;
+        return n * factorial(n - 1);
+    }
+
+    static int fib(int n) {
+        if (n <= 1) return n;
+        return fib(n - 1) + fib(n - 2);
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Factorial of 5: " + factorial(5));
+
+        System.out.print("Fibonacci: ");
+        for (int i = 0; i < 10; i++) {
+            System.out.print(fib(i) + " ");
+        }
+        System.out.println();
+    }
+}`,
+  explanation: [
+    "Recursion គឺ Method ហៅខ្លួនឯងជាមួយ Input តូចជាង។",
+    "Base Case បញ្ឈប់ការហៅ ដើម្បីកុំឱ្យ Stack Overflow។",
+    "factorial(5) = 5 * 4 * 3 * 2 * 1 = 120។",
+    "Fibonacci គឺផលបូកពីរតួមុន។ Recursion ងាយយល់ ប៉ុន្តែយឺតសម្រាប់ n ធំ។"
+  ],
+  output: `Factorial of 5: 120
+Fibonacci: 0 1 1 2 3 5 8 13 21 34`,
+  improvements: [
+    "ប្រើ Memoization ដើម្បីបង្កើនល្បឿន Fibonacci។",
+    "បង្ហាញ Error ពេល n អវិជ្ជមាន។",
+    "ប្រើ long សម្រាប់ Fibonacci ធំ។"
+  ],
+  challenges: [
+    "សរសេរ Fibonacci បែប Iterative រួចប្រៀបធៀបល្បឿន។",
+    "គណនា Factorial ធំដោយប្រើ BigInteger។"
+  ]
+});
+
+window.JAVA_PROJECTS.push({
+  id: "palindrome-checker",
+  num: 23,
+  title: "Palindrome Checker",
+  short: "ពិនិត្យថាអត្ថបទជា Palindrome ឬអត់ ដោយមិនខ្វល់អក្សរធំ/តូច និងចន្លោះ។",
+  intro: "អនុវត្ត String Method ដូចជា toLowerCase, replaceAll និង StringBuilder ដើម្បីពិនិត្យ Palindrome។",
+  time: "៦០ នាទី",
+  level: 2,
+  concepts: ["String", "StringBuilder", "replaceAll", "Scanner"],
+  objectives: [
+    "សម្អាតអត្ថបទមុនប្រៀបធៀប។",
+    "បញ្ច្រាស String ដោយ StringBuilder។",
+    "ប្រៀបធៀប String ដោយ equals។"
+  ],
+  requirements: [
+    "អានអត្ថបទពី Console។",
+    "បំលែងជា Lowercase និងលុបតួអក្សរពិសេស។",
+    "បង្ហាញ true ឬ false។"
+  ],
+  steps: [
+    "បង្កើត File <code>PalindromeChecker.java</code>។",
+    "អានអត្ថបទទាំងបន្ទាត់ដោយ nextLine។",
+    "សម្អាតដោយ toLowerCase និង replaceAll។",
+    "បញ្ច្រាសដោយ StringBuilder រួចប្រៀបធៀប។"
+  ],
+  file: "PalindromeChecker.java",
+  code: `import java.util.Scanner;
+
+public class PalindromeChecker {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Text: ");
+        String text = sc.nextLine();
+
+        String cleaned = text.toLowerCase().replaceAll("[^a-z0-9]", "");
+        String reversed = new StringBuilder(cleaned).reverse().toString();
+
+        System.out.println("Palindrome: " + cleaned.equals(reversed));
+        sc.close();
+    }
+}`,
+  explanation: [
+    "<code>toLowerCase()</code> ធ្វើឱ្យការប្រៀបធៀបមិនប្រកាន់អក្សរធំ/តូច។",
+    "<code>replaceAll(\"[^a-z0-9]\", \"\")</code> លុបចន្លោះ និងសញ្ញា។",
+    "<code>new StringBuilder(cleaned).reverse()</code> បង្កើតអត្ថបទបញ្ច្រាស។",
+    "<code>equals()</code> ប្រៀបធៀបតម្លៃ String មិនមែន Reference។"
+  ],
+  output: `Text: A man a plan a canal Panama
+Palindrome: true`,
+  improvements: [
+    "បង្ហាញអត្ថបទដែលបានសម្អាត និងបញ្ច្រាស។",
+    "ពិនិត្យ Palindrome ដោយ Two Pointers ដើម្បីសន្សំ Memory។",
+    "អានពាក្យច្រើនក្នុង Loop។"
+  ],
+  challenges: [
+    "ពិនិត្យ Palindrome ខ្មែរដោយមិនប្រើ Regex។",
+    "រក Palindrome វែងបំផុតក្នុងអត្ថបទមួយ។"
+  ]
+});
+
+window.JAVA_PROJECTS.push({
+  id: "word-frequency-counter",
+  num: 24,
+  title: "Word Frequency Counter",
+  short: "រាប់ចំនួនដងដែលពាក្យនីមួយៗបង្ហាញក្នុងអត្ថបទ។",
+  intro: "អនុវត្ត String, split, TreeMap និង Loop ដើម្បីរាប់ពាក្យ និងបង្ហាញលទ្ធផលតម្រៀបតាមអក្សរ។",
+  time: "៩០ នាទី",
+  level: 2,
+  concepts: ["String", "split", "TreeMap", "Map.Entry"],
+  objectives: [
+    "បំបែកអត្ថបទជាពាក្យ។",
+    "រាប់ចំនួនដងដោយ Map។",
+    "បង្ហាញលទ្ធផលតាមលំដាប់អក្សរ។"
+  ],
+  requirements: [
+    "បំលែងអត្ថបទជា Lowercase និងលុបសញ្ញា។",
+    "ប្រើ TreeMap សម្រាប់ការរាប់។",
+    "បង្ហាញពាក្យ និងចំនួនដង។"
+  ],
+  steps: [
+    "បង្កើត File <code>WordFrequencyCounter.java</code>។",
+    "សម្អាតអត្ថបទ រួច split តាមចន្លោះ។",
+    "ប្រើ <code>getOrDefault</code> ដើម្បីបូកចំនួន។",
+    "Loop លើ <code>entrySet()</code> ដើម្បីបង្ហាញ។"
+  ],
+  file: "WordFrequencyCounter.java",
+  code: `import java.util.Map;
+import java.util.TreeMap;
+
+public class WordFrequencyCounter {
+    public static void main(String[] args) {
+        String text = "Java is fun and Java is powerful";
+        String cleaned = text.toLowerCase().replaceAll("[^a-z ]", "");
+        String[] words = cleaned.trim().split("\\\\s+");
+
+        TreeMap<String, Integer> counts = new TreeMap<>();
+        for (String word : words) {
+            counts.put(word, counts.getOrDefault(word, 0) + 1);
+        }
+
+        for (Map.Entry<String, Integer> entry : counts.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+    }
+}`,
+  explanation: [
+    "<code>split</code> បំបែកអត្ថបទជា Array នៃពាក្យ។",
+    "<code>getOrDefault(word, 0)</code> ត្រឡប់ 0 បើពាក្យមិនទាន់មាន។",
+    "TreeMap រក្សាលំដាប់ Key តាមអក្សរ ដូច្នេះ Output នឹងរៀបរួច។",
+    "<code>Map.Entry</code> អនុញ្ញាតឱ្យចូលប្រើ Key និង Value ក្នុង Loop។"
+  ],
+  output: `and: 1
+fun: 1
+is: 2
+java: 2
+powerful: 1`,
+  improvements: [
+    "អានអត្ថបទពី File។",
+    "មិនរាប់ Stop Words ដូចជា the, a, is។",
+    "តម្រៀបតាមចំនួនដងជំនួសអក្សរ។"
+  ],
+  challenges: [
+    "បង្ហាញពាក្យ 5 ដែលបង្ហាញច្រើនបំផុត។",
+    "រាប់ពាក្យជាមួយ HashMap រួចតម្រៀបដោយ Comparator។"
+  ]
+});
+
+window.JAVA_PROJECTS.push({
+  id: "matrix-operations",
+  num: 25,
+  title: "Matrix Operations",
+  short: "បូក Matrix និងបង្ហាញ Transpose ដោយប្រើ Array ពីរវិមាត្រ។",
+  intro: "អនុវត្ត 2D Array និង Nested Loop ដើម្បីធ្វើប្រតិបត្តិការ Matrix សាមញ្ញ។",
+  time: "៩០ នាទី",
+  level: 3,
+  concepts: ["2D arrays", "Nested loops", "Transpose"],
+  objectives: [
+    "បង្កើត និងចូលប្រើ 2D Array។",
+    "បូក Matrix ធាតុមួយប៉ុនគ្នា។",
+    "បង្ហាញ Transpose ដោយប្តូរ Row និង Column។"
+  ],
+  requirements: [
+    "បង្កើត Matrix A និង B ទំហំ 2x2។",
+    "គណនា Matrix បូក។",
+    "បង្ហាញ Transpose របស់ A។"
+  ],
+  steps: [
+    "បង្កើត File <code>MatrixOperations.java</code>។",
+    "បង្កើត Array ពីរវិមាត្រ a និង b។",
+    "ប្រើ Nested Loop ដើម្បីបូក។",
+    "ប្រើ Nested Loop បញ្ច្រាស Index ដើម្បីបង្ហាញ Transpose។"
+  ],
+  file: "MatrixOperations.java",
+  code: `public class MatrixOperations {
+    public static void main(String[] args) {
+        int[][] a = {{1, 2}, {3, 4}};
+        int[][] b = {{5, 6}, {7, 8}};
+        int[][] sum = new int[2][2];
+
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                sum[i][j] = a[i][j] + b[i][j];
+            }
+        }
+
+        System.out.println("Sum:");
+        for (int[] row : sum) {
+            for (int value : row) {
+                System.out.print(value + " ");
+            }
+            System.out.println();
+        }
+
+        System.out.println("Transpose of A:");
+        for (int j = 0; j < 2; j++) {
+            for (int i = 0; i < 2; i++) {
+                System.out.print(a[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+}`,
+  explanation: [
+    "2D Array គឺ Array នៃ Array ដែលចូលប្រើដោយ <code>[row][col]</code>។",
+    "Nested Loop ដំណើរការគ្រប់ជួរដេក និងជួរឈរ។",
+    "<code>sum[i][j] = a[i][j] + b[i][j]</code> បូកធាតុតាមទីតាំងដូចគ្នា។",
+    "Transpose ប្តូរ <code>a[i][j]</code> ទៅ <code>a[j][i]</code>។"
+  ],
+  output: `Sum:
+6 8
+10 12
+Transpose of A:
+1 3
+2 4`,
+  improvements: [
+    "គុណ Matrix ដោយប្រើ Loop បីជាន់។",
+    "អានទំហំ និងធាតុពីអ្នកប្រើ។",
+    "បង្កើត Method សម្រាប់បង្ហាញ Matrix។"
+  ],
+  challenges: [
+    "គណនា Determinant សម្រាប់ Matrix 2x2 និង 3x3។",
+    "ពិនិត្យថា Matrix ជា Identity Matrix ឬអត់។"
+  ]
+});
+
+window.JAVA_PROJECTS.push({
+  id: "student-marks-report",
+  num: 26,
+  title: "Student Marks Report",
+  short: "គណនាពិន្ទុសរុប មធ្យមភាគ ខ្ពស់បំផុត និងទាបបំផុតពី Array។",
+  intro: "អនុវត្ត Array, Method និង Loop ដើម្បីបង្កើតរបាយការណ៍ពិន្ទុសិស្ស។",
+  time: "៦០ នាទី",
+  level: 2,
+  concepts: ["Arrays", "Methods", "for-each", "Casting"],
+  objectives: [
+    "សរសេរ Method គណនាស្ថិតិពី Array។",
+    "ប្រើ for-each សម្រាប់អានធាតុ។",
+    "បង្ហាញមធ្យមភាគជា double។"
+  ],
+  requirements: [
+    "បង្កើត Array ពិន្ទុយ៉ាងតិច 5។",
+    "Method total, average, highest, lowest។",
+    "បង្ហាញលទ្ធផលទាំងអស់។"
+  ],
+  steps: [
+    "បង្កើត File <code>StudentMarksReport.java</code>។",
+    "សរសេរ Method សម្រាប់ស្ថិតិនីមួយៗ។",
+    "បង្កើត Array ពិន្ទុក្នុង main។",
+    "ហៅ Method និងបង្ហាញលទ្ធផល។"
+  ],
+  file: "StudentMarksReport.java",
+  code: `public class StudentMarksReport {
+    static int total(int[] marks) {
+        int sum = 0;
+        for (int m : marks) sum += m;
+        return sum;
+    }
+
+    static double average(int[] marks) {
+        return (double) total(marks) / marks.length;
+    }
+
+    static int highest(int[] marks) {
+        int max = marks[0];
+        for (int m : marks) if (m > max) max = m;
+        return max;
+    }
+
+    static int lowest(int[] marks) {
+        int min = marks[0];
+        for (int m : marks) if (m < min) min = m;
+        return min;
+    }
+
+    public static void main(String[] args) {
+        int[] marks = {75, 88, 92, 60, 80};
+        System.out.println("Total: " + total(marks));
+        System.out.printf("Average: %.2f%n", average(marks));
+        System.out.println("Highest: " + highest(marks));
+        System.out.println("Lowest: " + lowest(marks));
+    }
+}`,
+  explanation: [
+    "Method នីមួយៗទទួល Array និងគណនាស្ថិតិមួយប្រភេទ។",
+    "for-each អានធាតុទាំងអស់ដោយមិនចាំបាច់ Index។",
+    "Cast <code>(double)</code> មុនចែក ដើម្បីទទួលបានទសភាគ។",
+    "average ហៅ total ដើម្បីកុំសរសេរ Logic ស្ទួន។"
+  ],
+  output: `Total: 395
+Average: 79.00
+Highest: 92
+Lowest: 60`,
+  improvements: [
+    "អានពិន្ទុពីអ្នកប្រើជាមួយ Loop។",
+    "បង្ហាញ Grade សម្រាប់មធ្យមភាគ។",
+    "រាប់ចំនួនសិស្សដែលជាប់ និងធ្លាក់។"
+  ],
+  challenges: [
+    "តម្រៀបពិន្ទុដោយ Arrays.sort។",
+    "បង្កើត Class Student និង Array នៃ Object។"
+  ]
+});
+
+window.JAVA_PROJECTS.push({
+  id: "bank-interest-calculator",
+  num: 27,
+  title: "Bank Interest Calculator",
+  short: "គណនាការកើនឡើងប្រាក់សន្សំដោយការប្រាក់ជារៀងរាល់ឆ្នាំ។",
+  intro: "អនុវត្ត Scanner, for Loop និង printf ដើម្បីបង្ហាញតារាងកំណើនប្រាក់សន្សំ។",
+  time: "៦០ នាទី",
+  level: 2,
+  concepts: ["Scanner", "for loop", "Compound interest", "printf"],
+  objectives: [
+    "អានប្រាក់ដើម អត្រា និងចំនួនឆ្នាំ។",
+    "គណនាការប្រាក់បន្ថែមលើប្រាក់សន្សំ។",
+    "បង្ហាញតារាងកំណើនជារៀងរាល់ឆ្នាំ។"
+  ],
+  requirements: [
+    "អាន principal, rate និង years។",
+    "គណនាការប្រាក់បន្ថែមក្នុង Loop។",
+    "បង្ហាញសមតុល្យរាល់ឆ្នាំ។"
+  ],
+  steps: [
+    "បង្កើត File <code>BankInterestCalculator.java</code>។",
+    "អានតម្លៃដោយ Scanner។",
+    "ប្រើ for loop ពីឆ្នាំ 1 ដល់ years។",
+    "បូកការប្រាក់ និងបង្ហាញដោយ printf។"
+  ],
+  file: "BankInterestCalculator.java",
+  code: `import java.util.Scanner;
+
+public class BankInterestCalculator {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Principal: ");
+        double principal = sc.nextDouble();
+        System.out.print("Annual rate (%): ");
+        double rate = sc.nextDouble();
+        System.out.print("Years: ");
+        int years = sc.nextInt();
+
+        double balance = principal;
+        for (int year = 1; year <= years; year++) {
+            balance += balance * rate / 100;
+            System.out.printf("Year %d: %.2f%n", year, balance);
+        }
+        sc.close();
+    }
+}`,
+  explanation: [
+    "<code>balance += balance * rate / 100</code> បន្ថែមការប្រាក់ទៅសមតុល្យ។",
+    "ការប្រាក់ឆ្នាំបន្ទាប់គណនាលើសមតុល្យថ្មី ដែលជា Compound Interest។",
+    "for loop ដំណើរការតាមចំនួនឆ្នាំដែលបញ្ចូល។",
+    "<code>%.2f</code> បង្ហាញប្រាក់ជាពីរខ្ទង់ទសភាគ។"
+  ],
+  output: `Principal: 1000
+Annual rate (%): 5
+Years: 3
+Year 1: 1050.00
+Year 2: 1102.50
+Year 3: 1157.63`,
+  improvements: [
+    "បន្ថែមការប្រាក់ប្រចាំខែ។",
+    "គណនាការប្រាក់សរុបដែលទទួលបាន។",
+    "ពិនិត្យ Input អវិជ្ជមាន។"
+  ],
+  challenges: [
+    "ប្រៀបធៀប Simple Interest និង Compound Interest។",
+    "បង្កើត Method គណនាតម្លៃអនាគត (Future Value)។"
+  ]
+});
+
+window.JAVA_PROJECTS.push({
+  id: "password-strength-checker",
+  num: 28,
+  title: "Password Strength Checker",
+  short: "វាយតម្លៃកម្លាំង Password តាមប្រភេទតួអក្សរដែលផ្ទុក។",
+  intro: "អនុវត្ត String, Character Method និង if-else ដើម្បីវាយតម្លៃ Password ជា Weak, Medium ឬ Strong។",
+  time: "៩០ នាទី",
+  level: 2,
+  concepts: ["String", "Character", "for-each", "if-else"],
+  objectives: [
+    "ពិនិត្យប្រវែង និងប្រភេទតួអក្សរ។",
+    "ប្រើ Character.isUpperCase/isLowerCase/isDigit។",
+    "គណនាពិន្ទុ និងចាត់ថ្នាក់កម្លាំង។"
+  ],
+  requirements: [
+    "អាន Password ពី Console។",
+    "ពិនិត្យប្រវែង ≥ 8។",
+    "ពិនិត្យអក្សរធំ អក្សរតូច លេខ និងសញ្ញាពិសេស។",
+    "បង្ហាញពិន្ទុ និងកម្រិតកម្លាំង។"
+  ],
+  steps: [
+    "បង្កើត File <code>PasswordStrengthChecker.java</code>។",
+    "អាន Password ដោយ nextLine។",
+    "Loop លើ <code>toCharArray()</code> ដើម្បីពិនិត្យប្រភេទតួអក្សរ។",
+    "គណនាពិន្ទុ និងបង្ហាញកម្រិត។"
+  ],
+  file: "PasswordStrengthChecker.java",
+  code: `import java.util.Scanner;
+
+public class PasswordStrengthChecker {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Password: ");
+        String password = sc.nextLine();
+
+        boolean longEnough = password.length() >= 8;
+        boolean hasUpper = false;
+        boolean hasLower = false;
+        boolean hasDigit = false;
+        boolean hasSpecial = false;
+        String special = "!@#$%^&*";
+
+        for (char c : password.toCharArray()) {
+            if (Character.isUpperCase(c)) hasUpper = true;
+            else if (Character.isLowerCase(c)) hasLower = true;
+            else if (Character.isDigit(c)) hasDigit = true;
+            else if (special.indexOf(c) >= 0) hasSpecial = true;
+        }
+
+        int score = 0;
+        if (longEnough) score++;
+        if (hasUpper) score++;
+        if (hasLower) score++;
+        if (hasDigit) score++;
+        if (hasSpecial) score++;
+
+        String strength = score >= 5 ? "Strong" : score >= 3 ? "Medium" : "Weak";
+        System.out.println("Score: " + score + "/5");
+        System.out.println("Strength: " + strength);
+        sc.close();
+    }
+}`,
+  explanation: [
+    "<code>toCharArray()</code> បំបែក String ជា Array នៃ char ដើម្បីពិនិត្យម្តងមួយ។",
+    "<code>Character.isUpperCase</code> និង Method ពាក់ព័ន្ធពិនិត្យប្រភេទតួអក្សរ។",
+    "<code>special.indexOf(c)</code> ត្រឡប់ -1 បើ char មិនមានក្នុងបញ្ជី។",
+    "Ternary Operator ជាប់គ្នាជួយកំណត់កម្រិតដោយសង្ខេប។"
+  ],
+  output: `Password: Java@2026
+Score: 5/5
+Strength: Strong`,
+  improvements: [
+    "ពិនិត្យ Password មិនឱ្យដូចឈ្មោះអ្នកប្រើ។",
+    "រាប់ចំនួនតួអក្សរនីមួយៗ។",
+    "បង្ហាញមូលហេតុដែលធ្វើឱ្យ Password ខ្សោយ។"
+  ],
+  challenges: [
+    "បង្កើត Password Generator ដែលធានាកម្រិត Strong។",
+    "ប្រើ Regex ដើម្បីពិនិត្យលក្ខខណ្ឌ។"
+  ]
+});
+
+window.JAVA_PROJECTS.push({
+  id: "rock-paper-scissors-game",
+  num: 29,
+  title: "Rock Paper Scissors Game",
+  short: "លេង Rock Paper Scissors ជាមួយកុំព្យូទ័រដែលជ្រើសដោយ Random។",
+  intro: "អនុវត្ត Scanner, Random, if-else និង Logical Operators ដើម្បីកំណត់អ្នកឈ្នះ។",
+  time: "៦០ នាទី",
+  level: 2,
+  concepts: ["Scanner", "Random", "if-else", "Logical operators"],
+  objectives: [
+    "ទទួលជម្រើសពីអ្នកប្រើ។",
+    "បង្កើតជម្រើសកុំព្យូទ័រដោយ Random។",
+    "កំណត់អ្នកឈ្នះតាមច្បាប់ហ្គេម។"
+  ],
+  requirements: [
+    "ជម្រើស 1=Rock, 2=Paper, 3=Scissors។",
+    "ប្រើ <code>Random.nextInt(3) + 1</code>។",
+    "បង្ហាញ Draw, You win ឬ Computer wins។"
+  ],
+  steps: [
+    "បង្កើត File <code>RockPaperScissorsGame.java</code>។",
+    "Import Scanner និង Random។",
+    "អានជម្រើសអ្នកលេង។",
+    "បង្កើតជម្រើសកុំព្យូទ័រ រួចប្រៀបធៀប។"
+  ],
+  file: "RockPaperScissorsGame.java",
+  code: `import java.util.Random;
+import java.util.Scanner;
+
+public class RockPaperScissorsGame {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Random random = new Random();
+
+        System.out.println("1=Rock 2=Paper 3=Scissors");
+        System.out.print("Your choice: ");
+        int player = sc.nextInt();
+        int computer = random.nextInt(3) + 1;
+
+        System.out.println("Computer: " + computer);
+
+        if (player == computer) {
+            System.out.println("Draw");
+        } else if ((player == 1 && computer == 3)
+                || (player == 2 && computer == 1)
+                || (player == 3 && computer == 2)) {
+            System.out.println("You win");
+        } else {
+            System.out.println("Computer wins");
+        }
+        sc.close();
+    }
+}`,
+  explanation: [
+    "<code>Random.nextInt(3)</code> ផ្តល់ 0, 1 ឬ 2 ដូច្នេះបូក 1 បាន 1–3។",
+    "បើជម្រើសស្មើគ្នា គឺ Draw។",
+    "លក្ខខណ្ឌឈ្នះរួមបញ្ចូលករណីទាំងបីដោយ <code>||</code>។",
+    "ករណីផ្សេងទៀតកុំព្យូទ័រឈ្នះ។"
+  ],
+  output: `1=Rock 2=Paper 3=Scissors
+Your choice: 1
+Computer: 3
+You win`,
+  improvements: [
+    "លេងច្រើនជុំ និងរាប់ពិន្ទុ។",
+    "ពិនិត្យជម្រើសមិនត្រឹមត្រូវ។",
+    "បង្ហាញឈ្មោះជម្រើសជំនួសលេខ។"
+  ],
+  challenges: [
+    "បង្កើត Best of 5។",
+    "រក្សាប្រវត្តិជុំក្នុង ArrayList។"
+  ]
+});
+
+window.JAVA_PROJECTS.push({
+  id: "quiz-application",
+  num: 30,
+  title: "Quiz Application",
+  short: "កម្មវិធីសំណួរចម្លើយពហុជម្រើស ដែលគណនាពិន្ទុដោយស្វ័យប្រវត្តិ។",
+  intro: "អនុវត្ត Array, 2D Array, Loop និង Scanner ដើម្បីបង្កើត Quiz ពីរបីសំណួរ។",
+  time: "៩០ នាទី",
+  level: 2,
+  concepts: ["Arrays", "2D arrays", "Loop", "Scanner"],
+  objectives: [
+    "ផ្ទុកសំណួរ និងជម្រើសក្នុង Array។",
+    "អានចម្លើយពីអ្នកប្រើ។",
+    "គណនា និងបង្ហាញពិន្ទុ។"
+  ],
+  requirements: [
+    "មានសំណួរយ៉ាងតិច 3។",
+    "ជម្រើសជា 2D Array។",
+    "បង្ហាញពិន្ទុចុងក្រោយ។"
+  ],
+  steps: [
+    "បង្កើត File <code>QuizApplication.java</code>។",
+    "បង្កើត Array សំណួរ ជម្រើស និងចម្លើយត្រឹមត្រូវ។",
+    "Loop បង្ហាញសំណួរ និងអានចម្លើយ។",
+    "បូកពិន្ទុ និងបង្ហាញលទ្ធផល។"
+  ],
+  file: "QuizApplication.java",
+  code: `import java.util.Scanner;
+
+public class QuizApplication {
+    public static void main(String[] args) {
+        String[] questions = {
+            "Which keyword creates an object?",
+            "Which type stores true/false?",
+            "Which loop always runs at least once?"
+        };
+        String[][] options = {
+            {"a) class", "b) new", "c) this"},
+            {"a) int", "b) String", "c) boolean"},
+            {"a) for", "b) while", "c) do-while"}
+        };
+        char[] answers = {'b', 'c', 'c'};
+
+        Scanner sc = new Scanner(System.in);
+        int score = 0;
+
+        for (int i = 0; i < questions.length; i++) {
+            System.out.println((i + 1) + ". " + questions[i]);
+            for (String option : options[i]) {
+                System.out.println("   " + option);
+            }
+            System.out.print("Answer: ");
+            char answer = sc.next().toLowerCase().charAt(0);
+            if (answer == answers[i]) {
+                score++;
+            }
+        }
+
+        System.out.println("Score: " + score + "/" + questions.length);
+        sc.close();
+    }
+}`,
+  explanation: [
+    "Array សំណួរ និង 2D Array ជម្រើសរក្សាទិន្នន័យ Quiz ដោយរៀបរយ។",
+    "Index <code>i</code> ភ្ជាប់សំណួរ ជម្រើស និងចម្លើយឱ្យត្រូវគ្នា។",
+    "<code>toLowerCase().charAt(0)</code> អានតួអក្សរដំបូង ដោយមិនខ្វល់អក្សរធំ/តូច។",
+    "ពិន្ទុកើនមួយពេលចម្លើយត្រូវ។"
+  ],
+  output: `1. Which keyword creates an object?
+   a) class
+   b) new
+   c) this
+Answer: b
+2. Which type stores true/false?
+   a) int
+   b) String
+   c) boolean
+Answer: c
+3. Which loop always runs at least once?
+   a) for
+   b) while
+   c) do-while
+Answer: c
+Score: 3/3`,
+  improvements: [
+    "អានសំណួរពី File ឬ Array ធំជាង។",
+    "បង្ហាញចម្លើយត្រឹមត្រូវពេលឆ្លើយខុស។",
+    "កំណត់ពេលវេលាសម្រាប់ Quiz។"
+  ],
+  challenges: [
+    "ដាក់សំណួរជា Class Question និង ArrayList។",
+    "រក្សាទុកពិន្ទុខ្ពស់បំផុតទៅ File។"
+  ]
+});
+
+window.JAVA_PROJECTS.push({
+  id: "inventory-management",
+  num: 31,
+  title: "Inventory Management",
+  short: "គ្រប់គ្រងទំនិញក្នុងស្តុក ដោយបន្ថែម បង្ហាញ និងគណនាតម្លៃសរុប។",
+  intro: "អនុវត្ត Class, ArrayList, Menu Loop និង Encapsulation ដើម្បីគ្រប់គ្រងស្តុកទំនិញ។",
+  time: "១២០ នាទី",
+  level: 3,
+  concepts: ["Classes", "ArrayList", "Menu loop", "Encapsulation"],
+  objectives: [
+    "បង្កើត Class Product មាន Field និង Method។",
+    "ប្រើ ArrayList ផ្ទុក Product ច្រើន។",
+    "គណនាតម្លៃសរុបក្នុងស្តុក។"
+  ],
+  requirements: [
+    "Menu: Add, List, Total, Exit។",
+    "Product មាន name, price, quantity។",
+    "បង្ហាញតម្លៃសរុប។"
+  ],
+  steps: [
+    "បង្កើត File <code>InventoryManagement.java</code>។",
+    "បង្កើត Class Product និង Constructor។",
+    "ប្រើ ArrayList<Product> ក្នុង main។",
+    "បង្កើត Menu Loop សម្រាប់ជ្រើសប្រតិបត្តិការ។"
+  ],
+  file: "InventoryManagement.java",
+  code: `import java.util.ArrayList;
+import java.util.Scanner;
+
+class Product {
+    String name;
+    double price;
+    int quantity;
+
+    Product(String name, double price, int quantity) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
+    double totalValue() {
+        return price * quantity;
+    }
+}
+
+public class InventoryManagement {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        ArrayList<Product> products = new ArrayList<>();
+        int choice;
+
+        do {
+            System.out.println("1. Add  2. List  3. Total  0. Exit");
+            choice = sc.nextInt();
+            sc.nextLine();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Name: ");
+                    String name = sc.nextLine();
+                    System.out.print("Price: ");
+                    double price = sc.nextDouble();
+                    System.out.print("Quantity: ");
+                    int qty = sc.nextInt();
+                    products.add(new Product(name, price, qty));
+                    break;
+                case 2:
+                    for (Product p : products) {
+                        System.out.println(p.name + " x" + p.quantity + " = " + p.totalValue());
+                    }
+                    break;
+                case 3:
+                    double total = 0;
+                    for (Product p : products) {
+                        total += p.totalValue();
+                    }
+                    System.out.println("Total value: " + total);
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Invalid choice");
+            }
+        } while (choice != 0);
+
+        sc.close();
+    }
+}`,
+  explanation: [
+    "Class Product រួមបញ្ចូលទិន្នន័យទំនិញ និង Method គណនាតម្លៃ។",
+    "ArrayList អាចបន្ថែម Product ថ្មីៗដោយមិនកំណត់ទំហំជាមុន។",
+    "Menu Loop បន្តរហូតអ្នកប្រើជ្រើស 0។",
+    "<code>sc.nextLine()</code> ក្រោយ <code>nextInt()</code> សម្អាត New Line មុនអានឈ្មោះ។"
+  ],
+  output: `1. Add  2. List  3. Total  0. Exit
+1
+Name: Pen
+Price: 1.5
+Quantity: 10
+1. Add  2. List  3. Total  0. Exit
+2
+Pen x10 = 15.0
+1. Add  2. List  3. Total  0. Exit
+3
+Total value: 15.0
+1. Add  2. List  3. Total  0. Exit
+0`,
+  improvements: [
+    "ធ្វើឱ្យ Field ជា private និងបន្ថែម Getter/Setter។",
+    "បន្ថែមការលុប និងកែប្រែទំនិញ។",
+    "ពិនិត្យតម្លៃ និងចំនួនអវិជ្ជមាន។"
+  ],
+  challenges: [
+    "ស្វែងរកទំនិញតាមឈ្មោះ។",
+    "រក្សាទុកស្តុកទៅ File និង Load មកវិញ។"
+  ]
+});
+
+window.JAVA_PROJECTS.push({
+  id: "employee-payroll",
+  num: 32,
+  title: "Employee Payroll",
+  short: "គណនាប្រាក់ខែបុគ្គលិកពេញម៉ោង និងក្រៅម៉ោងដោយប្រើ Inheritance។",
+  intro: "អនុវត្ត Abstract Class, Inheritance, Polymorphism និង ArrayList ដើម្បីគណនាប្រាក់ខែ។",
+  time: "១២០ នាទី",
+  level: 3,
+  concepts: ["Inheritance", "Polymorphism", "Abstract class", "ArrayList"],
+  objectives: [
+    "បង្កើត Abstract Class Employee។",
+    "បង្កើត Subclass FullTime និង PartTime។",
+    "គណនាប្រាក់ខែតាមប្រភេទបុគ្គលិក។"
+  ],
+  requirements: [
+    "Employee មាន Method abstract monthlyPay()។",
+    "FullTime គណនាពី salary។",
+    "PartTime គណនាពី hours * rate។",
+    "បង្ហាញ Payslip និងសរុប។"
+  ],
+  steps: [
+    "បង្កើត File <code>EmployeePayroll.java</code>។",
+    "សរសេរ Abstract Class Employee។",
+    "សរសេរ Subclass ពីរ និង Override monthlyPay។",
+    "ប្រើ ArrayList<Employee> និង Loop បង្ហាញ Payslip។"
+  ],
+  file: "EmployeePayroll.java",
+  code: `import java.util.ArrayList;
+
+abstract class Employee {
+    protected String name;
+
+    Employee(String name) {
+        this.name = name;
+    }
+
+    abstract double monthlyPay();
+
+    void payslip() {
+        System.out.printf("%s: $%.2f%n", name, monthlyPay());
+    }
+}
+
+class FullTime extends Employee {
+    private double salary;
+
+    FullTime(String name, double salary) {
+        super(name);
+        this.salary = salary;
+    }
+
+    double monthlyPay() {
+        return salary;
+    }
+}
+
+class PartTime extends Employee {
+    private int hours;
+    private double rate;
+
+    PartTime(String name, int hours, double rate) {
+        super(name);
+        this.hours = hours;
+        this.rate = rate;
+    }
+
+    double monthlyPay() {
+        return hours * rate;
+    }
+}
+
+public class EmployeePayroll {
+    public static void main(String[] args) {
+        ArrayList<Employee> staff = new ArrayList<>();
+        staff.add(new FullTime("Dara", 1200));
+        staff.add(new PartTime("Sok", 80, 10));
+
+        double total = 0;
+        for (Employee e : staff) {
+            e.payslip();
+            total += e.monthlyPay();
+        }
+        System.out.printf("Total payroll: $%.2f%n", total);
+    }
+}`,
+  explanation: [
+    "Abstract Class Employee កំណត់ Contract <code>monthlyPay()</code>។",
+    "Subclass អនុវត្តរូបមន្តគណនាខុសគ្នា។",
+    "ArrayList<Employee> ផ្ទុក Object ទាំងពីរប្រភេទ។",
+    "ការហៅ <code>monthlyPay()</code> ជ្រើស Method តាម Object ពិត (Polymorphism)។"
+  ],
+  output: `Dara: $1200.00
+Sok: $800.00
+Total payroll: $2000.00`,
+  improvements: [
+    "បន្ថែម Overtime Pay សម្រាប់ PartTime។",
+    "អានព័ត៌មានបុគ្គលិកពី Console។",
+    "បន្ថែមពន្ធ និងប្រាក់ឧបត្ថម្ភ។"
+  ],
+  challenges: [
+    "បន្ថែម Subclass Contractor។",
+    "បង្កើត Interface Payable និងអនុវត្តលើ Class ផ្សេងៗ។"
+  ]
+});
+
+window.JAVA_PROJECTS.push({
+  id: "shape-area-calculator",
+  num: 33,
+  title: "Shape Area Calculator",
+  short: "គណនាផ្ទៃក្រឡារូបរាងផ្សេងៗតាម Interface។",
+  intro: "អនុវត្ត Interface, Polymorphism និង Array នៃ Object ដើម្បីគណនាផ្ទៃក្រឡា។",
+  time: "៩០ នាទី",
+  level: 3,
+  concepts: ["Interfaces", "Polymorphism", "Math.PI", "Array of objects"],
+  objectives: [
+    "បង្កើត Interface Shape។",
+    "អនុវត្ត Interface ក្នុង Circle និង Rectangle។",
+    "Loop លើ Array នៃ Shape។"
+  ],
+  requirements: [
+    "Interface Shape មាន <code>area()</code>។",
+    "Circle គណនាដោយ Math.PI។",
+    "Rectangle គណនាដោយ width * height។",
+    "បង្ហាញផ្ទៃក្រឡារបស់រូបរាងនីមួយៗ។"
+  ],
+  steps: [
+    "បង្កើត File <code>ShapeAreaCalculator.java</code>។",
+    "សរសេរ Interface Shape។",
+    "សរសេរ Class Circle និង Rectangle។",
+    "បង្កើត Shape[] និង Loop បង្ហាញផ្ទៃក្រឡា។"
+  ],
+  file: "ShapeAreaCalculator.java",
+  code: `interface Shape {
+    double area();
+}
+
+class Circle implements Shape {
+    private double radius;
+
+    Circle(double radius) {
+        this.radius = radius;
+    }
+
+    public double area() {
+        return Math.PI * radius * radius;
+    }
+}
+
+class Rectangle implements Shape {
+    private double width;
+    private double height;
+
+    Rectangle(double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    public double area() {
+        return width * height;
+    }
+}
+
+public class ShapeAreaCalculator {
+    public static void main(String[] args) {
+        Shape[] shapes = {new Circle(3), new Rectangle(4, 5)};
+
+        for (Shape s : shapes) {
+            System.out.printf("%s area: %.2f%n",
+                    s.getClass().getSimpleName(), s.area());
+        }
+    }
+}`,
+  explanation: [
+    "Interface Shape កំណត់ Method <code>area()</code> ដែល Class ត្រូវអនុវត្ត។",
+    "Circle និង Rectangle មានរូបមន្តផ្ទាល់ខ្លួន។",
+    "Shape[] អាចផ្ទុក Object នៃ Class ណាដែល implements Shape។",
+    "<code>getClass().getSimpleName()</code> ត្រឡប់ឈ្មោះ Class សម្រាប់ការបង្ហាញ។"
+  ],
+  output: `Circle area: 28.27
+Rectangle area: 20.00`,
+  improvements: [
+    "បន្ថែម Triangle និងការគណនាបរិមាត្រ។",
+    "អានប្រភេទរូបរាងពីអ្នកប្រើ។",
+    "បង្ហាញរូបរាងដែលមានផ្ទៃធំបំផុត។"
+  ],
+  challenges: [
+    "បង្កើត Interface ទីពីរ <code>Perimeter</code>។",
+    "តម្រៀប Shape តាមផ្ទៃក្រឡាដោយ Comparator។"
+  ]
+});
+
+window.JAVA_PROJECTS.push({
+  id: "movie-ticket-booking",
+  num: 34,
+  title: "Movie Ticket Booking",
+  short: "កក់សំបុត្រភាពយន្ត និងគ្រប់គ្រងចំនួនកៅអីនៅសល់។",
+  intro: "អនុវត្ត Class, ArrayList និង Encapsulation ដើម្បីកក់សំបុត្រ និងពិនិត្យកៅអី។",
+  time: "១២០ នាទី",
+  level: 3,
+  concepts: ["Classes", "ArrayList", "Encapsulation", "Business rules"],
+  objectives: [
+    "បង្កើត Class Movie មាន seats និង price។",
+    "សរសេរ Method book(int tickets)។",
+    "ពិនិត្យកៅអីគ្រប់គ្រាន់មុនកក់។"
+  ],
+  requirements: [
+    "Movie មាន title, seats, price។",
+    "Method book ត្រឡប់ boolean។",
+    "បើកៅអីមិនគ្រប់ បង្ហាញសារ។",
+    "បង្ហាញតម្លៃសរុប និងកៅអីនៅសល់។"
+  ],
+  steps: [
+    "បង្កើត File <code>MovieTicketBooking.java</code>។",
+    "សរសេរ Class Movie និង Method book។",
+    "បង្កើត ArrayList<Movie> ក្នុង main។",
+    "ជ្រើសរើសភាពយន្ត កក់សំបុត្រ និងបង្ហាញលទ្ធផល។"
+  ],
+  file: "MovieTicketBooking.java",
+  code: `import java.util.ArrayList;
+
+class Movie {
+    String title;
+    int seats;
+    double price;
+
+    Movie(String title, int seats, double price) {
+        this.title = title;
+        this.seats = seats;
+        this.price = price;
+    }
+
+    boolean book(int tickets) {
+        if (tickets <= 0 || tickets > seats) {
+            return false;
+        }
+        seats -= tickets;
+        return true;
+    }
+}
+
+public class MovieTicketBooking {
+    public static void main(String[] args) {
+        ArrayList<Movie> movies = new ArrayList<>();
+        movies.add(new Movie("Java Story", 5, 5.0));
+        movies.add(new Movie("Khmer Code", 2, 4.5));
+
+        Movie selected = movies.get(0);
+        int tickets = 2;
+
+        if (selected.book(tickets)) {
+            System.out.printf("Booked %d tickets for %s%n", tickets, selected.title);
+            System.out.printf("Total: $%.2f%n", tickets * selected.price);
+            System.out.println("Seats left: " + selected.seats);
+        } else {
+            System.out.println("Not enough seats");
+        }
+    }
+}`,
+  explanation: [
+    "Method <code>book()</code> ពិនិត្យលក្ខខណ្ឌមុនកែប្រែ seats។",
+    "ការត្រឡប់ boolean ជួយឱ្យ Caller ដឹងថាការកក់ជោគជ័យ ឬអត់។",
+    "ArrayList ផ្ទុកភាពយន្តច្រើន ហើយ <code>get(0)</code> ជ្រើសភាពយន្តដំបូង។",
+    "Business Rule ការពារការកក់លើសកៅអីដែលមាន។"
+  ],
+  output: `Booked 2 tickets for Java Story
+Total: $10.00
+Seats left: 3`,
+  improvements: [
+    "ធ្វើឱ្យ Field ជា private និងបន្ថែម Getter។",
+    "បង្កើត Menu សម្រាប់ជ្រើសភាពយន្ត និងចំនួនសំបុត្រ។",
+    "បន្ថែមការបោះបង់ការកក់ (Cancel)។"
+  ],
+  challenges: [
+    "គ្រប់គ្រងកៅអីតាមលេខកៅអី (Seat Map)។",
+    "រក្សាទុកប្រវត្តិការកក់ទៅ File។"
+  ]
+});
+
+window.JAVA_PROJECTS.push({
+  id: "library-fine-calculator",
+  num: 35,
+  title: "Library Fine Calculator",
+  short: "គណនាប្រាក់ពិន័យសម្រាប់ការត្រឡប់សៀវភៅយឺតតាមចំនួនថ្ងៃ។",
+  intro: "អនុវត្ត Method, if-else និង printf ដើម្បីគណនាប្រាក់ពិន័យតាមជាន់ថ្ងៃយឺត។",
+  time: "៦០ នាទី",
+  level: 2,
+  concepts: ["Methods", "if-else", "Scanner", "printf"],
+  objectives: [
+    "សរសេរ Method គណនាប្រាក់ពិន័យ។",
+    "ប្រើជាន់តម្លៃតាមចំនួនថ្ងៃ។",
+    "បង្ហាញលទ្ធផលជាទសភាគពីរខ្ទង់។"
+  ],
+  requirements: [
+    "ថ្ងៃយឺត ≤ 0 គ្មានពិន័យ។",
+    "1–5 ថ្ងៃ ពិន័យ 0.5 ក្នុងមួយថ្ងៃ។",
+    "6–10 ថ្ងៃ ពិន័យ 1.0 ក្នុងមួយថ្ងៃ។",
+    "លើស 10 ថ្ងៃ ពិន័យ 2.0 ក្នុងមួយថ្ងៃ។"
+  ],
+  steps: [
+    "បង្កើត File <code>LibraryFineCalculator.java</code>។",
+    "សរសេរ Method calculateFine(int daysLate)។",
+    "អានចំនួនថ្ងៃយឺតពី Console។",
+    "បង្ហាញប្រាក់ពិន័យដោយ printf។"
+  ],
+  file: "LibraryFineCalculator.java",
+  code: `import java.util.Scanner;
+
+public class LibraryFineCalculator {
+    static double calculateFine(int daysLate) {
+        if (daysLate <= 0) return 0;
+        if (daysLate <= 5) return daysLate * 0.5;
+        if (daysLate <= 10) return 5 * 0.5 + (daysLate - 5) * 1.0;
+        return 5 * 0.5 + 5 * 1.0 + (daysLate - 10) * 2.0;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Days late: ");
+        int days = sc.nextInt();
+        System.out.printf("Fine: $%.2f%n", calculateFine(days));
+        sc.close();
+    }
+}`,
+  explanation: [
+    "Method calculateFine បំបែក Logic គណនាឱ្យអានងាយ។",
+    "ការត្រឡប់ភ្លាមៗ (<code>return</code>) បញ្ឈប់ Method នៅជាន់ដែលត្រូវគ្នា។",
+    "ជាន់ទីពីរគណនាថ្ងៃ 5 ដំបូង បូកថ្ងៃបន្ថែម។",
+    "ជាន់ទីបីបូកជាន់មុនទាំងអស់ បន្ថែមថ្ងៃលើស 10។"
+  ],
+  output: `Days late: 8
+Fine: $5.50`,
+  improvements: [
+    "បង្ហាញការបំបែកប្រាក់ពិន័យតាមជាន់។",
+    "អនុញ្ញាតឱ្យកំណត់អត្រាពិន័យខ្លួនឯង។",
+    "រក្សាទុកប្រវត្តិការត្រឡប់សៀវភៅ។"
+  ],
+  challenges: [
+    "គណនាប្រាក់ពិន័យសម្រាប់សៀវភៅច្រើនក្នុង ArrayList។",
+    "បន្ថែមការលើកលែងពិន័យសម្រាប់សមាជិក VIP។"
+  ]
+});
+
+window.JAVA_PROJECTS.push({
+  id: "file-based-notes-app",
+  num: 36,
+  title: "File-Based Notes App",
+  short: "កម្មវិធីកត់ត្រា Notes ដែលរក្សាទុក និងអានពី File។",
+  intro: "អនុវត្ត File I/O ជាមួយ java.nio.file ដើម្បីសរសេរ Notes ទៅ File និងអានមកវិញ។",
+  time: "១២០ នាទី",
+  level: 3,
+  concepts: ["File I/O", "java.nio.file", "IOException", "try-catch"],
+  objectives: [
+    "សរសេរទិន្នន័យទៅ File។",
+    "អានទិន្នន័យពី File ត្រឡប់មកវិញ។",
+    "ចាប់ IOException ដោយ try-catch។"
+  ],
+  requirements: [
+    "បង្កើត File <code>notes.txt</code>។",
+    "សរសេរ Notes យ៉ាងតិច 2។",
+    "អាន និងបង្ហាញ Notes ជាមួយលេខរៀង។",
+    "ចាប់ IOException។"
+  ],
+  steps: [
+    "បង្កើត File <code>NotesFileApp.java</code>។",
+    "Import Class ពី <code>java.nio.file</code>។",
+    "ប្រើ <code>Files.write</code> សរសេរ Notes។",
+    "ប្រើ <code>Files.readAllLines</code> អាន និងបង្ហាញ។"
+  ],
+  file: "NotesFileApp.java",
+  code: `import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+
+public class NotesFileApp {
+    public static void main(String[] args) {
+        Path path = Paths.get("notes.txt");
+
+        try {
+            Files.write(path, Arrays.asList(
+                    "Learn Java basics",
+                    "Practice OOP daily"));
+
+            List<String> notes = Files.readAllLines(path);
+            for (int i = 0; i < notes.size(); i++) {
+                System.out.println((i + 1) + ". " + notes.get(i));
+            }
+        } catch (IOException e) {
+            System.out.println("File error: " + e.getMessage());
+        }
+    }
+}`,
+  explanation: [
+    "<code>Paths.get(\"notes.txt\")</code> កំណត់ទីតាំង File ក្នុង Folder បច្ចុប្បន្ន។",
+    "<code>Files.write</code> សរសេរ List នៃ String ទៅ File។",
+    "<code>Files.readAllLines</code> អានគ្រប់បន្ទាត់ចូល List។",
+    "File Operation អាចបង្ក IOException ដូច្នេះត្រូវចាប់ដោយ try-catch។"
+  ],
+  output: `1. Learn Java basics
+2. Practice OOP daily`,
+  improvements: [
+    "បន្ថែម Menu សម្រាប់បន្ថែម Notes ថ្មី។",
+    "អាន Notes ដែលមានស្រាប់មុនសរសេរបន្ថែម។",
+    "ប្រើ Append Mode ដើម្បីមិនសរសេរជំនួសទាំងអស់។"
+  ],
+  challenges: [
+    "បង្កើតកម្មវិធី Notes ពេញលេញមាន Add, List, Delete។",
+    "រក្សាទុក Notes ជា CSV ជាមួយកាលបរិច្ឆេទ។"
+  ]
+});

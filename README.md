@@ -10,7 +10,7 @@ no install required.
   fundamentals.
 - **221 exercises** across three difficulty levels (Beginner / Intermediate / Challenge),
   each with requirements, sample input/output, a hint, and a hidden solution.
-- **16 hands-on projects** with full source code, line-by-line explanations, sample
+- **36 hands-on projects** with full source code, line-by-line explanations, sample
   output, improvement ideas, and challenges.
 - **Reference section**: 50 glossary terms, 50 keywords, 20 common errors, 21 cheat
   sheets, a 5-phase roadmap, and a 25-question final test.
@@ -60,7 +60,7 @@ lesson of java/
 │   ├── lessons-f.js         # Lessons 14–17 (OOP, classes, constructors, encapsulation)
 │   ├── lessons-g.js         # Lessons 18–21 (inheritance, polymorphism, abstraction, interfaces)
 │   ├── lessons-h.js         # Lessons 22–25 (exceptions, collections, files, final projects)
-│   ├── projects-data.js     # 16 guided projects
+│   ├── projects-data.js     # 36 guided projects
 │   └── reference-data.js    # Glossary, keywords, errors, cheatsheet, roadmap, final test
 ├── .vscode/settings.json    # Live Server port 5501
 └── README.md
@@ -108,6 +108,26 @@ Data files expose globals consumed by `script.js`:
 14. Student Grade Management
 15. Employee Management System
 16. Simple OOP Management System
+17. Temperature Converter
+18. BMI Calculator
+19. Leap Year Checker
+20. Multiplication Table Generator
+21. Prime Number Finder
+22. Factorial & Fibonacci
+23. Palindrome Checker
+24. Word Frequency Counter
+25. Matrix Operations
+26. Student Marks Report
+27. Bank Interest Calculator
+28. Password Strength Checker
+29. Rock Paper Scissors Game
+30. Quiz Application
+31. Inventory Management
+32. Employee Payroll
+33. Shape Area Calculator
+34. Movie Ticket Booking
+35. Library Fine Calculator
+36. File-Based Notes App
 
 ## Work Completed
 
@@ -119,12 +139,18 @@ Data files expose globals consumed by `script.js`:
 - **Extra examples** were added to the OOP and Abstraction lessons.
 - **Six required projects** from the project brief were implemented and appended:
   Student Information System, Simple Calculator, ATM Simulation, Student Grade
-  Management, Employee Management System, and Simple OOP Management System. The site now
-  ships 16 projects.
+  Management, Employee Management System, and Simple OOP Management System.
+- **20 additional practice projects** (nums 17–36) were added for extra practice:
+  Temperature Converter, BMI Calculator, Leap Year Checker, Multiplication Table
+  Generator, Prime Number Finder, Factorial & Fibonacci, Palindrome Checker, Word
+  Frequency Counter, Matrix Operations, Student Marks Report, Bank Interest Calculator,
+  Password Strength Checker, Rock Paper Scissors Game, Quiz Application, Inventory
+  Management, Employee Payroll, Shape Area Calculator, Movie Ticket Booking, Library Fine
+  Calculator, and File-Based Notes App. The site now ships 36 projects.
 - **Regex escaping** was corrected in a strings exercise so the generated Java source
   uses `"\\s+"` correctly.
 - **Verification**: all JavaScript data files and `script.js` pass `node --check`; the
-  content audit reports 25 lessons, 16 projects, all required fields present, valid quiz
+  content audit reports 25 lessons, 36 projects, all required fields present, valid quiz
   answers, and no broken internal references.
 
 ## Adding Content
