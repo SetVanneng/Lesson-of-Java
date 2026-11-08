@@ -11,7 +11,10 @@
   const REF = window.JAVA_REFERENCE || {};
 
   const STORE_KEY = "javaKhmer.v1";
-  const LEVEL_NAMES = { 1: "ចាប់ផ្តើម", 2: "មធ្យម", 3: "ប្រកួតប្រជែង" };
+  const LEVEL_NAMES = {
+    km: { 1: "ចាប់ផ្តើម", 2: "មធ្យម", 3: "ប្រកួតប្រជែង" },
+    en: { 1: "Beginner", 2: "Intermediate", 3: "Challenge" }
+  };
   const PART_NAMES = {
     1: "Introduction to Java",
     2: "Environment Setup",
@@ -30,6 +33,7 @@
 
   const state = {
     theme: "light",
+    lang: "km",
     collapsed: false,
     completed: [],
     bookmarks: [],
@@ -40,6 +44,108 @@
 
   const $ = (sel, root) => (root || document).querySelector(sel);
   const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
+
+  /* ------------------------------------------------------------------------
+     Language
+     ------------------------------------------------------------------------ */
+
+  function tr(km, en) {
+    return state.lang === "en" ? en : km;
+  }
+
+  function lessonTitle(lesson) {
+    if (!lesson) return "";
+    return state.lang === "en"
+      ? lesson.title || lesson.titleKh || ""
+      : lesson.titleKh || lesson.title || "";
+  }
+
+  function levelName(level) {
+    const names = LEVEL_NAMES[state.lang] || LEVEL_NAMES.km;
+    return names[level] || "";
+  }
+
+  function applyLang() {
+    const isEn = state.lang === "en";
+    document.documentElement.setAttribute("lang", isEn ? "en" : "km");
+
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute("content", isEn
+        ? "Learn Java in Khmer — detailed lessons, examples, exercises, hands-on projects, and tests for beginners."
+        : "វេបសាយរៀន Java ជាភាសាខ្មែរ — មេរៀនលម្អិត ឧទាហរណ៍ លំហាត់ កម្មវិធីអនុវត្ត និងតេស្តសម្រាប់អ្នកចាប់ផ្តើម។");
+    }
+
+    const brandTitle = $(".brand-title");
+    if (brandTitle) brandTitle.textContent = tr("Java ភាសាខ្មែរ", "Java in Khmer");
+
+    const langBtn = $("#langBtn");
+    if (langBtn) {
+      const label = $(".lang-label", langBtn);
+      if (label) label.textContent = isEn ? "ខ្មែរ" : "EN";
+      langBtn.setAttribute("aria-label", isEn ? "ប្តូរទៅភាសាខ្មែរ" : "Switch to English");
+      langBtn.setAttribute("title", isEn ? "ប្តូរទៅភាសាខ្មែរ" : "Switch to English");
+    }
+
+    const collapseBtn = $("#collapseBtn");
+    if (collapseBtn) {
+      collapseBtn.setAttribute("aria-label", tr("បង្រួម/ពង្រីក Sidebar", "Collapse/expand sidebar"));
+      collapseBtn.setAttribute("title", state.collapsed ? tr("ពង្រីក Sidebar", "Expand sidebar") : tr("បង្រួម Sidebar", "Collapse sidebar"));
+    }
+
+    const progressLabel = $(".progress-row span");
+    if (progressLabel) progressLabel.textContent = tr("ការរីកចម្រើនសរុប", "Total progress");
+
+    const sidebarFootNote = $(".sidebar-foot-note");
+    if (sidebarFootNote) {
+      sidebarFootNote.textContent = tr(
+        "រៀនបានគ្រប់ពេល · រក្សាទុកការរីកចម្រើនដោយស្វ័យប្រវត្តិ",
+        "Learn anytime · Progress saved automatically"
+      );
+    }
+
+    const menuBtn = $("#menuBtn");
+    if (menuBtn) menuBtn.setAttribute("aria-label", tr("បើកម៉ឺនុយ", "Open menu"));
+
+    const searchInput = $("#searchInput");
+    if (searchInput) {
+      searchInput.setAttribute("placeholder", tr("ស្វែងរកមេរៀន លំហាត់...", "Search lessons, exercises..."));
+      searchInput.setAttribute("aria-label", tr("ស្វែងរកមេរៀន", "Search lessons"));
+    }
+
+    const searchCloseBtn = $("#searchCloseBtn");
+    if (searchCloseBtn) searchCloseBtn.setAttribute("aria-label", tr("បិទការស្វែងរក", "Close search"));
+
+    const footer = $(".site-footer");
+    if (footer) {
+      footer.innerHTML =
+        '<span class="footer-owner">' +
+          tr("អ្នកបង្កើត និងម្ចាស់គេហទំព័រ៖ ", "Creator and site owner: ") +
+          "<strong>Set Vanneng</strong> · © 2026</span>" +
+        "<span>" + tr("Java ភាសាខ្មែរ · សម្រាប់ការរៀន និងការបង្រៀន", "Java in Khmer · For learning and teaching") + "</span>" +
+        "<span>" + tr("យោងតាម ", "Based on ") +
+          '<a href="https://docs.oracle.com/en/java/" target="_blank" rel="noopener">Oracle Java Docs</a>' +
+          tr(" និង ", " and ") +
+          '<a href="https://dev.java/learn/" target="_blank" rel="noopener">Dev.java</a></span>';
+    }
+
+    applyTheme();
+    buildSidebar();
+    updateProgressUI();
+    updateBookmarkBtn(getCurrentLessonId());
+  }
+
+  function toggleLang() {
+    state.lang = state.lang === "en" ? "km" : "en";
+    saveState();
+    applyLang();
+    navigate();
+  }
+
+  function getCurrentLessonId() {
+    const match = location.hash.match(/#\/lesson\/([^/?]+)/);
+    return match && lessonById(match[1]) ? match[1] : null;
+  }
 
   /* ------------------------------------------------------------------------
      Utilities
@@ -66,6 +172,7 @@
       const parsed = JSON.parse(raw);
       if (parsed && typeof parsed === "object") {
         if (parsed.theme === "dark" || parsed.theme === "light") state.theme = parsed.theme;
+        if (parsed.lang === "km" || parsed.lang === "en") state.lang = parsed.lang;
         if (typeof parsed.collapsed === "boolean") state.collapsed = parsed.collapsed;
         if (Array.isArray(parsed.completed)) state.completed = parsed.completed.filter((x) => typeof x === "string");
         if (Array.isArray(parsed.bookmarks)) state.bookmarks = parsed.bookmarks.filter((x) => typeof x === "string");
@@ -121,7 +228,7 @@
   }
 
   function difficultyDots(level) {
-    let html = '<span class="difficulty" title="កម្រិតពិបាក ' + level + '/3">';
+    let html = '<span class="difficulty" title="' + escapeHtml(tr("កម្រិតពិបាក ", "Difficulty ")) + level + '/3">';
     for (let i = 1; i <= 3; i++) html += '<i class="' + (i <= level ? "on" : "") + '"></i>';
     return html + "</span>";
   }
@@ -153,7 +260,7 @@
       '<div class="code-card">' +
         '<div class="code-head">' +
           '<span class="code-title">' + escapeHtml(title || "Java") + "</span>" +
-          '<button class="copy-btn" type="button">ចម្លង</button>' +
+          '<button class="copy-btn" type="button">' + tr("ចម្លង", "Copy") + "</button>" +
         "</div>" +
         "<pre><code>" + escapeHtml(code) + "</code></pre>" +
         (note ? '<div class="code-note">' + escapeHtml(note) + "</div>" : "") +
@@ -165,7 +272,7 @@
     if (!output) return "";
     return (
       '<div class="output-card">' +
-        '<div class="output-head">ទិន្នផលរំពឹង (Output)</div>' +
+        '<div class="output-head">' + tr("ទិន្នផលរំពឹង (Output)", "Expected output") + "</div>" +
         "<pre>" + escapeHtml(output) + "</pre>" +
       "</div>"
     );
@@ -194,7 +301,8 @@
       btn.innerHTML = isDark
         ? '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>'
         : '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
-      btn.setAttribute("title", isDark ? "ប្តូរទៅ Light mode" : "ប្តូរទៅ Dark mode");
+      btn.setAttribute("title", isDark ? tr("ប្តូរទៅ Light mode", "Switch to Light mode") : tr("ប្តូរទៅ Dark mode", "Switch to Dark mode"));
+      btn.setAttribute("aria-label", isDark ? tr("ប្តូរទៅ Light mode", "Switch to Light mode") : tr("ប្តូរទៅ Dark mode", "Switch to Dark mode"));
     });
   }
 
@@ -220,21 +328,21 @@
   function buildSidebar() {
     const nav = $("#sidebarNav");
     if (!nav) return;
-    let html = '<div class="nav-group-label">Java Lessons</div><ul class="nav-list">';
+    let html = '<div class="nav-group-label">' + tr("មេរៀន Java", "Java Lessons") + '</div><ul class="nav-list">';
 
     LESSONS.forEach((lesson) => {
       html +=
         '<li><a class="nav-link" href="#/lesson/' + lesson.id + '" data-route="/lesson/' + lesson.id + '">' +
           '<span class="nav-num">' + String(lesson.num).padStart(2, "0") + "</span>" +
           '<span class="nav-ico">' + ICON.book + "</span>" +
-          '<span class="nav-text">' + escapeHtml(lesson.title) + "</span>" +
+          '<span class="nav-text">' + escapeHtml(lessonTitle(lesson)) + "</span>" +
           '<svg class="nav-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' +
         "</a></li>";
     });
     html += "</ul>";
 
     if (PROJECTS.length) {
-      html += '<div class="nav-group-label">Projects</div><ul class="nav-list">';
+      html += '<div class="nav-group-label">' + tr("គម្រោង", "Projects") + '</div><ul class="nav-list">';
       PROJECTS.forEach((project) => {
         html +=
           '<li><a class="nav-link" href="#/project/' + project.id + '" data-route="/project/' + project.id + '">' +
@@ -247,20 +355,20 @@
     }
 
     const refs = [
-      ["/roadmap", "Learning Roadmap", ICON.map],
-      ["/glossary", "Java Glossary", ICON.glossary],
-      ["/keywords", "Keywords", ICON.key],
-      ["/errors", "Common Errors", ICON.bug],
-      ["/cheatsheet", "Cheat Sheet", ICON.cheat],
-      ["/bookmarks", "Bookmarks", ICON.bookmark],
-      ["/final-test", "Final Test", ICON.test]
+      ["/roadmap", "ផែនទីរៀន", "Learning Roadmap", ICON.map],
+      ["/glossary", "វចនានុក្រម", "Java Glossary", ICON.glossary],
+      ["/keywords", "ពាក្យគន្លឹះ", "Keywords", ICON.key],
+      ["/errors", "កំហុសញឹកញាប់", "Common Errors", ICON.bug],
+      ["/cheatsheet", "សន្លឹកសង្ខេប", "Cheat Sheet", ICON.cheat],
+      ["/bookmarks", "សញ្ញាសម្គាល់", "Bookmarks", ICON.bookmark],
+      ["/final-test", "តេស្តចុងក្រោយ", "Final Test", ICON.test]
     ];
-    html += '<div class="nav-group-label">ឯកសារជំនួយ</div><ul class="nav-list">';
-    refs.forEach(([route, label, icon]) => {
+    html += '<div class="nav-group-label">' + tr("ឯកសារជំនួយ", "Reference") + '</div><ul class="nav-list">';
+    refs.forEach(([route, kmLabel, enLabel, icon]) => {
       html +=
         '<li><a class="nav-link" href="#' + route + '" data-route="' + route + '">' +
           '<span class="nav-ico">' + icon + "</span>" +
-          '<span class="nav-text">' + label + "</span>" +
+          '<span class="nav-text">' + tr(kmLabel, enLabel) + "</span>" +
         "</a></li>";
     });
     html += "</ul>";
@@ -277,7 +385,7 @@
     const note = $("#sideProgressNote");
     if (bar) bar.style.width = percent + "%";
     if (text) text.textContent = percent + "%";
-    if (note) note.textContent = done + " / " + LESSONS.length + " មេរៀនបានបញ្ចប់";
+    if (note) note.textContent = done + " / " + LESSONS.length + tr(" មេរៀនបានបញ្ចប់", " lessons completed");
 
     $$("#sidebarNav .nav-link[data-route^='/lesson/']").forEach((link) => {
       const id = link.getAttribute("data-route").split("/")[2];
@@ -311,7 +419,7 @@
     }
     btn.hidden = false;
     const active = isBookmarked(lessonId);
-    btn.setAttribute("aria-label", active ? "ដកសញ្ញាសម្គាល់ចេញ" : "ដាក់សញ្ញាសម្គាល់មេរៀន");
+    btn.setAttribute("aria-label", active ? tr("ដកសញ្ញាសម្គាល់ចេញ", "Remove bookmark") : tr("ដាក់សញ្ញាសម្គាល់មេរៀន", "Bookmark this lesson"));
     btn.innerHTML = active
       ? '<svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v17l-6-4-6 4V4z"/></svg>'
       : ICON.bookmark;
@@ -350,50 +458,53 @@
         bookmarkTarget = lesson.id;
         state.last = lesson.id;
         saveState();
-        document.title = lesson.title + " — Java ភាសាខ្មែរ";
-        setCrumbs('<span>មេរៀន</span><span class="sep">/</span><span>PART ' + String(lesson.part).padStart(2, "0") + '</span><span class="sep">/</span><span class="crumb-strong">' + escapeHtml(lesson.title) + "</span>");
+        document.title = lessonTitle(lesson) + " — " + tr("Java ភាសាខ្មែរ", "Java in Khmer");
+        setCrumbs('<span>' + tr("មេរៀន", "Lessons") + '</span><span class="sep">/</span><span>PART ' + String(lesson.part).padStart(2, "0") + '</span><span class="sep">/</span><span class="crumb-strong">' + escapeHtml(lessonTitle(lesson)) + "</span>");
       }
     } else if (segments[0] === "project" && segments[1]) {
       const project = projectById(segments[1]);
       if (project) {
         html = renderProject(project);
-        document.title = project.title + " — Java Projects";
-        setCrumbs('<span>Projects</span><span class="sep">/</span><span class="crumb-strong">' + escapeHtml(project.title) + "</span>");
+        document.title = project.title + " — " + tr("Java គម្រោង", "Java Projects");
+        setCrumbs('<span>' + tr("គម្រោង", "Projects") + '</span><span class="sep">/</span><span class="crumb-strong">' + escapeHtml(project.title) + "</span>");
       }
     } else if (segments[0] === "glossary") {
       html = renderGlossary();
-      document.title = "Java Glossary — Java ភាសាខ្មែរ";
-      setCrumbs('<span>ឯកសារជំនួយ</span><span class="sep">/</span><span class="crumb-strong">Glossary</span>');
+      document.title = tr("វចនានុក្រម Java — Java ភាសាខ្មែរ", "Java Glossary — Java in Khmer");
+      setCrumbs('<span>' + tr("ឯកសារជំនួយ", "Reference") + '</span><span class="sep">/</span><span class="crumb-strong">' + tr("វចនានុក្រម", "Glossary") + '</span>');
     } else if (segments[0] === "keywords") {
       html = renderKeywords();
-      document.title = "Java Keywords — Java ភាសាខ្មែរ";
-      setCrumbs('<span>ឯកសារជំនួយ</span><span class="sep">/</span><span class="crumb-strong">Keywords</span>');
+      document.title = tr("ពាក្យគន្លឹះ Java — Java ភាសាខ្មែរ", "Java Keywords — Java in Khmer");
+      setCrumbs('<span>' + tr("ឯកសារជំនួយ", "Reference") + '</span><span class="sep">/</span><span class="crumb-strong">' + tr("ពាក្យគន្លឹះ", "Keywords") + '</span>');
     } else if (segments[0] === "errors") {
       html = renderErrors();
-      document.title = "Common Errors — Java ភាសាខ្មែរ";
-      setCrumbs('<span>ឯកសារជំនួយ</span><span class="sep">/</span><span class="crumb-strong">Errors</span>');
+      document.title = tr("កំហុសញឹកញាប់ — Java ភាសាខ្មែរ", "Common Errors — Java in Khmer");
+      setCrumbs('<span>' + tr("ឯកសារជំនួយ", "Reference") + '</span><span class="sep">/</span><span class="crumb-strong">' + tr("កំហុស", "Errors") + '</span>');
     } else if (segments[0] === "cheatsheet") {
       html = renderCheatsheet();
-      document.title = "Java Cheat Sheet — Java ភាសាខ្មែរ";
-      setCrumbs('<span>ឯកសារជំនួយ</span><span class="sep">/</span><span class="crumb-strong">Cheat Sheet</span>');
+      document.title = tr("សន្លឹកសង្ខេប Java — Java ភាសាខ្មែរ", "Java Cheat Sheet — Java in Khmer");
+      setCrumbs('<span>' + tr("ឯកសារជំនួយ", "Reference") + '</span><span class="sep">/</span><span class="crumb-strong">' + tr("សន្លឹកសង្ខេប", "Cheat Sheet") + '</span>');
     } else if (segments[0] === "roadmap") {
       html = renderRoadmapPage();
-      document.title = "Learning Roadmap — Java ភាសាខ្មែរ";
-      setCrumbs('<span>ឯកសារជំនួយ</span><span class="sep">/</span><span class="crumb-strong">Roadmap</span>');
+      document.title = tr("ផែនទីរៀន — Java ភាសាខ្មែរ", "Learning Roadmap — Java in Khmer");
+      setCrumbs('<span>' + tr("ឯកសារជំនួយ", "Reference") + '</span><span class="sep">/</span><span class="crumb-strong">' + tr("ផែនទីរៀន", "Roadmap") + '</span>');
     } else if (segments[0] === "bookmarks") {
       html = renderBookmarks();
-      document.title = "Bookmarks — Java ភាសាខ្មែរ";
-      setCrumbs('<span>ឯកសារជំនួយ</span><span class="sep">/</span><span class="crumb-strong">Bookmarks</span>');
+      document.title = tr("សញ្ញាសម្គាល់ — Java ភាសាខ្មែរ", "Bookmarks — Java in Khmer");
+      setCrumbs('<span>' + tr("ឯកសារជំនួយ", "Reference") + '</span><span class="sep">/</span><span class="crumb-strong">' + tr("សញ្ញាសម្គាល់", "Bookmarks") + '</span>');
     } else if (segments[0] === "final-test") {
       html = renderFinalTest();
-      document.title = "Final Test — Java ភាសាខ្មែរ";
-      setCrumbs('<span>ឯកសារជំនួយ</span><span class="sep">/</span><span class="crumb-strong">Final Test</span>');
+      document.title = tr("តេស្តចុងក្រោយ — Java ភាសាខ្មែរ", "Final Test — Java in Khmer");
+      setCrumbs('<span>' + tr("ឯកសារជំនួយ", "Reference") + '</span><span class="sep">/</span><span class="crumb-strong">' + tr("តេស្តចុងក្រោយ", "Final Test") + '</span>');
     }
 
     if (!html) {
       html = renderHome();
-      document.title = "Java ភាសាខ្មែរ — សៀវភៅរៀន Java ពីដំបូងដល់ OOP";
-      setCrumbs('<span class="crumb-strong">ទំព័រដំណើរការ</span>');
+      document.title = tr(
+        "Java ភាសាខ្មែរ — សៀវភៅរៀន Java ពីដំបូងដល់ OOP",
+        "Java in Khmer — Learn Java from the basics to OOP"
+      );
+      setCrumbs('<span class="crumb-strong">' + tr("ទំព័រដើម", "Home") + '</span>');
     }
 
     view.innerHTML = '<div class="view-inner">' + html + "</div>";
@@ -448,13 +559,13 @@
       part.lessons.forEach((lesson) => {
         items +=
           '<li><a href="#/lesson/' + lesson.id + '"><span class="num">' + String(lesson.num).padStart(2, "0") + "</span>" +
-          "<span>" + escapeHtml(lesson.title) + "</span>" +
+          "<span>" + escapeHtml(lessonTitle(lesson)) + "</span>" +
           (isDone(lesson.id) ? '<span class="done">✓</span>' : "") +
           "</a></li>";
       });
       partsHtml +=
         '<article class="part-card">' +
-          '<div class="part-top"><span class="part-tag">PART ' + String(part.num).padStart(2, "0") + '</span><span class="part-count">' + part.lessons.length + " មេរៀន</span></div>" +
+          '<div class="part-top"><span class="part-tag">PART ' + String(part.num).padStart(2, "0") + '</span><span class="part-count">' + part.lessons.length + tr(" មេរៀន", " lessons") + "</span></div>" +
           "<h3>" + escapeHtml(part.title) + "</h3>" +
           "<ul>" + items + "</ul>" +
         "</article>";
@@ -463,42 +574,42 @@
     return (
       '<section class="hero">' +
         '<span class="eyebrow">Java · Khmer Edition</span>' +
-        '<h1>រៀន <span class="accent">Java</span> ពីសូន្យ ដល់ Object-Oriented Programming</h1>' +
-        '<p class="hero-lead">សៀវភៅរៀន Java អនឡាញជាភាសាខ្មែរ សម្រាប់អ្នកចាប់ផ្តើម និងគ្រូបង្រៀន។ មេរៀនលម្អិត ឧទាហរណ៍ពន្យល់បន្ទាត់កូដ លំហាត់ ៣ កម្រិត គម្រោងអនុវត្ត និងតេស្តវាស់ចំណេះដឹង។</p>' +
-        '<p class="hero-owner">បង្កើត និងគ្រប់គ្រងដោយ <strong>Set Vanneng</strong></p>' +
+        '<h1>' + tr('រៀន <span class="accent">Java</span> ពីសូន្យ ដល់ Object-Oriented Programming', 'Learn <span class="accent">Java</span> from zero to Object-Oriented Programming') + '</h1>' +
+        '<p class="hero-lead">' + tr("សៀវភៅរៀន Java អនឡាញជាភាសាខ្មែរ សម្រាប់អ្នកចាប់ផ្តើម និងគ្រូបង្រៀន។ មេរៀនលម្អិត ឧទាហរណ៍ពន្យល់បន្ទាត់កូដ លំហាត់ ៣ កម្រិត គម្រោងអនុវត្ត និងតេស្តវាស់ចំណេះដឹង។", "An online Java textbook in Khmer for beginners and teachers. Detailed lessons, line-by-line code explanations, three-level exercises, hands-on projects, and knowledge tests.") + '</p>' +
+        '<p class="hero-owner">' + tr("បង្កើត និងគ្រប់គ្រងដោយ ", "Created and maintained by ") + '<strong>Set Vanneng</strong></p>' +
         '<div class="hero-actions">' +
           '<a class="btn btn-primary" href="#/lesson/' + (continueLesson ? continueLesson.id : LESSONS[0].id) + '">' +
-            ICON.book + (done > 0 ? "បន្តរៀន" : "ចាប់ផ្តើមមេរៀនទី១") +
+            ICON.book + (done > 0 ? tr("បន្តរៀន", "Continue learning") : tr("ចាប់ផ្តើមមេរៀនទី១", "Start lesson 1")) +
           "</a>" +
-          '<a class="btn" href="#/roadmap">មើល Roadmap</a>' +
-          '<a class="btn btn-ghost" href="#/final-test">តេស្តចុងក្រោយ</a>' +
+          '<a class="btn" href="#/roadmap">' + tr("មើល Roadmap", "View Roadmap") + '</a>' +
+          '<a class="btn btn-ghost" href="#/final-test">' + tr("តេស្តចុងក្រោយ", "Final test") + '</a>' +
         "</div>" +
       "</section>" +
 
       '<div class="stats-grid">' +
-        '<div class="stat-card"><div class="stat-value">' + LESSONS.length + '</div><div class="stat-label">មេរៀនលម្អិត</div></div>' +
-        '<div class="stat-card"><div class="stat-value">' + PROJECTS.length + '</div><div class="stat-label">គម្រោងអនុវត្ត</div></div>' +
-        '<div class="stat-card"><div class="stat-value">' + exerciseCount() + '</div><div class="stat-label">លំហាត់អនុវត្ត</div></div>' +
-        '<div class="stat-card"><div class="stat-value">' + percent + '%</div><div class="stat-label">អ្នកបានបញ្ចប់</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + LESSONS.length + '</div><div class="stat-label">' + tr("មេរៀនលម្អិត", "Detailed lessons") + '</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + PROJECTS.length + '</div><div class="stat-label">' + tr("គម្រោងអនុវត្ត", "Hands-on projects") + '</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + exerciseCount() + '</div><div class="stat-label">' + tr("លំហាត់អនុវត្ត", "Exercises") + '</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + percent + '%</div><div class="stat-label">' + tr("អ្នកបានបញ្ចប់", "Completed") + '</div></div>' +
       "</div>" +
 
-      '<div class="section-head"><h2>បន្តពីកន្លែងដែលអ្នកឈប់</h2></div>' +
+      '<div class="section-head"><h2>' + tr("បន្តពីកន្លែងដែលអ្នកឈប់", "Continue where you left off") + '</h2></div>' +
       (continueLesson
         ? '<a class="continue-card" href="#/lesson/' + continueLesson.id + '">' +
             '<span class="continue-icon">' + ICON.book + "</span>" +
             '<span class="continue-body">' +
-              '<span class="continue-kicker">' + (isDone(continueLesson.id) ? "មេរៀនចុងក្រោយ" : "បន្តរៀន") + "</span>" +
-              '<span class="continue-title">' + escapeHtml(continueLesson.title) + "</span>" +
+              '<span class="continue-kicker">' + (isDone(continueLesson.id) ? tr("មេរៀនចុងក្រោយ", "Last lesson") : tr("បន្តរៀន", "Continue")) + "</span>" +
+              '<span class="continue-title">' + escapeHtml(lessonTitle(continueLesson)) + "</span>" +
               '<span class="continue-meta">PART ' + String(continueLesson.part).padStart(2, "0") + " · " + continueLesson.time + " · " + difficultyDots(continueLesson.level) + "</span>" +
             "</span>" +
-            '<span class="chip accent">បើកមេរៀន ' + ICON.arrowRight + "</span>" +
+            '<span class="chip accent">' + tr("បើកមេរៀន ", "Open lesson ") + ICON.arrowRight + "</span>" +
           "</a>"
         : "") +
 
-      '<div class="section-head"><h2>មាតិកាមេរៀនតាម Part</h2><p>គ្របដណ្តប់ពីមូលដ្ឋានដល់ OOP និង Java បន្ថែម</p></div>' +
+      '<div class="section-head"><h2>' + tr("មាតិកាមេរៀនតាម Part", "Lessons by Part") + '</h2><p>' + tr("គ្របដណ្តប់ពីមូលដ្ឋានដល់ OOP និង Java បន្ថែម", "From fundamentals to OOP and beyond") + '</p></div>' +
       '<div class="parts-grid">' + partsHtml + "</div>" +
 
-      '<div class="section-head"><h2>គម្រោងអនុវត្ត</h2><p>រៀនដោយការសរសេរកម្មវិធីពិត</p></div>' +
+      '<div class="section-head"><h2>' + tr("គម្រោងអនុវត្ត", "Hands-on projects") + '</h2><p>' + tr("រៀនដោយការសរសេរកម្មវិធីពិត", "Learn by building real programs") + '</p></div>' +
       '<div class="project-grid">' +
         PROJECTS.slice(0, 4).map((p) =>
           '<a class="project-card" href="#/project/' + p.id + '">' +
@@ -509,9 +620,9 @@
           "</a>"
         ).join("") +
       "</div>" +
-      '<div style="margin-top:14px"><a class="btn" href="#/lesson/final-projects">មើលគម្រោងទាំង ' + PROJECTS.length + " " + ICON.arrowRight + "</a></div>" +
+      '<div style="margin-top:14px"><a class="btn" href="#/lesson/final-projects">' + tr("មើលគម្រោងទាំង " + PROJECTS.length, "View all " + PROJECTS.length + " projects") + " " + ICON.arrowRight + "</a></div>" +
 
-      '<div class="section-head"><h2>Learning Roadmap ខ្លីៗ</h2></div>' +
+      '<div class="section-head"><h2>' + tr("Learning Roadmap ខ្លីៗ", "Learning Roadmap at a glance") + '</h2></div>' +
       '<ol class="roadmap">' + homeRoadmap() + "</ol>"
     );
   }
@@ -539,24 +650,24 @@
         '<div class="lesson-kicker">' +
           '<span class="chip accent">PART ' + String(lesson.part).padStart(2, "0") + " · " + escapeHtml(lesson.partTitle || PART_NAMES[lesson.part] || "") + "</span>" +
           '<span class="chip">' + ICON.book + lesson.time + "</span>" +
-          '<span class="chip">កម្រិត ' + difficultyDots(lesson.level) + "</span>" +
-          (isDone(lesson.id) ? '<span class="chip ok">បានបញ្ចប់ ✓</span>' : "") +
+          '<span class="chip">' + tr("កម្រិត ", "Level ") + difficultyDots(lesson.level) + "</span>" +
+          (isDone(lesson.id) ? '<span class="chip ok">' + tr("បានបញ្ចប់ ✓", "Completed ✓") + '</span>' : "") +
         "</div>" +
         '<div class="lesson-title-row">' +
           "<div>" +
-            "<h1>" + escapeHtml(lesson.title) + "</h1>" +
+            "<h1>" + escapeHtml(lessonTitle(lesson)) + "</h1>" +
             '<p class="lesson-intro">' + lesson.intro + "</p>" +
           "</div>" +
           '<div class="lesson-tools">' +
             '<button class="btn btn-sm" id="completeBtn" type="button" data-id="' + lesson.id + '">' +
-              (isDone(lesson.id) ? "✓ បានបញ្ចប់" : "សម្គាល់ថាបានបញ្ចប់") +
+              (isDone(lesson.id) ? tr("✓ បានបញ្ចប់", "✓ Completed") : tr("សម្គាល់ថាបានបញ្ចប់", "Mark as completed")) +
             "</button>" +
           "</div>" +
         "</div>" +
       "</header>";
 
     if (lesson.objectives && lesson.objectives.length) {
-      html += '<section class="objectives"><h2>គោលបំណងនៃមេរៀន (Learning Objectives)</h2><ul>' +
+      html += '<section class="objectives"><h2>' + tr("គោលបំណងនៃមេរៀន (Learning Objectives)", "Learning Objectives") + '</h2><ul>' +
         lesson.objectives.map((o) => "<li>" + o + "</li>").join("") +
       "</ul></section>";
     }
@@ -568,7 +679,7 @@
     });
 
     if (lesson.terms && lesson.terms.length) {
-      html += '<h2>ពាក្យបច្ចេកទេសសំខាន់</h2><dl class="term-grid">';
+      html += '<h2>' + tr("ពាក្យបច្ចេកទេសសំខាន់", "Key terms") + '</h2><dl class="term-grid">';
       lesson.terms.forEach((t) => {
         html += '<div class="term"><dt>' + escapeHtml(t.en) + " — " + escapeHtml(t.kh) + "</dt><dd>" + t.text + "</dd></div>";
       });
@@ -576,19 +687,19 @@
     }
 
     if (lesson.syntax && lesson.syntax.length) {
-      html += "<h2>Syntax សំខាន់</h2>";
+      html += "<h2>" + tr("Syntax សំខាន់", "Key syntax") + "</h2>";
       lesson.syntax.forEach((item) => { html += syntaxCard(item); });
     }
 
     if (lesson.examples && lesson.examples.length) {
-      html += "<h2>ឧទាហរណ៍ពន្យល់បន្ទាត់កូដ</h2>";
+      html += "<h2>" + tr("ឧទាហរណ៍ពន្យល់បន្ទាត់កូដ", "Examples with line-by-line explanations") + "</h2>";
       lesson.examples.forEach((ex, i) => {
         html += '<div class="example-block"><h3><span class="example-num">' + (i + 1) + "</span>" + escapeHtml(ex.title) + "</h3>";
         if (ex.desc) html += "<p>" + ex.desc + "</p>";
         html += codeCard(ex.file || "Example" + (i + 1) + ".java", ex.code, ex.note);
         if (ex.output) html += outputCard(ex.output);
         if (ex.lines && ex.lines.length) {
-          html += '<details class="reveal" open><summary>ការពន្យល់បន្ទាត់កូដសំខាន់</summary><div class="reveal-body"><ul class="line-explain">';
+          html += '<details class="reveal" open><summary>' + tr("ការពន្យល់បន្ទាត់កូដសំខាន់", "Key line explanations") + '</summary><div class="reveal-body"><ul class="line-explain">';
           ex.lines.forEach((line) => { html += "<li>" + line + "</li>"; });
           html += "</ul></div></details>";
         }
@@ -597,27 +708,27 @@
     }
 
     if (lesson.mistakes && lesson.mistakes.length) {
-      html += "<h2>កំហុសញឹកញាប់របស់អ្នកចាប់ផ្តើម</h2><div class=\"mistake-list\">";
+      html += "<h2>" + tr("កំហុសញឹកញាប់របស់អ្នកចាប់ផ្តើម", "Common beginner mistakes") + '</h2><div class="mistake-list">';
       lesson.mistakes.forEach((m) => {
         html += '<div class="mistake">' + m.text;
-        if (m.fix) html += "<p><strong>ដំណោះស្រាយ៖</strong> " + m.fix + "</p>";
+        if (m.fix) html += "<p><strong>" + tr("ដំណោះស្រាយ៖", "Fix:") + "</strong> " + m.fix + "</p>";
         html += "</div>";
       });
       html += "</div>";
     }
 
     if (lesson.tips && lesson.tips.length) {
-      html += '<div class="callout tip"><div class="callout-title">ដំបូន្មានអនុវត្ត (Best Practices)</div><ul>';
+      html += '<div class="callout tip"><div class="callout-title">' + tr("ដំបូន្មានអនុវត្ត (Best Practices)", "Best Practices") + '</div><ul>';
       lesson.tips.forEach((t) => { html += "<li>" + t + "</li>"; });
       html += "</ul></div>";
     }
 
     if (lesson.exercises && lesson.exercises.length) {
-      html += '<h2 id="exercises">លំហាត់អនុវត្ត</h2><p class="muted small">សាកល្បងសរសេរកូដដោយខ្លួនឯងជាមុន រួចទើបបើកដំណោះស្រាយ។</p>';
+      html += '<h2 id="exercises">' + tr("លំហាត់អនុវត្ត", "Practice exercises") + '</h2><p class="muted small">' + tr("សាកល្បងសរសេរកូដដោយខ្លួនឯងជាមុន រួចទើបបើកដំណោះស្រាយ។", "Try writing the code yourself first, then reveal the solution.") + '</p>';
       [1, 2, 3].forEach((level) => {
         const items = lesson.exercises.filter((e) => e.level === level);
         if (!items.length) return;
-        html += '<h3>Level ' + level + " — " + LEVEL_NAMES[level] + "</h3>";
+        html += '<h3>Level ' + level + " — " + levelName(level) + "</h3>";
         items.forEach((ex, idx) => {
           const index = lesson.exercises.indexOf(ex) + 1;
           const inputText = ex.input || ex.inputSample;
@@ -626,15 +737,15 @@
               '<div class="exercise-head"><span class="exercise-title">' + index + ". " + escapeHtml(ex.title) + "</span>" +
                 '<span class="level-badge level-' + level + '">Level ' + level + "</span></div>" +
               "<p>" + ex.desc + "</p>" +
-              (ex.requirements && ex.requirements.length ? '<div class="req"><strong>តម្រូវការ៖</strong><ul>' + ex.requirements.map((r) => "<li>" + r + "</li>").join("") + "</ul></div>" : "") +
+              (ex.requirements && ex.requirements.length ? '<div class="req"><strong>' + tr("តម្រូវការ៖", "Requirements:") + '</strong><ul>' + ex.requirements.map((r) => "<li>" + r + "</li>").join("") + "</ul></div>" : "") +
               (inputText || ex.outputSample
                 ? '<div class="io-sample">' +
                     (inputText ? "<pre><strong>Input:</strong>\n" + escapeHtml(inputText) + "</pre>" : "") +
                     (ex.outputSample ? "<pre><strong>Output:</strong>\n" + escapeHtml(ex.outputSample) + "</pre>" : "") +
                   "</div>"
                 : "") +
-              (ex.hint ? '<details class="reveal"><summary>បង្ហាញតម្រុយ (Hint)</summary><div class="reveal-body">' + ex.hint + "</div></details>" : "") +
-              '<button class="btn btn-sm solution-toggle" type="button" aria-expanded="false">បង្ហាញដំណោះស្រាយ</button>' +
+              (ex.hint ? '<details class="reveal"><summary>' + tr("បង្ហាញតម្រុយ (Hint)", "Show hint") + '</summary><div class="reveal-body">' + ex.hint + "</div></details>" : "") +
+              '<button class="btn btn-sm solution-toggle" type="button" aria-expanded="false">' + tr("បង្ហាញដំណោះស្រាយ", "Show solution") + '</button>' +
               '<div class="solution">' +
                 (ex.solutionCode ? codeCard("Solution.java", ex.solutionCode) : "") +
                 (ex.solution ? "<p>" + ex.solution + "</p>" : "") +
@@ -646,17 +757,17 @@
     }
 
     if (lesson.quiz && lesson.quiz.length) {
-      html += '<h2>តេស្តខ្លីៗ (Quiz)</h2><div class="quiz" data-quiz-id="' + lesson.id + '"></div>';
+      html += '<h2>' + tr("តេស្តខ្លីៗ (Quiz)", "Quick quiz") + '</h2><div class="quiz" data-quiz-id="' + lesson.id + '"></div>';
     }
 
     if (lesson.summary && lesson.summary.length) {
-      html += '<h2>សេចក្តីសង្ខេបមេរៀន</h2><div class="summary-box"><ul>' +
+      html += '<h2>' + tr("សេចក្តីសង្ខេបមេរៀន", "Lesson summary") + '</h2><div class="summary-box"><ul>' +
         lesson.summary.map((s) => "<li>" + s + "</li>").join("") +
       "</ul></div>";
     }
 
     if (lesson.takeaways && lesson.takeaways.length) {
-      html += '<h2>ចំណុចសំខាន់ត្រូវចងចាំ</h2><div class="takeaways">' +
+      html += '<h2>' + tr("ចំណុចសំខាន់ត្រូវចងចាំ", "Key takeaways") + '</h2><div class="takeaways">' +
         lesson.takeaways.map((t, i) =>
           '<div class="takeaway"><b>Takeaway ' + String(i + 1).padStart(2, "0") + "</b>" + t + "</div>"
         ).join("") +
@@ -666,7 +777,7 @@
     html += "</div>";
 
     if (lesson.sources && lesson.sources.length) {
-      html += '<div class="sources"><h2>ឯកសារយោង</h2><ul>' +
+      html += '<div class="sources"><h2>' + tr("ឯកសារយោង", "References") + '</h2><ul>' +
         lesson.sources.map((s) => '<li><a href="' + escapeHtml(s.url) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(s.label) + "</a></li>").join("") +
       "</ul></div>";
     }
@@ -674,13 +785,13 @@
     const idx = LESSONS.findIndex((l) => l.id === lesson.id);
     const prev = LESSONS[idx - 1];
     const next = LESSONS[idx + 1];
-    html += '<nav class="lesson-nav" aria-label="ផ្លាស់ប្តូរមេរៀន">';
+    html += '<nav class="lesson-nav" aria-label="' + tr("ផ្លាស់ប្តូរមេរៀន", "Lesson navigation") + '">';
     html += prev
-      ? '<a href="#/lesson/' + prev.id + '"><span class="dir">' + ICON.arrowLeft + ' មេរៀនមុន</span><span class="name">' + escapeHtml(prev.title) + "</span></a>"
+      ? '<a href="#/lesson/' + prev.id + '"><span class="dir">' + ICON.arrowLeft + tr(" មេរៀនមុន", " Previous lesson") + '</span><span class="name">' + escapeHtml(lessonTitle(prev)) + "</span></a>"
       : "<span></span>";
     html += next
-      ? '<a class="next" href="#/lesson/' + next.id + '"><span class="dir">មេរៀនបន្ទាប់ ' + ICON.arrowRight + '</span><span class="name">' + escapeHtml(next.title) + "</span></a>"
-      : '<a class="next" href="#/lesson/final-projects"><span class="dir">បន្តទៅ ' + ICON.arrowRight + '</span><span class="name">Final Projects</span></a>';
+      ? '<a class="next" href="#/lesson/' + next.id + '"><span class="dir">' + tr("មេរៀនបន្ទាប់ ", "Next lesson ") + ICON.arrowRight + '</span><span class="name">' + escapeHtml(lessonTitle(next)) + "</span></a>"
+      : '<a class="next" href="#/lesson/final-projects"><span class="dir">' + tr("បន្តទៅ ", "Continue to ") + ICON.arrowRight + '</span><span class="name">Final Projects</span></a>';
     html += "</nav>";
 
     html += "</article>";
@@ -694,12 +805,12 @@
   function renderProject(project) {
     let html = '<article class="lesson-page">';
     html +=
-      '<a class="back-link" href="#/lesson/final-projects">' + ICON.arrowLeft + " ត្រឡប់ទៅគម្រោងទាំងអស់</a>" +
+      '<a class="back-link" href="#/lesson/final-projects">' + ICON.arrowLeft + tr(" ត្រឡប់ទៅគម្រោងទាំងអស់", " Back to all projects") + "</a>" +
       '<header class="lesson-head">' +
         '<div class="lesson-kicker">' +
           '<span class="chip accent">PROJECT ' + String(project.num).padStart(2, "0") + "</span>" +
           '<span class="chip">' + ICON.book + project.time + "</span>" +
-          '<span class="chip">កម្រិត ' + difficultyDots(project.level) + "</span>" +
+          '<span class="chip">' + tr("កម្រិត ", "Level ") + difficultyDots(project.level) + "</span>" +
         "</div>" +
         "<h1>" + escapeHtml(project.title) + "</h1>" +
         '<p class="lesson-intro">' + project.intro + "</p>" +
@@ -708,32 +819,32 @@
     html += '<div class="lesson-body">';
     html += '<div class="pill-row">' + (project.concepts || []).map((c) => '<span class="tag">' + escapeHtml(c) + "</span>").join("") + "</div>";
 
-    html += "<h2>គោលបំណងគម្រោង</h2><ul>" + (project.objectives || []).map((o) => "<li>" + o + "</li>").join("") + "</ul>";
-    html += "<h2>តម្រូវការគម្រោង</h2><ul>" + (project.requirements || []).map((r) => "<li>" + r + "</li>").join("") + "</ul>";
+    html += "<h2>" + tr("គោលបំណងគម្រោង", "Project objectives") + "</h2><ul>" + (project.objectives || []).map((o) => "<li>" + o + "</li>").join("") + "</ul>";
+    html += "<h2>" + tr("តម្រូវការគម្រោង", "Project requirements") + "</h2><ul>" + (project.requirements || []).map((r) => "<li>" + r + "</li>").join("") + "</ul>";
 
-    html += "<h2>ជំហានអភិវឌ្ឍន៍</h2><ol class=\"step-list\">" +
+    html += "<h2>" + tr("ជំហានអភិវឌ្ឍន៍", "Development steps") + "</h2><ol class=\"step-list\">" +
       (project.steps || []).map((s) => "<li>" + s + "</li>").join("") + "</ol>";
 
-    html += "<h2>Source Code ពេញលេញ</h2>";
-    html += codeCard(project.file || "Main.java", project.code, "ចម្លងកូដទៅឯកសារ .java ហើយ compile/run ដោយ javac និង java។");
+    html += "<h2>" + tr("Source Code ពេញលេញ", "Full source code") + "</h2>";
+    html += codeCard(project.file || "Main.java", project.code, tr("ចម្លងកូដទៅឯកសារ .java ហើយ compile/run ដោយ javac និង java។", "Copy the code into a .java file and compile/run it with javac and java."));
 
     if (project.explanation && project.explanation.length) {
-      html += "<h2>ការពន្យល់កូដសំខាន់</h2><ul class=\"line-explain\">" +
+      html += "<h2>" + tr("ការពន្យល់កូដសំខាន់", "Key code explanation") + "</h2><ul class=\"line-explain\">" +
         project.explanation.map((e) => "<li>" + e + "</li>").join("") + "</ul>";
     }
 
     if (project.output) {
-      html += "<h2>គំរូទិន្នផល</h2>" + outputCard(project.output);
+      html += "<h2>" + tr("គំរូទិន្នផល", "Sample output") + "</h2>" + outputCard(project.output);
     }
 
     if (project.improvements && project.improvements.length) {
-      html += '<div class="callout tip"><div class="callout-title">ចំណុចអាចកែលម្អបន្ថែម</div><ul>' +
+      html += '<div class="callout tip"><div class="callout-title">' + tr("ចំណុចអាចកែលម្អបន្ថែម", "Possible improvements") + '</div><ul>' +
         project.improvements.map((i) => "<li>" + i + "</li>").join("") +
       "</ul></div>";
     }
 
     if (project.challenges && project.challenges.length) {
-      html += "<h2>ភារកិច្ចបន្ថែម (Challenges)</h2><ol>" +
+      html += "<h2>" + tr("ភារកិច្ចបន្ថែម (Challenges)", "Extra challenges") + "</h2><ol>" +
         project.challenges.map((c) => "<li>" + c + "</li>").join("") + "</ol>";
     }
 
@@ -744,11 +855,11 @@
     const next = PROJECTS[idx + 1];
     html += '<nav class="lesson-nav">';
     html += prev
-      ? '<a href="#/project/' + prev.id + '"><span class="dir">' + ICON.arrowLeft + ' គម្រោងមុន</span><span class="name">' + escapeHtml(prev.title) + "</span></a>"
-      : '<a href="#/lesson/final-projects"><span class="dir">' + ICON.arrowLeft + ' ត្រឡប់</span><span class="name">Final Projects</span></a>';
+      ? '<a href="#/project/' + prev.id + '"><span class="dir">' + ICON.arrowLeft + tr(" គម្រោងមុន", " Previous project") + '</span><span class="name">' + escapeHtml(prev.title) + "</span></a>"
+      : '<a href="#/lesson/final-projects"><span class="dir">' + ICON.arrowLeft + tr(" ត្រឡប់", " Back") + '</span><span class="name">Final Projects</span></a>';
     html += next
-      ? '<a class="next" href="#/project/' + next.id + '"><span class="dir">គម្រោងបន្ទាប់ ' + ICON.arrowRight + '</span><span class="name">' + escapeHtml(next.title) + "</span></a>"
-      : '<a class="next" href="#/final-test"><span class="dir">តេស្តចុងក្រោយ ' + ICON.arrowRight + '</span><span class="name">Final Test</span></a>';
+      ? '<a class="next" href="#/project/' + next.id + '"><span class="dir">' + tr("គម្រោងបន្ទាប់ ", "Next project ") + ICON.arrowRight + '</span><span class="name">' + escapeHtml(next.title) + "</span></a>"
+      : '<a class="next" href="#/final-test"><span class="dir">' + tr("តេស្តចុងក្រោយ ", "Final test ") + ICON.arrowRight + '</span><span class="name">Final Test</span></a>';
     html += "</nav></article>";
     return html;
   }
@@ -764,8 +875,8 @@
 
   function renderGlossary() {
     const items = REF.glossary || [];
-    return pageHead("Java Glossary", "វចនានុក្រមពាក្យបច្ចេកទេស Java ដែលអ្នកនឹងជួបញឹកញាប់។ ស្វែងរកបានភ្លាមៗ។") +
-      '<div class="filter-row"><input class="filter-input" id="glossaryFilter" type="search" placeholder="ស្វែងរកពាក្យ ឬនិយមន័យ..." aria-label="ស្វែងរក Glossary"><button class="filter-chip active" data-glossary-all type="button">ទាំងអស់ (' + items.length + ")</button></div>" +
+    return pageHead(tr("វចនានុក្រម Java", "Java Glossary"), tr("វចនានុក្រមពាក្យបច្ចេកទេស Java ដែលអ្នកនឹងជួបញឹកញាប់។ ស្វែងរកបានភ្លាមៗ។", "A glossary of common Java technical terms you will encounter. Search instantly.")) +
+      '<div class="filter-row"><input class="filter-input" id="glossaryFilter" type="search" placeholder="' + tr("ស្វែងរកពាក្យ ឬនិយមន័យ...", "Search terms or definitions...") + '" aria-label="' + tr("ស្វែងរក Glossary", "Search glossary") + '"><button class="filter-chip active" data-glossary-all type="button">' + tr("ទាំងអស់", "All") + ' (' + items.length + ")</button></div>" +
       '<div class="glossary-list" id="glossaryList">' +
         items.map((g) =>
           '<div class="glossary-item" data-search="' + escapeHtml((g.en + " " + g.kh + " " + g.def).toLowerCase()) + '">' +
@@ -777,9 +888,9 @@
 
   function renderKeywords() {
     const items = REF.keywords || [];
-    return pageHead("Java Keywords Reference", "ពាក្យគន្លឹះ (Keywords) របស់ Java ដែលមានអត្ថន័យពិសេសក្នុងភាសា។ អ្នកមិនអាចប្រើពាក្យទាំងនេះជាឈ្មោះ variable បានទេ។") +
-      '<div class="filter-row"><input class="filter-input" id="keywordFilter" type="search" placeholder="ស្វែងរក keyword..." aria-label="ស្វែងរក keyword"></div>' +
-      '<div class="table-wrap"><table><thead><tr><th>Keyword</th><th>ប្រភេទ</th><th>អត្ថន័យ</th><th>ឧទាហរណ៍</th></tr></thead><tbody id="keywordBody">' +
+    return pageHead(tr("ឯកសារយោងពាក្យគន្លឹះ Java", "Java Keywords Reference"), tr("ពាក្យគន្លឹះ (Keywords) របស់ Java ដែលមានអត្ថន័យពិសេសក្នុងភាសា។ អ្នកមិនអាចប្រើពាក្យទាំងនេះជាឈ្មោះ variable បានទេ។", "Java keywords have special meaning in the language. You cannot use them as variable names.")) +
+      '<div class="filter-row"><input class="filter-input" id="keywordFilter" type="search" placeholder="' + tr("ស្វែងរក keyword...", "Search keywords...") + '" aria-label="' + tr("ស្វែងរក keyword", "Search keywords") + '"></div>' +
+      '<div class="table-wrap"><table><thead><tr><th>Keyword</th><th>' + tr("ប្រភេទ", "Type") + '</th><th>' + tr("អត្ថន័យ", "Meaning") + '</th><th>' + tr("ឧទាហរណ៍", "Example") + '</th></tr></thead><tbody id="keywordBody">' +
       items.map((k) =>
         "<tr data-search=\"" + escapeHtml((k.kw + " " + k.type + " " + k.desc).toLowerCase()) + "\"><td><code>" + escapeHtml(k.kw) + "</code></td><td>" + escapeHtml(k.type) + "</td><td>" + k.desc + "</td><td><code>" + escapeHtml(k.example || "") + "</code></td></tr>"
       ).join("") +
@@ -788,15 +899,15 @@
 
   function renderErrors() {
     const items = REF.errors || [];
-    let html = pageHead("Common Java Errors & Solutions", "កំហុសញឹកញាប់ដែលអ្នកចាប់ផ្តើមជួប រួមទាំងមូលហេតុ និងវិធីដោះស្រាយជាក់លាក់។");
-    html += '<div class="filter-row"><input class="filter-input" id="errorFilter" type="search" placeholder="ស្វែងរក error..." aria-label="ស្វែងរក error"></div>';
+    let html = pageHead(tr("កំហុស Java ញឹកញាប់ និងដំណោះស្រាយ", "Common Java Errors & Solutions"), tr("កំហុសញឹកញាប់ដែលអ្នកចាប់ផ្តើមជួប រួមទាំងមូលហេតុ និងវិធីដោះស្រាយជាក់លាក់។", "Common errors beginners encounter, including causes and specific fixes."));
+    html += '<div class="filter-row"><input class="filter-input" id="errorFilter" type="search" placeholder="' + tr("ស្វែងរក error...", "Search errors...") + '" aria-label="' + tr("ស្វែងរក error", "Search errors") + '"></div>';
     html += '<div id="errorList">';
     items.forEach((e) => {
       html +=
         '<div class="callout danger" data-search="' + escapeHtml((e.error + " " + e.cause).toLowerCase()) + '" style="margin-bottom:12px">' +
           '<div class="callout-title">' + escapeHtml(e.error) + "</div>" +
-          "<p><strong>មូលហេតុ៖</strong> " + e.cause + "</p>" +
-          "<p><strong>ដោះស្រាយ៖</strong> " + e.fix + "</p>" +
+          "<p><strong>" + tr("មូលហេតុ៖", "Cause:") + "</strong> " + e.cause + "</p>" +
+          "<p><strong>" + tr("ដោះស្រាយ៖", "Fix:") + "</strong> " + e.fix + "</p>" +
           (e.example ? codeCard("Example", e.example) : "") +
         "</div>";
     });
@@ -806,7 +917,7 @@
 
   function renderCheatsheet() {
     const sections = REF.cheatsheet || [];
-    let html = pageHead("Java Syntax Cheat Sheet", "សន្លឹកកាតសង្ខេប Syntax Java សម្រាប់មើលរហ័សពេលសរសេរកូដ ឬពេលបង្រៀន។");
+    let html = pageHead(tr("សន្លឹកសង្ខេប Syntax Java", "Java Syntax Cheat Sheet"), tr("សន្លឹកកាតសង្ខេប Syntax Java សម្រាប់មើលរហ័សពេលសរសេរកូដ ឬពេលបង្រៀន។", "A quick Java syntax reference for when you are writing code or teaching."));
     sections.forEach((s) => {
       html += '<div class="syntax-card"><div class="syntax-head">' + escapeHtml(s.title) + "</div><pre><code>" + escapeHtml(s.code) + "</code></pre>" +
         (s.note ? '<div class="code-note">' + escapeHtml(s.note) + "</div>" : "") + "</div>";
@@ -816,7 +927,7 @@
 
   function renderRoadmapPage() {
     const phases = REF.roadmap || [];
-    let html = pageHead("Learning Roadmap", "ផែនទីរៀន Java តាមលំដាប់។ ប៉ាន់ស្មានពេលវេលាតាមការរៀន ១ ម៉ោងក្នុងមួយថ្ងៃ។");
+    let html = pageHead(tr("ផែនទីរៀន Java", "Learning Roadmap"), tr("ផែនទីរៀន Java តាមលំដាប់។ ប៉ាន់ស្មានពេលវេលាតាមការរៀន ១ ម៉ោងក្នុងមួយថ្ងៃ។", "A step-by-step Java learning path. Time estimates assume one hour of study per day."));
     html += '<div class="roadmap-page">';
     phases.forEach((p, i) => {
       html += '<div class="phase"><div class="phase-head"><h3>' + (i + 1) + ". " + escapeHtml(p.title) + '</h3><span class="weeks">' + escapeHtml(p.weeks || "") + "</span></div>" +
@@ -825,31 +936,31 @@
         html += "<ul>";
         p.lessonIds.forEach((id) => {
           const l = lessonById(id);
-          if (l) html += '<li><a href="#/lesson/' + l.id + '">' + escapeHtml(l.title) + "</a></li>";
+          if (l) html += '<li><a href="#/lesson/' + l.id + '">' + escapeHtml(lessonTitle(l)) + "</a></li>";
         });
         html += "</ul>";
       }
       html += "</div>";
     });
     html += "</div>";
-    html += '<div class="callout info"><div class="callout-title">របៀបប្រើ Roadmap នេះ</div><p>មិនចាំបាច់ប្រញាប់ទេ។ មេរៀននីមួយៗត្រូវសរសេរកូដដោយខ្លួនឯងយ៉ាងហោចណាស់ម្តង។ ប្រសិនបើអ្នកជាគ្រូ អាចប្រើ Part នីមួយៗជាមេរៀន ១ សប្តាហ៍។</p></div>';
+    html += '<div class="callout info"><div class="callout-title">' + tr("របៀបប្រើ Roadmap នេះ", "How to use this roadmap") + '</div><p>' + tr("មិនចាំបាច់ប្រញាប់ទេ។ មេរៀននីមួយៗត្រូវសរសេរកូដដោយខ្លួនឯងយ៉ាងហោចណាស់ម្តង។ ប្រសិនបើអ្នកជាគ្រូ អាចប្រើ Part នីមួយៗជាមេរៀន ១ សប្តាហ៍។", "There is no need to rush. Write the code for each lesson yourself at least once. If you are a teacher, you can use each Part as one week of lessons.") + '</p></div>';
     return html;
   }
 
   function renderBookmarks() {
-    let html = pageHead("Bookmarks", "មេរៀនដែលអ្នកបានដាក់សញ្ញាសម្គាល់។ ចុចដើម្បីបើកឡើងវិញ។");
+    let html = pageHead(tr("សញ្ញាសម្គាល់", "Bookmarks"), tr("មេរៀនដែលអ្នកបានដាក់សញ្ញាសម្គាល់។ ចុចដើម្បីបើកឡើងវិញ។", "Lessons you have bookmarked. Click to open again."));
     const lessons = state.bookmarks.map((id) => lessonById(id)).filter(Boolean);
     if (!lessons.length) {
-      html += '<div class="empty-state"><strong>មិនមានសញ្ញាសម្គាល់ទេ</strong>បើកមេរៀនណាមួយ រួចចុចរូបសញ្ញាសម្គាល់នៅផ្នែកខាងលើ។</div>';
+      html += '<div class="empty-state"><strong>' + tr("មិនមានសញ្ញាសម្គាល់ទេ", "No bookmarks yet") + '</strong>' + tr("បើកមេរៀនណាមួយ រួចចុចរូបសញ្ញាសម្គាល់នៅផ្នែកខាងលើ។", "Open any lesson, then click the bookmark icon at the top.") + '</div>';
       return html;
     }
     html += '<div class="bookmark-list">';
     lessons.forEach((l) => {
       html += '<a class="bookmark-item" href="#/lesson/' + l.id + '">' +
         '<span class="idx">' + String(l.num).padStart(2, "0") + "</span>" +
-        '<span class="title">' + escapeHtml(l.title) + "</span>" +
+        '<span class="title">' + escapeHtml(lessonTitle(l)) + "</span>" +
         '<span class="meta">' + escapeHtml(l.time) + "</span>" +
-        '<span class="chip ' + (isDone(l.id) ? "ok" : "") + '">' + (isDone(l.id) ? "✓ បានបញ្ចប់" : "មិនទាន់បញ្ចប់") + "</span>" +
+        '<span class="chip ' + (isDone(l.id) ? "ok" : "") + '">' + (isDone(l.id) ? tr("✓ បានបញ្ចប់", "✓ Completed") : tr("មិនទាន់បញ្ចប់", "Not completed")) + "</span>" +
       "</a>";
     });
     html += "</div>";
@@ -859,8 +970,8 @@
   function renderFinalTest() {
     const questions = REF.finalTest || [];
     const best = state.finalTest;
-    return pageHead("Final Knowledge Test", "សំណួរ " + questions.length + " សំណួរ គ្របដណ្តប់មេរៀនសំខាន់ទាំងអស់។ ឆ្លើយគ្រប់សំណួរ ដើម្បីមើលពិន្ទុ។") +
-      (best ? '<div class="callout info"><div class="callout-title">ពិន្ទុល្អបំផុតរបស់អ្នក</div><p>' + best.score + " / " + best.total + (best.date ? " · " + escapeHtml(best.date) : "") + "</p></div>" : "") +
+    return pageHead(tr("តេស្តចំណេះដឹងចុងក្រោយ", "Final Knowledge Test"), tr("សំណួរ " + questions.length + " សំណួរ គ្របដណ្តប់មេរៀនសំខាន់ទាំងអស់។ ឆ្លើយគ្រប់សំណួរ ដើម្បីមើលពិន្ទុ។", questions.length + " questions covering all key lessons. Answer every question to see your score.")) +
+      (best ? '<div class="callout info"><div class="callout-title">' + tr("ពិន្ទុល្អបំផុតរបស់អ្នក", "Your best score") + '</div><p>' + best.score + " / " + best.total + (best.date ? " · " + escapeHtml(best.date) : "") + "</p></div>" : "") +
       '<div class="quiz" id="finalTestQuiz" data-quiz-id="__final__"></div>';
   }
 
@@ -882,9 +993,9 @@
       });
       html += '</div><div class="quiz-explain" data-explain="' + qi + '">' + (q.explain || "") + "</div></div>";
     });
-    html += '<div class="quiz-result"><span class="quiz-score" data-score>មិនទាន់ឆ្លើយ</span>' +
-      '<span class="small muted">' + (best ? "ល្អបំផុត៖ " + best.score + "/" + best.total : "") + "</span>" +
-      '<button class="btn btn-sm" type="button" data-reset-quiz>ធ្វើឡើងវិញ</button></div>';
+    html += '<div class="quiz-result"><span class="quiz-score" data-score>' + tr("មិនទាន់ឆ្លើយ", "Not answered yet") + '</span>' +
+      '<span class="small muted">' + (best ? tr("ល្អបំផុត៖ ", "Best: ") + best.score + "/" + best.total : "") + "</span>" +
+      '<button class="btn btn-sm" type="button" data-reset-quiz>' + tr("ធ្វើឡើងវិញ", "Try again") + '</button></div>';
 
     container.innerHTML = html;
 
@@ -895,7 +1006,7 @@
     function updateScore() {
       if (answered === questions.length) {
         const ok = correct >= Math.ceil(questions.length * 0.7);
-        scoreEl.innerHTML = 'ពិន្ទុ៖ <span class="' + (ok ? "ok" : "bad") + '">' + correct + " / " + questions.length + "</span>";
+        scoreEl.innerHTML = tr("ពិន្ទុ៖ ", "Score: ") + '<span class="' + (ok ? "ok" : "bad") + '">' + correct + " / " + questions.length + "</span>";
         const record = { score: correct, total: questions.length, date: new Date().toLocaleDateString("en-GB") };
         if (id === "__final__") {
           if (!state.finalTest || correct > state.finalTest.score) state.finalTest = record;
@@ -904,9 +1015,11 @@
           if (!prev || correct > prev.score) state.quiz[id] = record;
         }
         saveState();
-        toast(ok ? "ល្អណាស់! អ្នកឆ្លើយត្រូវ " + correct + "/" + questions.length : "បន្តព្យាយាម! អ្នកឆ្លើយត្រូវ " + correct + "/" + questions.length);
+        toast(ok
+          ? tr("ល្អណាស់! អ្នកឆ្លើយត្រូវ ", "Great! You got ") + correct + "/" + questions.length
+          : tr("បន្តព្យាយាម! អ្នកឆ្លើយត្រូវ ", "Keep trying! You got ") + correct + "/" + questions.length);
       } else {
-        scoreEl.textContent = "បានឆ្លើយ " + answered + " / " + questions.length;
+        scoreEl.textContent = tr("បានឆ្លើយ ", "Answered ") + answered + " / " + questions.length;
       }
     }
 
@@ -966,7 +1079,7 @@
         if (!solution || !solution.classList.contains("solution")) return;
         const open = solution.classList.toggle("open");
         btn.setAttribute("aria-expanded", open ? "true" : "false");
-        btn.textContent = open ? "បិទដំណោះស្រាយ" : "បង្ហាញដំណោះស្រាយ";
+        btn.textContent = open ? tr("បិទដំណោះស្រាយ", "Hide solution") : tr("បង្ហាញដំណោះស្រាយ", "Show solution");
       });
     });
 
@@ -978,17 +1091,17 @@
         if (!lesson) return;
         if (isDone(id)) {
           state.completed = state.completed.filter((x) => x !== id);
-          completeBtn.textContent = "សម្គាល់ថាបានបញ្ចប់";
-          toast("ដកសញ្ញាបញ្ចប់មេរៀន");
+          completeBtn.textContent = tr("សម្គាល់ថាបានបញ្ចប់", "Mark as completed");
+          toast(tr("ដកសញ្ញាបញ្ចប់មេរៀន", "Lesson marked as incomplete"));
         } else {
           state.completed.push(id);
-          completeBtn.textContent = "✓ បានបញ្ចប់";
-          toast("អបអរសាទរ! អ្នកបានបញ្ចប់មេរៀននេះ");
+          completeBtn.textContent = tr("✓ បានបញ្ចប់", "✓ Completed");
+          toast(tr("អបអរសាទរ! អ្នកបានបញ្ចប់មេរៀននេះ", "Congratulations! You completed this lesson"));
           const chipRow = completeBtn.closest(".lesson-head").querySelector(".lesson-kicker");
           if (chipRow && !chipRow.querySelector(".chip.ok")) {
             const chip = document.createElement("span");
             chip.className = "chip ok";
-            chip.textContent = "បានបញ្ចប់ ✓";
+            chip.textContent = tr("បានបញ្ចប់ ✓", "Completed ✓");
             chipRow.appendChild(chip);
           }
         }
@@ -1040,7 +1153,8 @@
       searchIndex.push({
         type: "lesson",
         route: "/lesson/" + l.id,
-        title: l.title,
+        titleKm: l.titleKh || l.title,
+        titleEn: l.title,
         meta: "PART " + String(l.part).padStart(2, "0") + " · " + l.time,
         text: (l.title + " " + l.titleKh + " " + l.intro + " " + (l.objectives || []).join(" ")).toLowerCase()
       });
@@ -1049,7 +1163,8 @@
           type: "exercise",
           route: "/lesson/" + l.id,
           target: "ex-" + l.id + "-" + (i + 1),
-          title: "លំហាត់៖ " + ex.title,
+          titleKm: "លំហាត់៖ " + ex.title,
+          titleEn: "Exercise: " + ex.title,
           meta: l.title + " · Level " + ex.level,
           text: (ex.title + " " + ex.desc + " " + (ex.requirements || []).join(" ")).toLowerCase()
         });
@@ -1059,7 +1174,8 @@
       searchIndex.push({
         type: "project",
         route: "/project/" + p.id,
-        title: p.title,
+        titleKm: p.title,
+        titleEn: p.title,
         meta: "Project " + p.num + " · " + p.time,
         text: (p.title + " " + p.intro + " " + (p.concepts || []).join(" ")).toLowerCase()
       });
@@ -1068,7 +1184,8 @@
       searchIndex.push({
         type: "glossary",
         route: "/glossary",
-        title: g.en + " — " + g.kh,
+        titleKm: g.en + " — " + g.kh,
+        titleEn: g.en + " — " + g.kh,
         meta: "Glossary",
         text: (g.en + " " + g.kh + " " + g.def).toLowerCase()
       });
@@ -1099,16 +1216,19 @@
     document.body.classList.add("search-open");
     const results = searchIndex.filter((item) => item.text.indexOf(query) !== -1).slice(0, 14);
     if (!results.length) {
-      panel.innerHTML = '<div class="search-empty">រកមិនឃើញលទ្ធផលសម្រាប់ “' + escapeHtml(q) + '” ទេ។ សាកល្បងពាក្យខ្លីជាងនេះ។</div>';
+      panel.innerHTML = '<div class="search-empty">' + tr("រកមិនឃើញលទ្ធផលសម្រាប់ “" + escapeHtml(q) + "” ទេ។ សាកល្បងពាក្យខ្លីជាងនេះ។", "No results for “" + escapeHtml(q) + "”. Try a shorter search term.") + '</div>';
       panel.hidden = false;
       return;
     }
-    let html = '<div class="search-hint">លទ្ធផលស្វែងរក · ' + results.length + "</div>";
+    let html = '<div class="search-hint">' + tr("លទ្ធផលស្វែងរក · ", "Search results · ") + results.length + "</div>";
     results.forEach((r) => {
-      const label = r.type === "lesson" ? "ម" : r.type === "exercise" ? "ល" : r.type === "project" ? "គ" : "ព";
+      const label = state.lang === "en"
+        ? (r.type === "lesson" ? "L" : r.type === "exercise" ? "E" : r.type === "project" ? "P" : "G")
+        : (r.type === "lesson" ? "ម" : r.type === "exercise" ? "ល" : r.type === "project" ? "គ" : "ព");
+      const title = state.lang === "en" ? (r.titleEn || r.titleKm) : (r.titleKm || r.titleEn);
       html += '<a class="search-result" href="#' + r.route + '" data-route="' + r.route + '"' + (r.target ? ' data-target="' + r.target + '"' : "") + ">" +
         '<span class="s-icon">' + label + "</span>" +
-        '<span class="s-body"><span class="s-title">' + highlightMatch(r.title, q) + '</span><span class="s-meta">' + escapeHtml(r.meta) + "</span></span>" +
+        '<span class="s-body"><span class="s-title">' + highlightMatch(title, q) + '</span><span class="s-meta">' + escapeHtml(r.meta) + "</span></span>" +
       "</a>";
     });
     panel.innerHTML = html;
@@ -1140,9 +1260,11 @@
         document.body.classList.remove("sidebar-open");
         document.body.style.overflow = "";
       }
+      if (window.innerWidth > 720) document.body.classList.remove("search-open");
       updateReadingProgress();
     });
 
+    $("#langBtn") && $("#langBtn").addEventListener("click", toggleLang);
     $("#themeBtn") && $("#themeBtn").addEventListener("click", toggleTheme);
     $("#themeBtnSide") && $("#themeBtnSide").addEventListener("click", toggleTheme);
 
@@ -1152,7 +1274,7 @@
       } else {
         setSidebarCollapsed(!state.collapsed);
         const btn = $("#collapseBtn");
-        if (btn) btn.setAttribute("title", state.collapsed ? "ពង្រីក Sidebar" : "បង្រួម Sidebar");
+        if (btn) btn.setAttribute("title", state.collapsed ? tr("ពង្រីក Sidebar", "Expand sidebar") : tr("បង្រួម Sidebar", "Collapse sidebar"));
       }
     });
 
@@ -1173,10 +1295,10 @@
       if (!lessonById(id)) return;
       if (isBookmarked(id)) {
         state.bookmarks = state.bookmarks.filter((x) => x !== id);
-        toast("ដកសញ្ញាសម្គាល់ចេញ");
+        toast(tr("ដកសញ្ញាសម្គាល់ចេញ", "Bookmark removed"));
       } else {
         state.bookmarks.push(id);
-        toast("បានដាក់សញ្ញាសម្គាល់មេរៀន");
+        toast(tr("បានដាក់សញ្ញាសម្គាល់មេរៀន", "Lesson bookmarked"));
       }
       saveState();
       updateBookmarkBtn(id);
@@ -1190,11 +1312,11 @@
         if (!code) return;
         const text = code.textContent;
         const done = () => {
-          copyBtn.textContent = "បានចម្លង ✓";
+          copyBtn.textContent = tr("បានចម្លង ✓", "Copied ✓");
           copyBtn.classList.add("copied");
-          toast("ចម្លងកូដរួចរាល់");
+          toast(tr("ចម្លងកូដរួចរាល់", "Code copied"));
           setTimeout(() => {
-            copyBtn.textContent = "ចម្លង";
+            copyBtn.textContent = tr("ចម្លង", "Copy");
             copyBtn.classList.remove("copied");
           }, 1800);
         };
@@ -1222,10 +1344,36 @@
 
       const panel = $("#searchPanel");
       const searchBox = e.target.closest(".search-box");
-      if (panel && !panel.hidden && !searchBox && !e.target.closest("#searchPanel")) {
-        closeSearch();
+      if (!searchBox && !e.target.closest("#searchPanel")) {
+        if (document.body.classList.contains("search-open") || (panel && !panel.hidden)) {
+          closeSearch();
+          const input = $("#searchInput");
+          if (input) input.blur();
+        }
       }
     });
+
+    const searchBox = $(".search-box");
+    if (searchBox) {
+      searchBox.addEventListener("click", (e) => {
+        if (window.innerWidth > 720) return;
+        if (e.target.closest(".search-close")) return;
+        if (!document.body.classList.contains("search-open")) {
+          document.body.classList.add("search-open");
+          const input = $("#searchInput");
+          if (input) input.focus();
+        }
+      });
+    }
+
+    const searchCloseBtn = $("#searchCloseBtn");
+    if (searchCloseBtn) {
+      searchCloseBtn.addEventListener("click", () => {
+        closeSearch();
+        const input = $("#searchInput");
+        if (input) input.blur();
+      });
+    }
 
     const searchInput = $("#searchInput");
     if (searchInput) {
@@ -1244,6 +1392,16 @@
           document.body.classList.add("search-open");
           setTimeout(() => searchInput.focus(), 10);
         }
+      });
+      searchInput.addEventListener("blur", () => {
+        if (window.innerWidth > 720) return;
+        setTimeout(() => {
+          if (document.activeElement === searchInput) return;
+          if (searchInput.value.trim()) return;
+          const panelEl = $("#searchPanel");
+          if (panelEl && panelEl.contains(document.activeElement)) return;
+          closeSearch();
+        }, 160);
       });
     }
 
@@ -1285,7 +1443,7 @@
       document.body.removeChild(area);
       done();
     } catch (err) {
-      toast("មិនអាចចម្លងបានទេ — សូមជ្រើសរើសកូដដោយដៃ");
+      toast(tr("មិនអាចចម្លងបានទេ — សូមជ្រើសរើសកូដដោយដៃ", "Could not copy — please select the code manually"));
     }
   }
 
@@ -1295,9 +1453,8 @@
 
   function init() {
     loadState();
-    applyTheme();
+    applyLang();
     document.body.classList.toggle("sidebar-collapsed", state.collapsed && window.innerWidth > 1024);
-    buildSidebar();
     buildSearchIndex();
     bindGlobalEvents();
     updateProgressUI();

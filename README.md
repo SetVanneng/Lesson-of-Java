@@ -131,6 +131,23 @@ Data files expose globals consumed by `script.js`:
 
 ## Work Completed
 
+- **Bilingual Khmer/English UI**: added a language toggle in the topbar. It switches all
+  navigation, labels, buttons, page headings, lesson titles, and search results between
+  Khmer and English, updates the document language, and persists the choice in
+  `localStorage`.
+- **Exercise solutions now show output**: clicking "បង្ហាញដំណោះស្រាយ" (Show solution)
+  reveals the exercise's sample output after the solution code, so learners can verify
+  the expected result without scrolling back up.
+- **Hint/solution spacing**: added top margin to the solution toggle button so it is no
+  longer cramped against the Hint disclosure box.
+- **Mobile search rebuilt**: the collapsed search icon now expands into a full-width
+  topbar overlay with a dedicated close button. Tapping outside, pressing Escape, or
+  choosing a result closes and resets it cleanly.
+- **Mobile search fixed**: the search placeholder text is now properly hidden on phones
+  (`display:none` on `::placeholder` was unreliable), the magnifier uses the real SVG icon
+  instead of an emoji, and the field expands cleanly when tapped.
+- **Small-phone responsive polish**: tighter topbar and view padding, stacked lesson
+  navigation, and reduced hero/exercise/quiz spacing on narrow screens.
 - **Exercise depth expanded**: every lesson now has at least 8 exercises, distributed
   across all three levels.
 - **20 additional exercises** were added to ten core lessons (2 each):
