@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="km" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="វេបសាយរៀន Java ជាភាសាខ្មែរ — មេរៀនលម្អិត ឧទាហរណ៍ លំហាត់ កម្មវិធីអនុវត្ត និងតេស្តសម្រាប់អ្នកចាប់ផ្តើម។">
+  <meta name="author" content="Set Vanneng">
+  <meta name="copyright" content="© 2026 Set Vanneng">
+  <meta name="theme-color" content="#f5f6f8">
+  <title>Java ភាសាខ្មែរ — សៀវភៅរៀន Java ពីដំបូងដល់ OOP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Hanuman:wght@400;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23416B8C'/%3E%3Ctext x='32' y='42' font-family='monospace' font-size='26' fill='white' text-anchor='middle'%3EJava%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+  <div class="app" id="app">
+    <aside class="sidebar" id="sidebar" aria-label="ម៉ឺនុយមេរៀន">
+      <div class="sidebar-head">
+        <a class="brand" href="#/home" aria-label="Java ភាសាខ្មែរ — ទំព័រដើម">
+          <span class="brand-mark" aria-hidden="true">J</span>
+          <span class="brand-text">
+            <span class="brand-title">Java ភាសាខ្មែរ</span>
+            <span class="brand-sub">Online Textbook · Beginner to OOP</span>
+          </span>
+        </a>
+        <button class="icon-btn" id="collapseBtn" type="button" aria-label="បង្រួម/ពង្រីក Sidebar" title="បង្រួម Sidebar">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+      </div>
+
+      <div class="sidebar-scroll">
+        <div class="progress-card">
+          <div class="progress-row"><span>ការរីកចម្រើនសរុប</span><strong id="sideProgressText">0%</strong></div>
+          <div class="progress-track"><div class="progress-fill" id="sideProgressBar"></div></div>
+          <div class="progress-note" id="sideProgressNote">0 / 25 មេរៀនបានបញ្ចប់</div>
+        </div>
+        <nav id="sidebarNav" aria-label="មាតិកាមេរៀន"></nav>
+      </div>
+
+      <div class="sidebar-foot">
+        <button class="icon-btn" id="themeBtnSide" type="button" aria-label="ប្តូរ Theme" title="Dark / Light mode">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+        <span class="sidebar-foot-note">រៀនបានគ្រប់ពេល · រក្សាទុកការរីកចម្រើនដោយស្វ័យប្រវត្តិ</span>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+    <div class="main">
+      <header class="topbar">
+        <button class="icon-btn" id="menuBtn" type="button" aria-label="បើកម៉ឺនុយ" aria-controls="sidebar" aria-expanded="false">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+
+        <div class="crumbs" id="crumbs" aria-live="polite"></div>
+
+        <div class="topbar-actions">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.2-3.2"/></svg>
+            <input class="search-input" id="searchInput" type="search" placeholder="ស្វែងរកមេរៀន លំហាត់..." autocomplete="off" aria-label="ស្វែងរកមេរៀន">
+            <span class="search-kbd" aria-hidden="true">/</span>
+          </div>
+          <button class="icon-btn" id="themeBtn" type="button" aria-label="ប្តូរ Dark/Light mode" title="Dark / Light mode">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          </button>
+          <button class="icon-btn" id="bookmarkBtn" type="button" aria-label="ដាក់សញ្ញាសម្គាល់មេរៀន" title="ដាក់សញ្ញាសម្គាល់" hidden>
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v17l-6-4-6 4V4z"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="reading-progress" aria-hidden="true"><span id="readingBar"></span></div>
+
+      <main class="view" id="view" tabindex="-1"></main>
+
+      <footer class="site-footer">
+        <span class="footer-owner">អ្នកបង្កើត និងម្ចាស់គេហទំព័រ៖ <strong>Set Vanneng</strong> · © 2026</span>
+        <span>Java ភាសាខ្មែរ · សម្រាប់ការរៀន និងការបង្រៀន</span>
+        <span>យោងតាម <a href="https://docs.oracle.com/en/java/" target="_blank" rel="noopener">Oracle Java Docs</a> និង <a href="https://dev.java/learn/" target="_blank" rel="noopener">Dev.java</a></span>
+      </footer>
+    </div>
+  </div>
+
+  <div class="search-panel" id="searchPanel" hidden></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="data/lessons-a.js" defer></script>
+  <script src="data/lessons-b.js" defer></script>
+  <script src="data/lessons-c.js" defer></script>
+  <script src="data/lessons-d.js" defer></script>
+  <script src="data/lessons-e.js" defer></script>
+  <script src="data/lessons-f.js" defer></script>
+  <script src="data/lessons-g.js" defer></script>
+  <script src="data/lessons-h.js" defer></script>
+  <script src="data/projects-data.js" defer></script>
+  <script src="data/reference-data.js" defer></script>
+  <script src="script.js" defer></script>
+</body>
+</html>
