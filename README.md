@@ -61,16 +61,18 @@ lesson of java/
 │   ├── lessons-g.js         # Lessons 18–21 (inheritance, polymorphism, abstraction, interfaces)
 │   ├── lessons-h.js         # Lessons 22–25 (exceptions, collections, files, final projects)
 │   ├── projects-data.js     # 36 guided projects
-│   └── reference-data.js    # Glossary, keywords, errors, cheatsheet, roadmap, final test
+│   ├── reference-data.js    # Glossary, keywords, errors, cheatsheet, roadmap, final test
+│   └── content-en.js        # English versions of all lesson/project/reference content
 ├── .vscode/settings.json    # Live Server port 5501
 └── README.md
 ```
 
 Data files expose globals consumed by `script.js`:
 
-- `window.JAVA_LESSONS` — lessons
-- `window.JAVA_PROJECTS` — projects
-- `window.JAVA_REFERENCE` — reference data
+- `window.JAVA_LESSONS` — Khmer lessons
+- `window.JAVA_PROJECTS` — Khmer projects
+- `window.JAVA_REFERENCE` — Khmer reference data
+- `window.JAVA_LESSONS_EN` / `window.JAVA_PROJECTS_EN` / `window.JAVA_REFERENCE_EN` — English content used by the language toggle
 
 ## Content Coverage
 
@@ -131,10 +133,19 @@ Data files expose globals consumed by `script.js`:
 
 ## Work Completed
 
-- **Bilingual Khmer/English UI**: added a language toggle in the topbar. It switches all
-  navigation, labels, buttons, page headings, lesson titles, and search results between
-  Khmer and English, updates the document language, and persists the choice in
-  `localStorage`.
+- **Bilingual Khmer/English UI**: added a language toggle in the topbar. It switches the
+  interface, lesson bodies, exercises, quizzes, projects, reference pages, and search
+  results between Khmer and English, updates the document language, and persists the
+  choice in `localStorage`.
+- **Full English content**: all lesson sections, objectives, exercises, quizzes, project
+  steps, glossary, keywords, errors, cheatsheet, roadmap, and final test are translated
+  in `data/content-en.js`. `script.js` swaps the Khmer and English content arrays when the
+  language changes; code samples and string literals are preserved, while Khmer code
+  comments were translated. Hidden `titleKh`/`kh` fields remain Khmer but are not shown
+  in English mode.
+- **Translation verification**: headless Chrome checks report 0 Khmer prose in English
+  mode; switching back to Khmer, reload persistence, search results in both languages,
+  and mobile search all pass.
 - **Exercise solutions now show output**: clicking "បង្ហាញដំណោះស្រាយ" (Show solution)
   reveals the exercise's sample output after the solution code, so learners can verify
   the expected result without scrolling back up.

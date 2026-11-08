@@ -6,9 +6,23 @@
 (function () {
   "use strict";
 
-  const LESSONS = window.JAVA_LESSONS || [];
-  const PROJECTS = window.JAVA_PROJECTS || [];
-  const REF = window.JAVA_REFERENCE || {};
+  const LESSONS_KM = window.JAVA_LESSONS || [];
+  const PROJECTS_KM = window.JAVA_PROJECTS || [];
+  const REF_KM = window.JAVA_REFERENCE || {};
+  const LESSONS_EN = window.JAVA_LESSONS_EN || LESSONS_KM;
+  const PROJECTS_EN = window.JAVA_PROJECTS_EN || PROJECTS_KM;
+  const REF_EN = window.JAVA_REFERENCE_EN || REF_KM;
+
+  let LESSONS = LESSONS_KM;
+  let PROJECTS = PROJECTS_KM;
+  let REF = REF_KM;
+
+  function syncContentLang() {
+    const useEnglish = state.lang === "en";
+    LESSONS = useEnglish ? LESSONS_EN : LESSONS_KM;
+    PROJECTS = useEnglish ? PROJECTS_EN : PROJECTS_KM;
+    REF = useEnglish ? REF_EN : REF_KM;
+  }
 
   const STORE_KEY = "javaKhmer.v1";
   const LEVEL_NAMES = {
@@ -66,6 +80,7 @@
   }
 
   function applyLang() {
+    syncContentLang();
     const isEn = state.lang === "en";
     document.documentElement.setAttribute("lang", isEn ? "en" : "km");
 
@@ -139,7 +154,10 @@
     state.lang = state.lang === "en" ? "km" : "en";
     saveState();
     applyLang();
+    buildSearchIndex();
     navigate();
+    const searchInput = $("#searchInput");
+    if (searchInput && searchInput.value.trim()) runSearch(searchInput.value);
   }
 
   function getCurrentLessonId() {
@@ -681,7 +699,8 @@
     if (lesson.terms && lesson.terms.length) {
       html += '<h2>' + tr("ពាក្យបច្ចេកទេសសំខាន់", "Key terms") + '</h2><dl class="term-grid">';
       lesson.terms.forEach((t) => {
-        html += '<div class="term"><dt>' + escapeHtml(t.en) + " — " + escapeHtml(t.kh) + "</dt><dd>" + t.text + "</dd></div>";
+        const termLabel = state.lang === "en" ? escapeHtml(t.en) : escapeHtml(t.en) + " — " + escapeHtml(t.kh);
+        html += '<div class="term"><dt>' + termLabel + "</dt><dd>" + t.text + "</dd></div>";
       });
       html += "</dl>";
     }
@@ -880,7 +899,9 @@
       '<div class="glossary-list" id="glossaryList">' +
         items.map((g) =>
           '<div class="glossary-item" data-search="' + escapeHtml((g.en + " " + g.kh + " " + g.def).toLowerCase()) + '">' +
-            '<div class="term-en">' + escapeHtml(g.en) + '</div><div class="term-kh">' + escapeHtml(g.kh) + "</div><p>" + g.def + "</p>" +
+            '<div class="term-en">' + escapeHtml(g.en) + '</div>' +
+            (state.lang === "en" ? "" : '<div class="term-kh">' + escapeHtml(g.kh) + "</div>") +
+            "<p>" + g.def + "</p>" +
           "</div>"
         ).join("") +
       "</div>";
