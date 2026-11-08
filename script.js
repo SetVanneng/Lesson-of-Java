@@ -638,6 +638,7 @@
               '<div class="solution">' +
                 (ex.solutionCode ? codeCard("Solution.java", ex.solutionCode) : "") +
                 (ex.solution ? "<p>" + ex.solution + "</p>" : "") +
+                (ex.outputSample ? outputCard(ex.outputSample) : "") +
               "</div>" +
             "</div>";
         });
