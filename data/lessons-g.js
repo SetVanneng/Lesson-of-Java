@@ -447,6 +447,210 @@ public class ShapeDemo {
         System.out.println("Area: " + r.area());
     }
 }`
+    },
+    {
+      level: 1,
+      title: "Animal និង Dog",
+      desc: "បង្កើត Class <code>Animal</code> មាន Method <code>eat()</code> និង Class <code>Dog</code> extends Animal មាន Method <code>bark()</code>។",
+      requirements: ["Class Animal", "Class Dog extends Animal", "បង្កើត Object Dog និងហៅ Method ទាំងពីរ"],
+      outputSample: "Buddy is eating\nBuddy says Woof",
+      hint: "Dog ទទួល Method eat() ពី Animal ដោយស្វ័យប្រវត្តិ។",
+      solutionCode: `class Animal {
+    String name;
+
+    void eat() {
+        System.out.println(name + " is eating");
+    }
+}
+
+class Dog extends Animal {
+    void bark() {
+        System.out.println(name + " says Woof");
+    }
+}
+
+public class AnimalDemo {
+    public static void main(String[] args) {
+        Dog d = new Dog();
+        d.name = "Buddy";
+        d.eat();
+        d.bark();
+    }
+}`
+    },
+    {
+      level: 2,
+      title: "Vehicle និង Car",
+      desc: "បង្កើត Class <code>Vehicle</code> មាន wheels និង Method <code>describe()</code>; Class <code>Car</code> extends និង Override ដោយប្រើ super។",
+      requirements: ["Class Vehicle", "Class Car extends Vehicle", "Override describe និងហៅ super.describe()"],
+      outputSample: "Vehicle: Toyota\nWheels: 4",
+      hint: "ហៅ <code>super.describe()</code> ដើម្បីបង្ហាញព័ត៌មានរបស់ Class មេ។",
+      solutionCode: `class Vehicle {
+    String name;
+    int wheels;
+
+    void describe() {
+        System.out.println("Vehicle: " + name);
+    }
+}
+
+class Car extends Vehicle {
+    @Override
+    void describe() {
+        super.describe();
+        System.out.println("Wheels: " + wheels);
+    }
+}
+
+public class CarDemo {
+    public static void main(String[] args) {
+        Car c = new Car();
+        c.name = "Toyota";
+        c.wheels = 4;
+        c.describe();
+    }
+}`
+    },
+    {
+      level: 3,
+      title: "Person និង Student",
+      desc: "បង្កើត Class <code>Person</code> មាន Method <code>introduce()</code> និង Class <code>Student</code> extends ដោយ Override។",
+      requirements: ["Class Person", "Class Student extends Person", "Override introduce", "ប្រើ super"],
+      outputSample: "I am Dara\nI am Dara, a student",
+      hint: "Student អាចហៅ <code>super.introduce()</code> រួចបន្ថែមអត្ថបទផ្ទាល់ខ្លួន។",
+      solutionCode: `class Person {
+    String name;
+
+    void introduce() {
+        System.out.println("I am " + name);
+    }
+}
+
+class Student extends Person {
+    @Override
+    void introduce() {
+        super.introduce();
+        System.out.println("I am " + name + ", a student");
+    }
+}
+
+public class PersonDemo {
+    public static void main(String[] args) {
+        Student s = new Student();
+        s.name = "Dara";
+        s.introduce();
+    }
+}`
+    },
+    {
+      level: 3,
+      title: "BankAccount និង SavingsAccount",
+      desc: "បង្កើត Class <code>BankAccount</code> មាន deposit/withdraw និង Class <code>SavingsAccount</code> បន្ថែម <code>addInterest(rate)</code>។",
+      requirements: ["Class BankAccount", "Class SavingsAccount extends", "Method addInterest", "បង្ហាញ balance"],
+      inputSample: "deposit 1000, interest 10%",
+      outputSample: "Balance after interest: 1100.0",
+      hint: "addInterest អាចហៅ <code>deposit(balance * rate / 100)</code>។",
+      solutionCode: `class BankAccount {
+    double balance;
+
+    void deposit(double amount) {
+        if (amount > 0) balance += amount;
+    }
+
+    void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) balance -= amount;
+    }
+}
+
+class SavingsAccount extends BankAccount {
+    void addInterest(double rate) {
+        deposit(balance * rate / 100);
+    }
+}
+
+public class SavingsDemo {
+    public static void main(String[] args) {
+        SavingsAccount acc = new SavingsAccount();
+        acc.deposit(1000);
+        acc.addInterest(10);
+        System.out.println("Balance after interest: " + acc.balance);
+    }
+}`
+    },
+    {
+      level: 2,
+      title: "Person និង Teacher",
+      desc: "បង្កើត Class <code>Person</code> មាន <code>show()</code> និង Subclass <code>Teacher</code> បន្ថែម Field subject រួច Override show()។",
+      requirements: ["ប្រើ extends", "Override show()", "ហៅពី Object Teacher"],
+      outputSample: "Dara teaches Java",
+      hint: "ក្នុង Teacher អាចហៅ <code>super.show()</code> ឬបង្ហាញព័ត៌មានខ្លួនឯង។",
+      solutionCode: `class Person {
+    String name;
+
+    void show() {
+        System.out.println("Name: " + name);
+    }
+}
+
+class Teacher extends Person {
+    String subject;
+
+    @Override
+    void show() {
+        System.out.println(name + " teaches " + subject);
+    }
+}
+
+public class TeacherDemo {
+    public static void main(String[] args) {
+        Teacher t = new Teacher();
+        t.name = "Dara";
+        t.subject = "Java";
+        t.show();
+    }
+}`,
+      solution: "Teacher ស្នង Field name ពី Person និង Override show() ដើម្បីបង្ហាញព័ត៌មានបន្ថែម។"
+    },
+    {
+      level: 3,
+      title: "Employee និង Manager",
+      desc: "បង្កើត <code>Employee</code> មាន salary និង <code>Manager extends Employee</code> មាន bonus។ Override <code>totalPay()</code> ដើម្បីបូក bonus។",
+      requirements: ["ប្រើ super(...)", "Override totalPay()", "បង្ហាញចំណូលសរុប"],
+      outputSample: "Total pay: 1300.0",
+      hint: "Manager Constructor ហៅ <code>super(salary)</code> រួច totalPay ត្រឡប់ <code>super.totalPay() + bonus</code>។",
+      solutionCode: `class Employee {
+    double salary;
+
+    Employee(double salary) {
+        this.salary = salary;
+    }
+
+    double totalPay() {
+        return salary;
+    }
+}
+
+class Manager extends Employee {
+    double bonus;
+
+    Manager(double salary, double bonus) {
+        super(salary);
+        this.bonus = bonus;
+    }
+
+    @Override
+    double totalPay() {
+        return super.totalPay() + bonus;
+    }
+}
+
+public class ManagerDemo {
+    public static void main(String[] args) {
+        Manager m = new Manager(1000, 300);
+        System.out.println("Total pay: " + m.totalPay());
+    }
+}`,
+      solution: "Manager ប្រើ super ដើម្បីផ្ទេរ salary ទៅ Employee និងហៅ Method របស់ Superclass បន្ថែម bonus។"
     }
   ],
   quiz: [
@@ -887,6 +1091,139 @@ public class ShapeInstanceof {
         }
     }
 }`
+    },
+    {
+      level: 1,
+      title: "Method Overloading",
+      desc: "បង្កើត Method <code>add</code> ពីរកំណែ៖ សម្រាប់ int និងសម្រាប់ double ដើម្បីបង្ហាញ Compile-time Polymorphism។",
+      requirements: ["add(int, int)", "add(double, double)", "បង្ហាញលទ្ធផលទាំងពីរ"],
+      outputSample: "3\n4.5",
+      hint: "Method ឈ្មោះដូចគ្នា ប៉ុន្តែ Parameter ខុសគ្នា។",
+      solutionCode: `public class MathDemo {
+    static int add(int a, int b) {
+        return a + b;
+    }
+
+    static double add(double a, double b) {
+        return a + b;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(add(1, 2));
+        System.out.println(add(2.0, 2.5));
+    }
+}`
+    },
+    {
+      level: 2,
+      title: "Animal Array",
+      desc: "បង្កើត Class <code>Animal</code> មាន <code>speak()</code> និង Subclass Dog, Cat Override។ ប្រើ Array នៃ Animal។",
+      requirements: ["Class Animal", "Dog និង Cat Override speak", "Loop លើ Animal[]"],
+      outputSample: "Dog: Woof\nCat: Meow",
+      hint: "Java ជ្រើស Method តាម Object ពិត (Runtime Polymorphism)។",
+      solutionCode: `class Animal {
+    void speak() {
+        System.out.println("Some sound");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    void speak() {
+        System.out.println("Dog: Woof");
+    }
+}
+
+class Cat extends Animal {
+    @Override
+    void speak() {
+        System.out.println("Cat: Meow");
+    }
+}
+
+public class AnimalArrayDemo {
+    public static void main(String[] args) {
+        Animal[] animals = {new Dog(), new Cat()};
+        for (Animal a : animals) {
+            a.speak();
+        }
+    }
+}`
+    },
+    {
+      level: 3,
+      title: "Payment Polymorphism",
+      desc: "បង្កើត Class <code>Payment</code> មាន <code>pay(amount)</code> និង Subclass CardPayment, CashPayment Override។",
+      requirements: ["Class Payment", "Subclass ពីរ Override pay", "ហៅតាម Reference Payment"],
+      outputSample: "Paid by card: 100.0\nPaid by cash: 50.0",
+      hint: "ប្រើ <code>Payment p = new CardPayment();</code> រួចហៅ <code>p.pay(100);</code>។",
+      solutionCode: `class Payment {
+    void pay(double amount) {
+        System.out.println("Paid: " + amount);
+    }
+}
+
+class CardPayment extends Payment {
+    @Override
+    void pay(double amount) {
+        System.out.println("Paid by card: " + amount);
+    }
+}
+
+class CashPayment extends Payment {
+    @Override
+    void pay(double amount) {
+        System.out.println("Paid by cash: " + amount);
+    }
+}
+
+public class PaymentDemo {
+    public static void main(String[] args) {
+        Payment p1 = new CardPayment();
+        Payment p2 = new CashPayment();
+        p1.pay(100);
+        p2.pay(50);
+    }
+}`
+    },
+    {
+      level: 3,
+      title: "Upcasting និង Downcasting",
+      desc: "បង្កើត Reference <code>Shape</code> ចង្អុល <code>Circle</code> រួច Downcast ដោយ <code>instanceof</code> ដើម្បីហៅ Method ពិសេស។",
+      requirements: ["Upcasting", "instanceof pattern", "ហៅ Method របស់ Circle"],
+      outputSample: "Circle radius: 2.0",
+      hint: "ប្រើ <code>if (s instanceof Circle c) { ... }</code>។",
+      solutionCode: `class Shape {
+    double area() {
+        return 0;
+    }
+}
+
+class Circle extends Shape {
+    double radius;
+
+    Circle(double radius) {
+        this.radius = radius;
+    }
+
+    double getRadius() {
+        return radius;
+    }
+
+    @Override
+    double area() {
+        return Math.PI * radius * radius;
+    }
+}
+
+public class CastingDemo {
+    public static void main(String[] args) {
+        Shape s = new Circle(2);
+        if (s instanceof Circle c) {
+            System.out.println("Circle radius: " + c.getRadius());
+        }
+    }
+}`
     }
   ],
   quiz: [
@@ -1169,6 +1506,61 @@ public class EmployeeAbstract {
         "FullTime និង PartTime គណនាខុសគ្នា។",
         "printSalary ជា Concrete Method ដែលហៅ salary តាម Polymorphism។"
       ]
+    },
+    {
+      title: "Abstract Vehicle",
+      desc: "Abstract Class Vehicle មាន Method ធម្មតា describe() និង Abstract Method maxSpeed() ដែល Car និង Bike អនុវត្តខុសគ្នា។",
+      file: "VehicleDemo.java",
+      code: `abstract class Vehicle {
+    String name;
+
+    Vehicle(String name) {
+        this.name = name;
+    }
+
+    abstract int maxSpeed();
+
+    void describe() {
+        System.out.println(name + " max speed: " + maxSpeed() + " km/h");
+    }
+}
+
+class Car extends Vehicle {
+    Car(String name) {
+        super(name);
+    }
+
+    @Override
+    int maxSpeed() {
+        return 180;
+    }
+}
+
+class Bike extends Vehicle {
+    Bike(String name) {
+        super(name);
+    }
+
+    @Override
+    int maxSpeed() {
+        return 40;
+    }
+}
+
+public class VehicleDemo {
+    public static void main(String[] args) {
+        Vehicle[] vehicles = {new Car("Toyota"), new Bike("Honda")};
+        for (Vehicle v : vehicles) {
+            v.describe();
+        }
+    }
+}`,
+      output: "Toyota max speed: 180 km/h\nHonda max speed: 40 km/h",
+      lines: [
+        "Vehicle កំណត់ abstract maxSpeed() ដែល Subclass ត្រូវអនុវត្ត។",
+        "describe() ជា Method ធម្មតាដែលអាចហៅ abstract method បាន។",
+        "Array ប្រភេទ Vehicle បង្ហាញ Polymorphism ពេលហៅ describe()។"
+      ]
     }
   ],
   mistakes: [
@@ -1317,6 +1709,144 @@ class Intern extends Employee {
 public class AbstractEmployee {
     public static void main(String[] args) {
         new Intern("Dara", 20, 5).show();
+    }
+}`
+    },
+    {
+      level: 1,
+      title: "Abstract Appliance",
+      desc: "បង្កើត Abstract Class <code>Appliance</code> មាន Abstract Method <code>turnOn()</code> និង Method <code>info()</code>។ Class <code>Fan</code> អនុវត្ត។",
+      requirements: ["abstract class", "abstract turnOn()", "Subclass Fan អនុវត្ត turnOn"],
+      outputSample: "Appliance: Fan\nFan is on",
+      hint: "Subclass ត្រូវ Override Abstract Method ទាំងអស់។",
+      solutionCode: `abstract class Appliance {
+    String name;
+
+    abstract void turnOn();
+
+    void info() {
+        System.out.println("Appliance: " + name);
+    }
+}
+
+class Fan extends Appliance {
+    @Override
+    void turnOn() {
+        System.out.println("Fan is on");
+    }
+}
+
+public class ApplianceDemo {
+    public static void main(String[] args) {
+        Fan f = new Fan();
+        f.name = "Fan";
+        f.info();
+        f.turnOn();
+    }
+}`
+    },
+    {
+      level: 2,
+      title: "Abstract Shape",
+      desc: "បង្កើត Abstract Class <code>Shape</code> មាន Abstract Method <code>area()</code> និង Class <code>Square</code>។",
+      requirements: ["abstract class Shape", "abstract area()", "Square គណនាផ្ទៃក្រឡា"],
+      inputSample: "side=4",
+      outputSample: "Square area: 16.0",
+      hint: "<code>return side * side;</code>។",
+      solutionCode: `abstract class Shape {
+    abstract double area();
+}
+
+class Square extends Shape {
+    double side;
+
+    Square(double side) {
+        this.side = side;
+    }
+
+    @Override
+    double area() {
+        return side * side;
+    }
+}
+
+public class SquareDemo {
+    public static void main(String[] args) {
+        Square s = new Square(4);
+        System.out.println("Square area: " + s.area());
+    }
+}`
+    },
+    {
+      level: 3,
+      title: "Abstract BankAccount",
+      desc: "បង្កើត Abstract Class <code>BankAccount</code> មាន Abstract Method <code>withdraw(amount)</code> និង Class <code>SavingsAccount</code>។",
+      requirements: ["abstract withdraw", "SavingsAccount អនុវត្ត", "បង្ហាញ balance"],
+      inputSample: "deposit 500, withdraw 200",
+      outputSample: "Withdrew: 200.0\nBalance: 300.0",
+      hint: "Abstract Class អាចមាន Method ធម្មតាដូចជា deposit។",
+      solutionCode: `abstract class BankAccount {
+    double balance;
+
+    void deposit(double amount) {
+        if (amount > 0) balance += amount;
+    }
+
+    abstract void withdraw(double amount);
+}
+
+class SavingsAccount extends BankAccount {
+    @Override
+    void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            System.out.println("Withdrew: " + amount);
+        }
+    }
+}
+
+public class BankDemo {
+    public static void main(String[] args) {
+        SavingsAccount acc = new SavingsAccount();
+        acc.deposit(500);
+        acc.withdraw(200);
+        System.out.println("Balance: " + acc.balance);
+    }
+}`
+    },
+    {
+      level: 3,
+      title: "Abstract Employee",
+      desc: "បង្កើត Abstract Class <code>Employee</code> មាន Abstract Method <code>salary()</code> និង Class <code>Manager</code>។",
+      requirements: ["abstract salary", "Manager អនុវត្ត", "បង្ហាញប្រាក់ខែ"],
+      inputSample: "base=1000, bonus=200",
+      outputSample: "Manager salary: 1200.0",
+      hint: "salary() ត្រឡប់ <code>base + bonus</code>។",
+      solutionCode: `abstract class Employee {
+    String name;
+
+    abstract double salary();
+}
+
+class Manager extends Employee {
+    double base;
+    double bonus;
+
+    Manager(double base, double bonus) {
+        this.base = base;
+        this.bonus = bonus;
+    }
+
+    @Override
+    double salary() {
+        return base + bonus;
+    }
+}
+
+public class EmployeeDemo {
+    public static void main(String[] args) {
+        Manager m = new Manager(1000, 200);
+        System.out.println("Manager salary: " + m.salary());
     }
 }`
     }
@@ -1748,6 +2278,122 @@ public class MathOpDemo {
 
         System.out.println(add.apply(2, 3));
         System.out.println(sub.apply(2, 3));
+    }
+}`
+    },
+    {
+      level: 1,
+      title: "Interface Animal",
+      desc: "បង្កើត Interface <code>Animal</code> មាន Method <code>sound()</code> និង Class <code>Dog</code> implements។",
+      requirements: ["Interface Animal", "Dog implements Animal", "អនុវត្ត sound()"],
+      outputSample: "Dog says Woof",
+      hint: "Class ត្រូវអនុវត្ត Method ទាំងអស់ក្នុង Interface។",
+      solutionCode: `interface Animal {
+    void sound();
+}
+
+class Dog implements Animal {
+    @Override
+    public void sound() {
+        System.out.println("Dog says Woof");
+    }
+}
+
+public class AnimalDemo {
+    public static void main(String[] args) {
+        Dog d = new Dog();
+        d.sound();
+    }
+}`
+    },
+    {
+      level: 2,
+      title: "Interface Shape",
+      desc: "បង្កើត Interface <code>Shape</code> មាន Method <code>area()</code> និង Class <code>Circle</code> implements។",
+      requirements: ["Interface Shape", "Circle implements Shape", "គណនាផ្ទៃក្រឡា"],
+      inputSample: "radius=3",
+      outputSample: "Circle area: 28.274333882308138",
+      hint: "<code>Math.PI * radius * radius</code>។",
+      solutionCode: `interface Shape {
+    double area();
+}
+
+class Circle implements Shape {
+    double radius;
+
+    Circle(double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    public double area() {
+        return Math.PI * radius * radius;
+    }
+}
+
+public class CircleDemo {
+    public static void main(String[] args) {
+        Circle c = new Circle(3);
+        System.out.println("Circle area: " + c.area());
+    }
+}`
+    },
+    {
+      level: 3,
+      title: "Multiple Interfaces",
+      desc: "បង្កើត Interface <code>Flyable</code> និង <code>Swimmable</code> រួច Class <code>Duck</code> implements ទាំងពីរ។",
+      requirements: ["Interface ពីរ", "Duck implements ទាំងពីរ", "ហៅ Method ទាំងពីរ"],
+      outputSample: "Duck is flying\nDuck is swimming",
+      hint: "ប្រើ <code>implements Flyable, Swimmable</code>។",
+      solutionCode: `interface Flyable {
+    void fly();
+}
+
+interface Swimmable {
+    void swim();
+}
+
+class Duck implements Flyable, Swimmable {
+    @Override
+    public void fly() {
+        System.out.println("Duck is flying");
+    }
+
+    @Override
+    public void swim() {
+        System.out.println("Duck is swimming");
+    }
+}
+
+public class DuckDemo {
+    public static void main(String[] args) {
+        Duck d = new Duck();
+        d.fly();
+        d.swim();
+    }
+}`
+    },
+    {
+      level: 3,
+      title: "Default Method",
+      desc: "បង្កើត Interface <code>Greeter</code> មាន Default Method <code>greet(name)</code> រួច Class <code>EnglishGreeter</code> ប្រើវា។",
+      requirements: ["Default Method", "Class មិនចាំបាច់ Override", "ហៅ greet"],
+      outputSample: "Hello, Dara\nHello, guest",
+      hint: "Default Method មាន <code>default</code> និង Body ក្នុង Interface។",
+      solutionCode: `interface Greeter {
+    default void greet(String name) {
+        System.out.println("Hello, " + name);
+    }
+}
+
+class EnglishGreeter implements Greeter {
+}
+
+public class GreeterDemo {
+    public static void main(String[] args) {
+        EnglishGreeter g = new EnglishGreeter();
+        g.greet("Dara");
+        g.greet("guest");
     }
 }`
     }

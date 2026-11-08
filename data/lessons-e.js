@@ -549,6 +549,54 @@ public class PassByValue {
         printPrimes(20);
     }
 }`
+    },
+    {
+      level: 2,
+      title: "Method គណនាមធ្យមភាគ",
+      desc: "សរសេរ <code>static double average(int[] nums)</code> ដែលគណនាមធ្យមភាគ ហើយហៅពី main។",
+      requirements: ["Method ទទួល int[]", "ត្រឡប់ double", "ហៅជាមួយ Array"],
+      inputSample: "{80, 90, 70}",
+      outputSample: "Average: 80.0",
+      hint: "បូកតម្លៃទាំងអស់ រួចចែកនឹង <code>nums.length</code> ជា double។",
+      solutionCode: `public class AverageMethod {
+    static double average(int[] nums) {
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+        }
+        return (double) sum / nums.length;
+    }
+
+    public static void main(String[] args) {
+        int[] scores = {80, 90, 70};
+        System.out.println("Average: " + average(scores));
+    }
+}`,
+      solution: "Cast ជា double មុនចែក ដើម្បីទទួលបានលទ្ធផលទសភាគត្រឹមត្រូវ។ Method ជួយបំបែក Logic ឱ្យអានងាយ។"
+    },
+    {
+      level: 3,
+      title: "Method បូកលេខខ្ទង់",
+      desc: "សរសេរ <code>static int sumOfDigits(int n)</code> ដែលបូកលេខខ្ទង់ទាំងអស់នៃចំនួនមួយ។",
+      requirements: ["Method ត្រឡប់ int", "ប្រើ % និង /", "សាកល្បង 1234"],
+      inputSample: "1234",
+      outputSample: "Sum of digits: 10",
+      hint: "ក្នុង Loop៖ <code>sum += n % 10; n /= 10;</code> រហូត n ក្លាយជា 0។",
+      solutionCode: `public class DigitSumMethod {
+    static int sumOfDigits(int n) {
+        int sum = 0;
+        while (n > 0) {
+            sum += n % 10;
+            n /= 10;
+        }
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Sum of digits: " + sumOfDigits(1234));
+    }
+}`,
+      solution: "Modulo 10 យកលេខខ្ទង់ចុងក្រោយ ហើយចែក 10 លុបវាចេញ។ Loop បន្តរហូតអស់ខ្ទង់។"
     }
   ],
   quiz: [
@@ -931,6 +979,99 @@ public static void test(double a, int b) { }
     public static void main(String[] args) {
         System.out.println("Array version: " + sum(new int[]{1, 2, 3}));
         System.out.println("Varargs version: " + sum(1, 2, 3));
+    }
+}`
+    },
+    {
+      level: 1,
+      title: "Overload multiply",
+      desc: "បង្កើត Method <code>multiply</code> ពីរកំណែ៖ គុណចំនួនពីរ និងគុណចំនួនបី។",
+      requirements: ["multiply(int, int)", "multiply(int, int, int)", "បង្ហាញលទ្ធផល"],
+      outputSample: "6\n24",
+      hint: "Parameter ខុសគ្នាបរិមាណ។",
+      solutionCode: `public class MultiplyOverload {
+    static int multiply(int a, int b) {
+        return a * b;
+    }
+
+    static int multiply(int a, int b, int c) {
+        return a * b * c;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(multiply(2, 3));
+        System.out.println(multiply(2, 3, 4));
+    }
+}`
+    },
+    {
+      level: 2,
+      title: "Overload print",
+      desc: "បង្កើត Method <code>print</code> សម្រាប់ int, String និង double ដើម្បីបង្ហាញតម្លៃតាម Type។",
+      requirements: ["print(int)", "print(String)", "print(double)"],
+      outputSample: "int: 5\nString: Java\ndouble: 2.5",
+      hint: "Parameter Type ខុសគ្នាធ្វើឱ្យ Overload បាន។",
+      solutionCode: `public class PrintOverload {
+    static void print(int value) {
+        System.out.println("int: " + value);
+    }
+
+    static void print(String value) {
+        System.out.println("String: " + value);
+    }
+
+    static void print(double value) {
+        System.out.println("double: " + value);
+    }
+
+    public static void main(String[] args) {
+        print(5);
+        print("Java");
+        print(2.5);
+    }
+}`
+    },
+    {
+      level: 3,
+      title: "Overload area",
+      desc: "បង្កើត Method <code>area</code> សម្រាប់ការេ (int) និងរង្វង់ (double) ដើម្បីបង្ហាញថា Type ខុសគ្នាអាច Overload បាន។",
+      requirements: ["area(int side)", "area(double radius)", "បង្ហាញលទ្ធផលពីរ"],
+      outputSample: "Square: 9\nCircle: 28.274333882308138",
+      hint: "ចំណាំ៖ Overload ដោយឈ្មោះ Parameter មិនបានទេ—ត្រូវខុស Type ឬចំនួន។",
+      solutionCode: `public class AreaOverload {
+    static int area(int side) {
+        return side * side;
+    }
+
+    static double area(double radius) {
+        return Math.PI * radius * radius;
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Square: " + area(3));
+        System.out.println("Circle: " + area(3.0));
+    }
+}`
+    },
+    {
+      level: 3,
+      title: "Overload តាមលំដាប់ Parameter",
+      desc: "បង្កើត Method <code>display(String, int)</code> និង <code>display(int, String)</code> ដើម្បីបង្ហាញព័ត៌មានតាមលំដាប់ផ្សេងគ្នា។",
+      requirements: ["display(String, int)", "display(int, String)", "ហៅទាំងពីរ"],
+      outputSample: "Name: Dara, Age: 20\nAge: 20, Name: Dara",
+      hint: "លំដាប់ Type ខុសគ្នាក៏រាប់ជា Overload។",
+      solutionCode: `public class DisplayOverload {
+    static void display(String name, int age) {
+        System.out.println("Name: " + name + ", Age: " + age);
+    }
+
+    static void display(int age, String name) {
+        System.out.println("Age: " + age + ", Name: " + name);
+    }
+
+    public static void main(String[] args) {
+        display("Dara", 20);
+        display(20, "Dara");
     }
 }`
     }
@@ -1392,6 +1533,27 @@ window.JAVA_LESSONS.push({
 
     public static void main(String[] args) {
         System.out.println(countDigits(12345));
+    }
+}`
+    },
+    {
+      level: 2,
+      title: "GCD ដោយ Recursion",
+      desc: "គណនា GCD (Greatest Common Divisor) នៃចំនួនពីរដោយប្រើ Euclid's Algorithm។",
+      requirements: ["Base Case b == 0", "Return gcd(b, a % b)"],
+      inputSample: "gcd(48, 18)",
+      outputSample: "6",
+      hint: "នៅពេល <code>b == 0</code> លទ្ធផលគឺ <code>a</code>។",
+      solutionCode: `public class GcdRecursive {
+    public static int gcd(int a, int b) {
+        if (b == 0) {
+            return a;
+        }
+        return gcd(b, a % b);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(gcd(48, 18));
     }
 }`
     }

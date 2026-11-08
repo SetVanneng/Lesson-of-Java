@@ -462,6 +462,43 @@ public class DecimalIssue {
     }
 }`,
       solution: "double ប្រើ Binary Floating Point ដែលមិនអាចតំណាង 0.1 និង 0.2 បានជាក់លាក់។ BigDecimal ប្រើគោលដប់ ដូច្នេះលទ្ធផលបាន 0.3 យ៉ាងត្រឹមត្រូវ។"
+    },
+    {
+      level: 2,
+      title: "បម្លែងសីតុណ្ហភាព",
+      desc: "បម្លែងសីតុណ្ហភាពពី Celsius ទៅ Fahrenheit ដោយប្រើ double និងរូបមន្ត <code>F = C * 9 / 5 + 32</code>។",
+      requirements: ["ប្រើ double", "គណនាតាមរូបមន្ត", "បង្ហាញលទ្ធផលមួយខ្ទង់ទសភាគ"],
+      inputSample: "Celsius = 37.5",
+      outputSample: "Fahrenheit: 99.5",
+      hint: "ប្រើ <code>System.out.printf(\"Fahrenheit: %.1f%n\", f)</code> ដើម្បីបង្ហាញមួយខ្ទង់។",
+      solutionCode: `public class TemperatureConverter {
+    public static void main(String[] args) {
+        double celsius = 37.5;
+        double fahrenheit = celsius * 9 / 5 + 32;
+
+        System.out.printf("Fahrenheit: %.1f%n", fahrenheit);
+    }
+}`,
+      solution: "គុណនឹង 9 ចែកនឹង 5 បន្ទាប់មកបូក 32 ដោយរក្សាទិន្នន័យជា double ដើម្បីកុំឱ្យបាត់ទសភាគ។"
+    },
+    {
+      level: 3,
+      title: "គណនា BMI",
+      desc: "គណនា BMI ពីទម្ងន់ (kg) និងកម្ពស់ (m) ដោយប្រើ double រួចបង្ហាញជាមួយទសភាគពីរខ្ទង់។",
+      requirements: ["ប្រើ double", "គណនា weight / (height * height)", "បង្ហាញដោយ %.2f"],
+      inputSample: "weight=65, height=1.7",
+      outputSample: "BMI: 22.49",
+      hint: "BMI = ទម្ងន់ ចែក កម្ពស់ការេ។ ប្រើ <code>%.2f</code> ក្នុង printf។",
+      solutionCode: `public class BmiCalculator {
+    public static void main(String[] args) {
+        double weight = 65;
+        double height = 1.7;
+        double bmi = weight / (height * height);
+
+        System.out.printf("BMI: %.2f%n", bmi);
+    }
+}`,
+      solution: "ការប្រើ double ធានាថាការចែកមិនបាត់ទសភាគ។ printf ជាមួយ %.2f បង្ហាញត្រឹមពីរខ្ទង់។"
     }
   ],
   quiz: [
@@ -947,6 +984,49 @@ System.out.println("Result: " + grade);</code></pre>`
         System.out.println("Tax: " + tax);
     }
 }`
+    },
+    {
+      level: 2,
+      title: "គណនាប្រាក់បញ្ចុះតម្លៃ",
+      desc: "ទទួលតម្លៃទំនិញ និងភាគរយបញ្ចុះតម្លៃ រួចគណនាតម្លៃត្រូវបង់ដោយប្រើ Operator និង Compound Assignment។",
+      requirements: ["ប្រើ <code>*</code> និង <code>-=</code>", "គណនាប្រាក់បញ្ចុះ", "បង្ហាញតម្លៃចុងក្រោយ"],
+      inputSample: "price=200, discount=15",
+      outputSample: "Discount: 30.0\nPay: 170.0",
+      hint: "ប្រាក់បញ្ចុះ = price * discount / 100 រួច <code>price -= discountAmount</code>។",
+      solutionCode: `public class DiscountCalculator {
+    public static void main(String[] args) {
+        double price = 200;
+        double discountPercent = 15;
+        double discount = price * discountPercent / 100;
+
+        price -= discount;
+        System.out.println("Discount: " + discount);
+        System.out.println("Pay: " + price);
+    }
+}`,
+      solution: "ប្រើ <code>*</code> គណនាភាគរយ និង <code>-=</code> ដកប្រាក់បញ្ចុះចេញពីតម្លៃដើម។"
+    },
+    {
+      level: 3,
+      title: "Bitwise Permission Flags",
+      desc: "ប្រើ Bitwise Operators <code>|</code> និង <code>&amp;</code> ដើម្បីបើក និងពិនិត្យសិទ្ធិ (Read=1, Write=2, Execute=4)។",
+      requirements: ["ប្រើ <code>|</code> បើកសិទ្ធិ", "ប្រើ <code>&amp;</code> ពិនិត្យសិទ្ធិ", "បង្ហាញលទ្ធផល true/false"],
+      outputSample: "Permissions: 7\nCan read: true\nCan execute: true",
+      hint: "សិទ្ធិរួម = READ | WRITE | EXECUTE។ ពិនិត្យដោយ <code>(perm &amp; READ) != 0</code>។",
+      solutionCode: `public class PermissionFlags {
+    static final int READ = 1;
+    static final int WRITE = 2;
+    static final int EXECUTE = 4;
+
+    public static void main(String[] args) {
+        int permissions = READ | WRITE | EXECUTE;
+
+        System.out.println("Permissions: " + permissions);
+        System.out.println("Can read: " + ((permissions & READ) != 0));
+        System.out.println("Can execute: " + ((permissions & EXECUTE) != 0));
+    }
+}`,
+      solution: "Bitwise OR បញ្ចូល Flag ចូលគ្នា ហើយ Bitwise AND ជាមួយ Flag បង្ហាញថាសិទ្ធិនោះមាន ឬអត់។"
     }
   ],
   quiz: [
@@ -1429,6 +1509,84 @@ public class RetryInput {
         sc.close();
     }
 }`
+    },
+    {
+      level: 3,
+      title: "Menu Calculator",
+      desc: "បង្កើតម៉ឺនុយ Calculator ដោយ Scanner, switch និង do-while ដែលអនុញ្ញាតឱ្យគណនាម្តងហើយម្តងទៀតរហូតជ្រើស 0។",
+      requirements: ["បង្ហាញម៉ឺនុយ", "ប្រើ switch", "ប្រើ do-while", "ចេញនៅពេលជ្រើស 0"],
+      inputSample: "1\n10 5\n0",
+      outputSample: "1) Add 2) Subtract 0) Exit\nResult: 15.0\n1) Add 2) Subtract 0) Exit",
+      hint: "អាន choice ក្នុង Loop ហើយប្រើ <code>while (choice != 0)</code>។",
+      solutionCode: `import java.util.Scanner;
+
+public class MenuCalculator {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int choice;
+        do {
+            System.out.println("1) Add 2) Subtract 0) Exit");
+            choice = sc.nextInt();
+            if (choice == 1 || choice == 2) {
+                double a = sc.nextDouble();
+                double b = sc.nextDouble();
+                if (choice == 1) {
+                    System.out.println("Result: " + (a + b));
+                } else {
+                    System.out.println("Result: " + (a - b));
+                }
+            }
+        } while (choice != 0);
+        sc.close();
+    }
+}`
+    },
+    {
+      level: 2,
+      title: "គណនាផ្ទៃក្រឡាចតុកោណ",
+      desc: "អានទទឹង និងកម្ពស់ពី Console រួចគណនាផ្ទៃក្រឡា និងបរិមាត្រ។",
+      requirements: ["ប្រើ Scanner", "អាន double ពីរតម្លៃ", "បង្ហាញ Area និង Perimeter"],
+      inputSample: "4\n5",
+      outputSample: "Area: 20.0\nPerimeter: 18.0",
+      hint: "អានដោយ <code>sc.nextDouble()</code> ពីរដង។",
+      solutionCode: `import java.util.Scanner;
+
+public class RectangleInput {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        double width = sc.nextDouble();
+        double height = sc.nextDouble();
+
+        System.out.println("Area: " + (width * height));
+        System.out.println("Perimeter: " + (2 * (width + height)));
+        sc.close();
+    }
+}`,
+      solution: "Scanner អាន double បន្តបន្ទាប់គ្នាតាមលំដាប់ Input។ Area = ទទឹង × កម្ពស់។"
+    },
+    {
+      level: 3,
+      title: "បំលែងនាទីទៅម៉ោង",
+      desc: "អានចំនួននាទីពី Console រួចបំលែងជាម៉ោង និងនាទីនៅសល់។",
+      requirements: ["ប្រើ Scanner", "ប្រើ <code>/</code> និង <code>%</code>", "បង្ហាញទម្រង់ 2h 5m"],
+      inputSample: "125",
+      outputSample: "2h 5m",
+      hint: "ម៉ោង = minutes / 60; នាទីសល់ = minutes % 60។",
+      solutionCode: `import java.util.Scanner;
+
+public class MinutesConverter {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int minutes = sc.nextInt();
+
+        int hours = minutes / 60;
+        int rest = minutes % 60;
+
+        System.out.println(hours + "h " + rest + "m");
+        sc.close();
+    }
+}`,
+      solution: "ការចែកគត់ជាមួយ int ផ្តល់ចំនួនម៉ោង ហើយ Modulo ផ្តល់នាទីនៅសល់។"
     }
   ],
   quiz: [

@@ -416,6 +416,98 @@ public class ReadFileSafe {
         }
     }
 }`
+    },
+    {
+      level: 1,
+      title: "Catch ArithmeticException",
+      desc: "សរសេរកម្មវិធីចែកលេខដោយ 0 ហើយចាប់ Exception ដើម្បីបង្ហាញសារជំនួសការ Crash។",
+      requirements: ["ប្រើ try-catch", "ចាប់ ArithmeticException", "បង្ហាញសារច្បាស់លាស់"],
+      outputSample: "Cannot divide by zero",
+      hint: "ប្រើ <code>catch (ArithmeticException e)</code>។",
+      solutionCode: `public class DivideDemo {
+    public static void main(String[] args) {
+        try {
+            int result = 10 / 0;
+            System.out.println(result);
+        } catch (ArithmeticException e) {
+            System.out.println("Cannot divide by zero");
+        }
+    }
+}`
+    },
+    {
+      level: 2,
+      title: "finally Block",
+      desc: "បង្ហាញថា <code>finally</code> តែងតែដំណើរការ ទោះមាន Exception ឬអត់។",
+      requirements: ["ប្រើ try-catch-finally", "ចាប់ ArrayIndexOutOfBoundsException", "បង្ហាញសារក្នុង finally"],
+      outputSample: "Index out of range\nDone",
+      hint: "Block <code>finally</code> រត់ក្រោយ try/catch ជានិច្ច។",
+      solutionCode: `public class FinallyDemo {
+    public static void main(String[] args) {
+        try {
+            int[] nums = {1, 2, 3};
+            System.out.println(nums[5]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Index out of range");
+        } finally {
+            System.out.println("Done");
+        }
+    }
+}`
+    },
+    {
+      level: 2,
+      title: "ចែកលេខដោយសុវត្ថិភាព",
+      desc: "សរសេរ Program ចែកលេខពីរ ហើយចាប់ <code>ArithmeticException</code> ពេលចែកនឹង 0។",
+      requirements: ["ប្រើ try-catch", "ចាប់ ArithmeticException", "បង្ហាញសារសុវត្ថិភាព"],
+      inputSample: "10 / 0",
+      outputSample: "Cannot divide by zero",
+      hint: "ដាក់ការចែកក្នុង try រួច catch <code>ArithmeticException e</code>។",
+      solutionCode: `public class SafeDivide {
+    public static void main(String[] args) {
+        int a = 10;
+        int b = 0;
+
+        try {
+            System.out.println("Result: " + (a / b));
+        } catch (ArithmeticException e) {
+            System.out.println("Cannot divide by zero");
+        }
+    }
+}`,
+      solution: "ការចែកនឹង 0 បង្ក ArithmeticException។ catch ការពារ Program មិនឱ្យ Crash។"
+    },
+    {
+      level: 3,
+      title: "Custom Exception",
+      desc: "បង្កើត <code>InvalidAgeException</code> ហើយ throw ពេលអាយុតិចជាង 0 ឬធំជាង 120។",
+      requirements: ["បង្កើត Custom Exception", "ប្រើ throw", "ចាប់ដោយ catch"],
+      inputSample: "age=150",
+      outputSample: "Invalid age: 150",
+      hint: "Class ត្រូវ <code>extends Exception</code> និងមាន Constructor ទទួល message។",
+      solutionCode: `class InvalidAgeException extends Exception {
+    InvalidAgeException(String message) {
+        super(message);
+    }
+}
+
+public class AgeValidator {
+    static void validate(int age) throws InvalidAgeException {
+        if (age < 0 || age > 120) {
+            throw new InvalidAgeException("Invalid age: " + age);
+        }
+        System.out.println("Valid age: " + age);
+    }
+
+    public static void main(String[] args) {
+        try {
+            validate(150);
+        } catch (InvalidAgeException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}`,
+      solution: "Custom Exception ស្នងពី Exception។ Method ប្រកាស throws ហើយ throw ពេលទិន្នន័យមិនត្រឹមត្រូវ។ catch បង្ហាញសារ។"
     }
   ],
   quiz: [
@@ -877,6 +969,44 @@ public class SortDescending {
         System.out.println(numbers);
     }
 }`
+    },
+    {
+      level: 1,
+      title: "ArrayList Basics",
+      desc: "បង្កើត <code>ArrayList</code> បន្ថែមឈ្មោះបី រួចបង្ហាញទាំងអស់។",
+      requirements: ["import java.util.ArrayList", "ប្រើ add", "បង្ហាញ List"],
+      outputSample: "[Dara, Sok, Mona]",
+      hint: "ប្រើ <code>ArrayList&lt;String&gt; names = new ArrayList&lt;&gt;();</code>។",
+      solutionCode: `import java.util.ArrayList;
+
+public class ListDemo {
+    public static void main(String[] args) {
+        ArrayList<String> names = new ArrayList<>();
+        names.add("Dara");
+        names.add("Sok");
+        names.add("Mona");
+        System.out.println(names);
+    }
+}`
+    },
+    {
+      level: 2,
+      title: "HashMap ផ្ទុកពិន្ទុ",
+      desc: "ប្រើ <code>HashMap</code> ផ្ទុកពិន្ទុសិស្ស រួចអានពិន្ទុម្នាក់ និងបង្ហាញចំនួនសិស្ស។",
+      requirements: ["import java.util.HashMap", "ប្រើ put", "ប្រើ get និង size"],
+      outputSample: "Dara: 90\nSize: 2",
+      hint: "Key ជា String និង Value ជា Integer។",
+      solutionCode: `import java.util.HashMap;
+
+public class MapDemo {
+    public static void main(String[] args) {
+        HashMap<String, Integer> scores = new HashMap<>();
+        scores.put("Dara", 90);
+        scores.put("Sok", 85);
+        System.out.println("Dara: " + scores.get("Dara"));
+        System.out.println("Size: " + scores.size());
+    }
+}`
     }
   ],
   quiz: [
@@ -1301,6 +1431,51 @@ public class WordCountFile {
                 }
             }
             System.out.println("Words: " + count);
+        } catch (IOException e) {
+            System.out.println("Cannot read file");
+        }
+    }
+}`
+    },
+    {
+      level: 1,
+      title: "សរសេរឯកសារ",
+      desc: "ប្រើ <code>FileWriter</code> សរសេរអត្ថបទទៅឯកសារ output.txt។",
+      requirements: ["import java.io.FileWriter", "ប្រើ try-with-resources", "ចាប់ IOException"],
+      outputSample: "File written",
+      hint: "ប្រើ <code>try (FileWriter writer = new FileWriter(\"output.txt\"))</code>។",
+      solutionCode: `import java.io.FileWriter;
+import java.io.IOException;
+
+public class WriteDemo {
+    public static void main(String[] args) {
+        try (FileWriter writer = new FileWriter("output.txt")) {
+            writer.write("Hello File");
+            System.out.println("File written");
+        } catch (IOException e) {
+            System.out.println("Cannot write file");
+        }
+    }
+}`
+    },
+    {
+      level: 2,
+      title: "អានឯកសារ",
+      desc: "ប្រើ <code>BufferedReader</code> អានឯកសារ output.txt បន្ទាត់ម្តងមួយ។",
+      requirements: ["import java.io.BufferedReader", "ប្រើ readLine", "ចាប់ IOException"],
+      outputSample: "Hello File",
+      hint: "Loop រហូត <code>readLine()</code> ត្រឡប់ <code>null</code>។",
+      solutionCode: `import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class ReadDemo {
+    public static void main(String[] args) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("output.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
         } catch (IOException e) {
             System.out.println("Cannot read file");
         }
@@ -1848,6 +2023,147 @@ public class CapstoneApp {
         }
 
         scanner.close();
+    }
+}`
+    },
+    {
+      level: 1,
+      title: "Number Checker",
+      desc: "បង្កើតកម្មវិធីអានចំនួនមួយ រួចប្រាប់ថាវាជាបូក/ដក និងគូ/សេស។",
+      requirements: ["ប្រើ Scanner", "ប្រើ if-else", "គ្របដណ្តប់សូន្យ"],
+      inputSample: "-4",
+      outputSample: "Negative Even",
+      hint: "ប្រើ <code>n % 2 == 0</code> ដើម្បីពិនិត្យគូ។",
+      solutionCode: `import java.util.Scanner;
+
+public class NumberChecker {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+
+        if (n == 0) {
+            System.out.println("Zero");
+        } else if (n > 0) {
+            System.out.println(n % 2 == 0 ? "Positive Even" : "Positive Odd");
+        } else {
+            System.out.println(n % 2 == 0 ? "Negative Even" : "Negative Odd");
+        }
+
+        sc.close();
+    }
+}`
+    },
+    {
+      level: 2,
+      title: "Multiplication Table",
+      desc: "បង្កើតកម្មវិធីបង្ហាញមេគុណ 1 ដល់ 10 នៃចំនួនដែលអ្នកប្រើបញ្ចូល។",
+      requirements: ["ប្រើ Scanner", "ប្រើ for loop", "បង្ហាញ 10 បន្ទាត់"],
+      inputSample: "3",
+      outputSample: "3 x 1 = 3\n3 x 2 = 6\n3 x 3 = 9",
+      hint: "Loop <code>i</code> ពី 1 ដល់ 10 រួចបង្ហាញ <code>n * i</code>។",
+      solutionCode: `import java.util.Scanner;
+
+public class MultiplicationTable {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+
+        for (int i = 1; i <= 10; i++) {
+            System.out.println(n + " x " + i + " = " + (n * i));
+        }
+
+        sc.close();
+    }
+}`
+    },
+    {
+      level: 3,
+      title: "Vowel Counter",
+      desc: "បង្កើតកម្មវិធីអានអត្ថបទ រួចរាប់ចំនួនស្រៈអង់គ្លេស (a, e, i, o, u)។",
+      requirements: ["ប្រើ nextLine", "ប្រើ charAt និង loop", "រាប់មិនប្រកាន់អក្សរធំ-តូច"],
+      inputSample: "Hello Java",
+      outputSample: "Vowels: 4",
+      hint: "បំប្លែងជា lowercase មុនរាប់។",
+      solutionCode: `import java.util.Scanner;
+
+public class VowelCounter {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String text = sc.nextLine().toLowerCase();
+        int count = 0;
+
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') {
+                count++;
+            }
+        }
+
+        System.out.println("Vowels: " + count);
+        sc.close();
+    }
+}`
+    },
+    {
+      level: 3,
+      title: "Simple ATM",
+      desc: "បង្កើត ATM Console តូចមួយដែលមាន Class Account, Menu, Deposit, Withdraw និង Balance។",
+      requirements: ["Class Account ជាមួយ private balance", "Menu Loop", "ពិនិត្យទឹកប្រាក់មិនគ្រប់"],
+      inputSample: "1 50\n3\n0",
+      outputSample: "Balance: 150.0",
+      hint: "ប្រើ do-while និង switch; withdraw ត្រឡប់ boolean។",
+      solutionCode: `import java.util.Scanner;
+
+class Account {
+    private double balance;
+
+    void deposit(double amount) {
+        if (amount > 0) balance += amount;
+    }
+
+    boolean withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+
+    double getBalance() {
+        return balance;
+    }
+}
+
+public class AtmApp {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Account acc = new Account();
+        acc.deposit(100);
+        int choice;
+
+        do {
+            System.out.println("1) Deposit 2) Withdraw 3) Balance 0) Exit");
+            choice = sc.nextInt();
+            switch (choice) {
+                case 1:
+                    acc.deposit(sc.nextDouble());
+                    break;
+                case 2:
+                    if (!acc.withdraw(sc.nextDouble())) {
+                        System.out.println("Insufficient funds");
+                    }
+                    break;
+                case 3:
+                    System.out.println("Balance: " + acc.getBalance());
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Invalid choice");
+            }
+        } while (choice != 0);
+
+        sc.close();
     }
 }`
     }

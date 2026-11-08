@@ -178,6 +178,40 @@ public class StudentDemo {
         "<code>grade()</code> ប្រើ score ដើម្បីគណនានិទស្សន្ត។",
         "Method អាចចូលប្រើ Field របស់ Object បានដោយផ្ទាល់។"
       ]
+    },
+    {
+      title: "Class Rectangle",
+      desc: "ឧទាហរណ៍បន្ថែមដែលរួមបញ្ចូលទិន្នន័យ (width, height) និងអាកប្បកិរិយា (area) ក្នុង Class តែមួយ។",
+      file: "RectangleDemo.java",
+      code: `class Rectangle {
+    double width;
+    double height;
+
+    double area() {
+        return width * height;
+    }
+
+    double perimeter() {
+        return 2 * (width + height);
+    }
+}
+
+public class RectangleDemo {
+    public static void main(String[] args) {
+        Rectangle r = new Rectangle();
+        r.width = 4;
+        r.height = 5;
+
+        System.out.println("Area: " + r.area());
+        System.out.println("Perimeter: " + r.perimeter());
+    }
+}`,
+      output: "Area: 20.0\nPerimeter: 18.0",
+      lines: [
+        "Rectangle រួមបញ្ចូលទិន្នន័យ និង Method គណនាដែលពាក់ព័ន្ធ។",
+        "<code>area()</code> និង <code>perimeter()</code> ប្រើ Field របស់ Object ខ្លួនឯង។",
+        "Object ថ្មីនីមួយៗមាន width និង height ដាច់ដោយឡែក។"
+      ]
     }
   ],
   mistakes: [
@@ -299,6 +333,178 @@ public class BankDemo {
         System.out.println("Balance: " + acc.balance);
     }
 }`
+    },
+    {
+      level: 1,
+      title: "Class Laptop",
+      desc: "បង្កើត Class <code>Laptop</code> មាន brand និង price ព្រមទាំង Method <code>show()</code> បង្ហាញព័ត៌មាន។",
+      requirements: ["Field brand និង price", "Method show", "បង្កើត Object មួយ"],
+      outputSample: "Brand: Dell\nPrice: 750.0",
+      hint: "ប្រើ <code>class Laptop { String brand; double price; void show() {...} }</code>។",
+      solutionCode: `class Laptop {
+    String brand;
+    double price;
+
+    void show() {
+        System.out.println("Brand: " + brand);
+        System.out.println("Price: " + price);
+    }
+}
+
+public class LaptopDemo {
+    public static void main(String[] args) {
+        Laptop l = new Laptop();
+        l.brand = "Dell";
+        l.price = 750.0;
+        l.show();
+    }
+}`
+    },
+    {
+      level: 2,
+      title: "Class Temperature",
+      desc: "បង្កើត Class <code>Temperature</code> មាន Field celsius និង Method <code>toFahrenheit()</code>។",
+      requirements: ["Field celsius", "Method toFahrenheit", "បង្ហាញលទ្ធផល"],
+      inputSample: "celsius=25",
+      outputSample: "Fahrenheit: 77.0",
+      hint: "រូបមន្ត <code>celsius * 9 / 5 + 32</code>។",
+      solutionCode: `class Temperature {
+    double celsius;
+
+    double toFahrenheit() {
+        return celsius * 9 / 5 + 32;
+    }
+}
+
+public class TemperatureDemo {
+    public static void main(String[] args) {
+        Temperature t = new Temperature();
+        t.celsius = 25;
+        System.out.println("Fahrenheit: " + t.toFahrenheit());
+    }
+}`
+    },
+    {
+      level: 3,
+      title: "Class ShoppingCart",
+      desc: "បង្កើត Class <code>ShoppingCart</code> ដែលបូកបញ្ចូលតម្លៃទំនិញ និងរាប់ចំនួនទំនិញ។",
+      requirements: ["Field itemCount និង total", "Method addItem(double price)", "Method show"],
+      inputSample: "add 10, add 15.5",
+      outputSample: "Items: 2\nTotal: 25.5",
+      hint: "បង្កើន <code>itemCount++</code> និង <code>total += price</code> ក្នុង addItem។",
+      solutionCode: `class ShoppingCart {
+    int itemCount;
+    double total;
+
+    void addItem(double price) {
+        itemCount++;
+        total += price;
+    }
+
+    void show() {
+        System.out.println("Items: " + itemCount);
+        System.out.println("Total: " + total);
+    }
+}
+
+public class CartDemo {
+    public static void main(String[] args) {
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItem(10);
+        cart.addItem(15.5);
+        cart.show();
+    }
+}`
+    },
+    {
+      level: 3,
+      title: "Class Employee",
+      desc: "បង្កើត Class <code>Employee</code> មាន name និង salary ព្រមទាំង Method <code>raise(percent)</code> បង្កើនប្រាក់ខែ។",
+      requirements: ["Field name និង salary", "Method raise(double percent)", "Method show"],
+      inputSample: "salary=500, raise 10",
+      outputSample: "Name: Sokha\nNew salary: 550.0",
+      hint: "ប្រើ <code>salary += salary * percent / 100;</code>។",
+      solutionCode: `class Employee {
+    String name;
+    double salary;
+
+    void raise(double percent) {
+        salary += salary * percent / 100;
+    }
+
+    void show() {
+        System.out.println("Name: " + name);
+        System.out.println("New salary: " + salary);
+    }
+}
+
+public class EmployeeDemo {
+    public static void main(String[] args) {
+        Employee e = new Employee();
+        e.name = "Sokha";
+        e.salary = 500;
+        e.raise(10);
+        e.show();
+    }
+}`
+    },
+    {
+      level: 2,
+      title: "Class Laptop",
+      desc: "បង្កើត Class <code>Laptop</code> មាន Field brand, ram និង Method <code>info()</code> ដែលបង្ហាញព័ត៌មាន។",
+      requirements: ["Field ពីរ", "Method info()", "បង្កើត Object និងហៅ Method"],
+      outputSample: "Asus, 16GB RAM",
+      hint: "បង្កើត Object ដោយ <code>new Laptop()</code> រួចកំណត់ Field មុនហៅ info()។",
+      solutionCode: `class Laptop {
+    String brand;
+    int ram;
+
+    void info() {
+        System.out.println(brand + ", " + ram + "GB RAM");
+    }
+}
+
+public class LaptopDemo {
+    public static void main(String[] args) {
+        Laptop laptop = new Laptop();
+        laptop.brand = "Asus";
+        laptop.ram = 16;
+        laptop.info();
+    }
+}`,
+      solution: "Class កំណត់ Field និង Method។ Object ដែលបង្កើតដោយ new មានទិន្នន័យផ្ទាល់ខ្លួន។"
+    },
+    {
+      level: 3,
+      title: "Array នៃ Object",
+      desc: "បង្កើត Array នៃ Object <code>Student</code> រួចគណនាមធ្យមភាគពិន្ទុរបស់សិស្សទាំងអស់។",
+      requirements: ["Class Student មាន name, score", "បង្កើត Student[]", "គណនា Average"],
+      outputSample: "Dara: 80\nSok: 90\nAverage: 85.0",
+      hint: "ប្រើ For-each លើ <code>Student[]</code> ដើម្បីបូកពិន្ទុ រួចចែកនឹង <code>students.length</code>។",
+      solutionCode: `class Student {
+    String name;
+    int score;
+}
+
+public class StudentArrayDemo {
+    public static void main(String[] args) {
+        Student[] students = new Student[2];
+        students[0] = new Student();
+        students[0].name = "Dara";
+        students[0].score = 80;
+        students[1] = new Student();
+        students[1].name = "Sok";
+        students[1].score = 90;
+
+        int total = 0;
+        for (Student s : students) {
+            System.out.println(s.name + ": " + s.score);
+            total += s.score;
+        }
+        System.out.println("Average: " + (double) total / students.length);
+    }
+}`,
+      solution: "Array ផ្ទុក Reference ទៅ Object។ For-each ចូលប្រើ Field របស់ Object នីមួយៗ ហើយគណនាមធ្យមភាគ។"
     }
   ],
   quiz: [
@@ -668,6 +874,134 @@ public class WalletDemo {
         w.add(50);
         w.spend(20);
         w.show();
+    }
+}`
+    },
+    {
+      level: 1,
+      title: "Class Dog",
+      desc: "បង្កើត Class <code>Dog</code> មាន name និង Method <code>bark()</code> ដែលបង្ហាញសំឡេង។",
+      requirements: ["Field name", "Method bark", "បង្កើត Object"],
+      outputSample: "Dara says Woof!",
+      hint: "ប្រើ <code>System.out.println(name + \" says Woof!\");</code>។",
+      solutionCode: `class Dog {
+    String name;
+
+    void bark() {
+        System.out.println(name + " says Woof!");
+    }
+}
+
+public class DogDemo {
+    public static void main(String[] args) {
+        Dog d = new Dog();
+        d.name = "Dara";
+        d.bark();
+    }
+}`
+    },
+    {
+      level: 2,
+      title: "Class Counter",
+      desc: "បង្កើត Class <code>Counter</code> ដែលអាចបង្កើន និងកំណត់ឡើងវិញតម្លៃរាប់។",
+      requirements: ["Field count", "Method increment", "Method reset", "Method show"],
+      outputSample: "Count: 2\nCount: 0",
+      hint: "ប្រើ <code>count++</code> និង <code>count = 0</code>។",
+      solutionCode: `class Counter {
+    int count;
+
+    void increment() {
+        count++;
+    }
+
+    void reset() {
+        count = 0;
+    }
+
+    void show() {
+        System.out.println("Count: " + count);
+    }
+}
+
+public class CounterDemo {
+    public static void main(String[] args) {
+        Counter c = new Counter();
+        c.increment();
+        c.increment();
+        c.show();
+        c.reset();
+        c.show();
+    }
+}`
+    },
+    {
+      level: 3,
+      title: "Class Inventory",
+      desc: "បង្កើត Class <code>Inventory</code> សម្រាប់បន្ថែម និងដកចំនួនទំនិញ ដោយមិនឱ្យចំនួនតិចជាងសូន្យ។",
+      requirements: ["Field quantity", "Method add(int n)", "Method remove(int n)", "Method show"],
+      inputSample: "add 10, remove 3, remove 20",
+      outputSample: "Quantity: 7",
+      hint: "ក្នុង remove ពិនិត្យ <code>if (n &lt;= quantity)</code> មុនដក។",
+      solutionCode: `class Inventory {
+    int quantity;
+
+    void add(int n) {
+        if (n > 0) quantity += n;
+    }
+
+    void remove(int n) {
+        if (n > 0 && n <= quantity) quantity -= n;
+    }
+
+    void show() {
+        System.out.println("Quantity: " + quantity);
+    }
+}
+
+public class InventoryDemo {
+    public static void main(String[] args) {
+        Inventory inv = new Inventory();
+        inv.add(10);
+        inv.remove(3);
+        inv.remove(20);
+        inv.show();
+    }
+}`
+    },
+    {
+      level: 3,
+      title: "Class Course",
+      desc: "បង្កើត Class <code>Course</code> ដែលគណនាពិន្ទុមធ្យម និងរាប់ចំនួនសិស្សជាប់។",
+      requirements: ["Field scores (array)", "Method average()", "Method passed(passMark)"],
+      inputSample: "scores = 70, 90, 80; passMark = 80",
+      outputSample: "Average: 80.0\nPassed: 2",
+      hint: "ប្រើ for-each loop ដើម្បីបូកពិន្ទុ និងរាប់អ្នកដែល <code>s &gt;= passMark</code>។",
+      solutionCode: `class Course {
+    String title;
+    double[] scores;
+
+    double average() {
+        double sum = 0;
+        for (double s : scores) sum += s;
+        return scores.length == 0 ? 0 : sum / scores.length;
+    }
+
+    int passed(double passMark) {
+        int count = 0;
+        for (double s : scores) {
+            if (s >= passMark) count++;
+        }
+        return count;
+    }
+}
+
+public class CourseDemo {
+    public static void main(String[] args) {
+        Course c = new Course();
+        c.title = "Java";
+        c.scores = new double[]{70, 90, 80};
+        System.out.println("Average: " + c.average());
+        System.out.println("Passed: " + c.passed(80));
     }
 }`
     }
@@ -1119,6 +1453,138 @@ public class TeamDemo {
         new Team(names).show();
     }
 }`
+    },
+    {
+      level: 1,
+      title: "Constructor សាមញ្ញ",
+      desc: "បង្កើត Class <code>Laptop</code> ដែលមាន Constructor ទទួល brand និង price។",
+      requirements: ["Constructor ទទួល Parameter ពីរ", "Method show", "បង្កើត Object ដោយ new"],
+      outputSample: "Brand: Asus\nPrice: 900.0",
+      hint: "Constructor មានឈ្មោះដូច Class និងគ្មាន Return Type។",
+      solutionCode: `class Laptop {
+    String brand;
+    double price;
+
+    Laptop(String brand, double price) {
+        this.brand = brand;
+        this.price = price;
+    }
+
+    void show() {
+        System.out.println("Brand: " + brand);
+        System.out.println("Price: " + price);
+    }
+}
+
+public class LaptopDemo {
+    public static void main(String[] args) {
+        Laptop l = new Laptop("Asus", 900.0);
+        l.show();
+    }
+}`
+    },
+    {
+      level: 2,
+      title: "Constructor កំណត់តម្លៃចាប់ផ្តើម",
+      desc: "បង្កើត Class <code>Counter</code> ដែល Constructor កំណត់តម្លៃចាប់ផ្តើម រួចបង្កើនម្តង។",
+      requirements: ["Constructor ទទួល int start", "Method increment", "Method value"],
+      inputSample: "start=5",
+      outputSample: "Value: 6",
+      hint: "កំណត់ <code>count = start;</code> ក្នុង Constructor។",
+      solutionCode: `class Counter {
+    int count;
+
+    Counter(int start) {
+        count = start;
+    }
+
+    void increment() {
+        count++;
+    }
+
+    int value() {
+        return count;
+    }
+}
+
+public class CounterDemo {
+    public static void main(String[] args) {
+        Counter c = new Counter(5);
+        c.increment();
+        System.out.println("Value: " + c.value());
+    }
+}`
+    },
+    {
+      level: 3,
+      title: "Constructor ជាមួយ Validation",
+      desc: "បង្កើត Class <code>Student</code> ដែល Constructor ពិនិត្យពិន្ទុឱ្យស្ថិតចន្លោះ 0 ដល់ 100។",
+      requirements: ["Constructor(name, score)", "Validation ពិន្ទុ", "Method getGrade"],
+      inputSample: "name=Dara, score=85",
+      outputSample: "Dara: B",
+      hint: "ប្រើ <code>if (score &gt;= 0 &amp;&amp; score &lt;= 100)</code> មុនដាក់តម្លៃ។",
+      solutionCode: `class Student {
+    String name;
+    int score;
+
+    Student(String name, int score) {
+        this.name = name;
+        if (score >= 0 && score <= 100) {
+            this.score = score;
+        } else {
+            this.score = 0;
+        }
+    }
+
+    String getGrade() {
+        if (score >= 90) return "A";
+        if (score >= 80) return "B";
+        if (score >= 70) return "C";
+        return "F";
+    }
+}
+
+public class StudentDemo {
+    public static void main(String[] args) {
+        Student s = new Student("Dara", 85);
+        System.out.println(s.name + ": " + s.getGrade());
+    }
+}`
+    },
+    {
+      level: 3,
+      title: "Constructor Overloading",
+      desc: "បង្កើត Class <code>Box</code> ដែលមាន Constructor ពីរ៖ មួយសម្រាប់គូប និងមួយសម្រាប់ប្រអប់ចតុកោណ។",
+      requirements: ["Constructor ១ Parameter", "Constructor ៣ Parameter", "Method volume"],
+      inputSample: "cube side=3; box 2,3,4",
+      outputSample: "Volume: 27.0\nVolume: 24.0",
+      hint: "Constructor ទីមួយហៅ <code>this(side, side, side)</code>។",
+      solutionCode: `class Box {
+    double width, height, depth;
+
+    Box(double side) {
+        this(side, side, side);
+    }
+
+    Box(double width, double height, double depth) {
+        this.width = width;
+        this.height = height;
+        this.depth = depth;
+    }
+
+    double volume() {
+        return width * height * depth;
+    }
+}
+
+public class BoxDemo {
+    public static void main(String[] args) {
+        Box cube = new Box(3);
+        Box box = new Box(2, 3, 4);
+        System.out.println("Volume: " + cube.volume());
+        System.out.println("Volume: " + box.volume());
+    }
+}`
     }
   ],
   quiz: [
@@ -1565,6 +2031,146 @@ public class AccountReadOnly {
         acc.deposit(50);
         acc.withdraw(20);
         acc.withdraw(100);
+        System.out.println("Balance: " + acc.getBalance());
+    }
+}`
+    },
+    {
+      level: 1,
+      title: "Private Age",
+      desc: "បង្កើត Class <code>Person</code> ដែល Field age ជា private និងមាន Getter/Setter។",
+      requirements: ["private int age", "Getter និង Setter", "បង្ហាញតម្លៃ"],
+      inputSample: "setAge(20)",
+      outputSample: "Age: 20",
+      hint: "Setter គួរពិនិត្យ <code>age &gt;= 0</code>។",
+      solutionCode: `class Person {
+    private int age;
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        if (age >= 0) {
+            this.age = age;
+        }
+    }
+}
+
+public class PersonDemo {
+    public static void main(String[] args) {
+        Person p = new Person();
+        p.setAge(20);
+        System.out.println("Age: " + p.getAge());
+    }
+}`
+    },
+    {
+      level: 2,
+      title: "Product Price",
+      desc: "បង្កើត Class <code>Product</code> ដែល price ជា private និងមិនអនុញ្ញាតតម្លៃអវិជ្ជមាន។",
+      requirements: ["private double price", "Setter បដិសេធតម្លៃអវិជ្ជមាន", "Getter"],
+      inputSample: "setPrice(1500)",
+      outputSample: "Price: 1500.0",
+      hint: "<code>if (price &gt;= 0) this.price = price;</code>។",
+      solutionCode: `class Product {
+    private double price;
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        if (price >= 0) {
+            this.price = price;
+        }
+    }
+}
+
+public class ProductDemo {
+    public static void main(String[] args) {
+        Product p = new Product();
+        p.setPrice(1500);
+        System.out.println("Price: " + p.getPrice());
+    }
+}`
+    },
+    {
+      level: 3,
+      title: "Student Score Validation",
+      desc: "បង្កើត Class <code>Student</code> ដែល name និង score ជា private និងពិនិត្យពិន្ទុ 0–100។",
+      requirements: ["private name និង score", "Setter ពិនិត្យពិន្ទុ", "Method getGrade"],
+      inputSample: "name=Dara, score=95",
+      outputSample: "Dara: A",
+      hint: "បើ score ខុសចន្លោះ កុំផ្លាស់តម្លៃចាស់។",
+      solutionCode: `class Student {
+    private String name;
+    private int score;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setScore(int score) {
+        if (score >= 0 && score <= 100) {
+            this.score = score;
+        }
+    }
+
+    public String getGrade() {
+        if (score >= 90) return "A";
+        if (score >= 80) return "B";
+        if (score >= 70) return "C";
+        return "F";
+    }
+}
+
+public class StudentDemo {
+    public static void main(String[] args) {
+        Student s = new Student();
+        s.setName("Dara");
+        s.setScore(95);
+        System.out.println(s.getName() + ": " + s.getGrade());
+    }
+}`
+    },
+    {
+      level: 3,
+      title: "Encapsulated Bank Account",
+      desc: "បង្កើត Class <code>BankAccount</code> ដែល balance ជា private និងមាន deposit/withdraw មាន Validation។",
+      requirements: ["private double balance", "Method deposit", "Method withdraw", "Method getBalance"],
+      inputSample: "deposit 100, withdraw 20",
+      outputSample: "Balance: 80.0",
+      hint: "withdraw ត្រូវពិនិត្យ <code>amount &lt;= balance</code>។",
+      solutionCode: `class BankAccount {
+    private double balance;
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        }
+    }
+
+    public void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+        }
+    }
+}
+
+public class BankDemo {
+    public static void main(String[] args) {
+        BankAccount acc = new BankAccount();
+        acc.deposit(100);
+        acc.withdraw(20);
         System.out.println("Balance: " + acc.getBalance());
     }
 }`

@@ -555,6 +555,64 @@ public class ReverseArrayExercise {
         System.out.println("Sum: " + sum);
     }
 }`
+    },
+    {
+      level: 2,
+      title: "រកលេខធំទីពីរ",
+      desc: "រកលេខធំទីពីរក្នុង Array ដោយមិនតម្រៀប Array។",
+      requirements: ["ប្រើ Loop មួយដង", "តាមដានធំបំផុត និងធំទីពីរ", "បង្ហាញលទ្ធផល"],
+      inputSample: "{5, 9, 2, 9, 7}",
+      outputSample: "Second largest: 7",
+      hint: "ពិនិត្យ <code>num &gt; max</code> និង <code>num &gt; second &amp;&amp; num != max</code>។",
+      solutionCode: `public class SecondLargest {
+    public static void main(String[] args) {
+        int[] nums = {5, 9, 2, 9, 7};
+        int max = Integer.MIN_VALUE;
+        int second = Integer.MIN_VALUE;
+
+        for (int num : nums) {
+            if (num > max) {
+                second = max;
+                max = num;
+            } else if (num > second && num != max) {
+                second = num;
+            }
+        }
+
+        System.out.println("Second largest: " + second);
+    }
+}`,
+      solution: "ធ្វើបច្ចុប្បន្នភាព max និង second ក្នុង Loop តែមួយ។ តម្លៃស្មើ max ត្រូវបានរំលង ដើម្បីរកធំទីពីរពិត។"
+    },
+    {
+      level: 3,
+      title: "បញ្ច្រាស Array ក្នុងកន្លែង",
+      desc: "បញ្ច្រាស Array ដោយប្តូរតម្លៃក្នុង Array ដើម (In-place) ដោយមិនបង្កើត Array ថ្មី។",
+      requirements: ["ប្រើ Two Pointers", "ប្តូរតម្លៃដោយ temp", "បង្ហាញ Array បន្ទាប់ពីបញ្ច្រាស"],
+      inputSample: "{1, 2, 3, 4, 5}",
+      outputSample: "5 4 3 2 1",
+      hint: "ប្រើ <code>left = 0</code> និង <code>right = nums.length - 1</code> រួចប្តូររហូត <code>left &lt; right</code>។",
+      solutionCode: `public class ReverseArray {
+    public static void main(String[] args) {
+        int[] nums = {1, 2, 3, 4, 5};
+
+        int left = 0;
+        int right = nums.length - 1;
+        while (left < right) {
+            int temp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = temp;
+            left++;
+            right--;
+        }
+
+        for (int num : nums) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+    }
+}`,
+      solution: "Two Pointers ប្តូរតម្លៃពីចុងទាំងសងខាងចូលកណ្តាល ដោយប្រើ temp មួយ។"
     }
   ],
   quiz: [
@@ -1012,7 +1070,7 @@ if (email.contains("@") &amp;&amp; email.contains(".")) {
       solutionCode: `public class CountWords {
     public static void main(String[] args) {
         String text = "Java is easy to learn";
-        String[] words = text.trim().split("\\s+");
+        String[] words = text.trim().split("\\\\s+");
         System.out.println("Words: " + words.length);
     }
 }`
@@ -1055,6 +1113,48 @@ if (email.contains("@") &amp;&amp; email.contains(".")) {
         System.out.println(sb.toString());
     }
 }`
+    },
+    {
+      level: 2,
+      title: "រាប់ចំនួនពាក្យ",
+      desc: "រាប់ចំនួនពាក្យក្នុងប្រយោគដោយប្រើ <code>split</code> និងកម្ចាត់ចន្លោះលើស។",
+      requirements: ["ប្រើ trim", "ប្រើ split", "បង្ហាញចំនួនពាក្យ"],
+      inputSample: "  I love Java  ",
+      outputSample: "Words: 3",
+      hint: "<code>text.trim().split(\"\\\\s+\")</code> បំបែកតាមចន្លោះមួយ ឬច្រើន។",
+      solutionCode: `public class WordCount {
+    public static void main(String[] args) {
+        String text = "  I love Java  ";
+        String cleaned = text.trim();
+
+        if (cleaned.isEmpty()) {
+            System.out.println("Words: 0");
+        } else {
+            String[] words = cleaned.split("\\\\s+");
+            System.out.println("Words: " + words.length);
+        }
+    }
+}`,
+      solution: "trim លុបចន្លោះដើម និងចុង រួច split តាម Regex ចន្លោះមួយ ឬច្រើន បំបែកពាក្យ។"
+    },
+    {
+      level: 3,
+      title: "ពិនិត្យ Palindrome",
+      desc: "ពិនិត្យថាអត្ថបទជា Palindrome ឬអត់ ដោយមិនខ្វល់អក្សរធំ/តូច និងចន្លោះ។",
+      requirements: ["ប្រើ replaceAll", "ប្រើ StringBuilder reverse", "បង្ហាញ true/false"],
+      inputSample: "A man a plan a canal Panama",
+      outputSample: "Palindrome: true",
+      hint: "លុបចន្លោះ និងបំលែងជា Lowercase មុនប្រៀបធៀប។",
+      solutionCode: `public class PalindromeCheck {
+    public static void main(String[] args) {
+        String text = "A man a plan a canal Panama";
+        String cleaned = text.toLowerCase().replaceAll("[^a-z0-9]", "");
+
+        String reversed = new StringBuilder(cleaned).reverse().toString();
+        System.out.println("Palindrome: " + cleaned.equals(reversed));
+    }
+}`,
+      solution: "ធ្វើឱ្យអត្ថបទស្អាត (Lowercase + លុបតួអក្សរមិនមែនអក្សរ/លេខ) រួចប្រៀបធៀបជាមួយខ្លួនវាដែលបញ្ច្រាស។"
     }
   ],
   quiz: [

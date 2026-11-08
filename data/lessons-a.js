@@ -247,6 +247,22 @@ window.JAVA_LESSONS.push({
       requirements: ["សាកល្បងបើក .class ដោយ Text Editor", "ពន្យល់ពីភាពខុសគ្នារវាង Source និង Bytecode"],
       hint: "Bytecode មានទម្រង់ Binary ដែល JVM អាន មិនមែនអត្ថបទសម្រាប់មនុស្សអានទេ។",
       solution: "ឯកសារ .java ជាអត្ថបទដែលមនុស្សអានបាន។ ឯកសារ .class មាន Bytecode ជា Binary ដែលរចនាសម្រាប់ JVM។ ដូច្នេះ Notepad នឹងបង្ហាញតួអក្សរចម្លែកៗ។ អ្នកអាចប្រើឧបករណ៍ដូចជា javap ដើម្បីមើល Bytecode ជាអត្ថបទបាន។"
+    },
+    {
+      level: 1,
+      title: "Compiled ឬ Interpreted?",
+      desc: "ពន្យល់ថាហេតុអ្វីគេចាត់ទុក Java ថាមានទាំងដំណាក់កាល Compile និង Interpreted។",
+      requirements: ["និយាយពី javac", "និយាយពី JVM", "ពន្យល់ Bytecode"],
+      hint: "javac បំប្លែង Source ទៅ Bytecode; JVM អាន Bytecode។",
+      solution: "javac ធ្វើ Compile ឯកសារ .java ទៅ .class ដែលជា Bytecode។ បន្ទាប់មក JVM អាន និងប្រតិបត្តិ Bytecode នោះ (Interpret/JIT)។ ដូច្នេះ Java មានដំណាក់កាល Compile និងដំណាក់កាលប្រតិបត្តិលើ JVM។"
+    },
+    {
+      level: 2,
+      title: "ដំណើរការ Hello World",
+      desc: "រៀបរាប់ជំហានពីការសរសេរកូដ ដល់ការបង្ហាញលទ្ធផលលើ Terminal។",
+      requirements: ["ឈ្មោះ Command compile", "ឈ្មោះ Command run", "លទ្ធផលរំពឹង"],
+      hint: "ប្រើ javac Hello.java រួច java Hello។",
+      solution: "១) សរសេរកូដក្នុង Hello.java។ ២) បើក Terminal ក្នុង Folder នោះ។ ៣) រត់ javac Hello.java ដើម្បីបង្កើត Hello.class។ ៤) រត់ java Hello។ ៥) Terminal បង្ហាញ Hello, World!។"
     }
   ],
   quiz: [
@@ -473,6 +489,27 @@ window.JAVA_LESSONS.push({
       requirements: ["យ៉ាងហោចណាស់ ៣ ចំណុចក្នុងមួយ", "សរុបថាអ្នកជ្រើសរើសមួយណា ហើយហេតុអ្វី"],
       hint: "គិតពីទម្ងន់កម្មវិធី ភាពងាយស្រួល និងមុខងារ Debug។",
       solution: "VS Code៖ ស្រាល បើកលឿន Extension ច្រើន ប៉ុន្តែត្រូវដំinstall Extension បន្ថែម។ IntelliJ IDEA៖ មាន Auto-complete, Refactoring និង Debug ខ្លាំង ប៉ុន្តែធ្ងន់ជាង និងចំណាយ RAM ច្រើន។ អ្នកចាប់ផ្តើមអាចជ្រើស VS Code ព្រោះស្រាល ហើយប្តូរទៅ IntelliJ នៅពេលគម្រោងធំឡើង។"
+    },
+    {
+      level: 1,
+      title: "ពិនិត្យ Java Version",
+      desc: "ពន្យល់របៀបពិនិត្យថា JDK ត្រូវបានដំឡើងត្រឹមត្រូវ និងបង្ហាញ Version។",
+      requirements: ["Command ពិនិត្យ java", "Command ពិនិត្យ javac", "ហេតុអ្វីត្រូវមើលទាំងពីរ"],
+      hint: "ប្រើ <code>java -version</code> និង <code>javac -version</code>។",
+      solution: "រត់ <code>java -version</code> ដើម្បីមើល JRE Version និង <code>javac -version</code> ដើម្បីមើល Compiler Version។ ប្រសិនបើ javac មិនស្គាល់ មានន័យថា PATH មិនទាន់កំណត់ ឬដំឡើងតែ JRE។ ទាំងពីរគួរបង្ហាញ Version ដូចគ្នា ដូចជា 21។"
+    },
+    {
+      level: 2,
+      title: "Compile ដោយ Command Line",
+      desc: "សរសេរកម្មវិធី <code>FirstProgram</code> រួច Compile និង Run ដោយ Terminal។",
+      requirements: ["បង្កើតឯកសារ FirstProgram.java", "Compile ដោយ javac", "Run ដោយ java"],
+      outputSample: "My first Java program",
+      hint: "ឈ្មោះឯកសារត្រូវដូចឈ្មោះ public class។",
+      solutionCode: `public class FirstProgram {
+    public static void main(String[] args) {
+        System.out.println("My first Java program");
+    }
+}`
     }
   ],
   quiz: [
@@ -721,6 +758,39 @@ window.JAVA_LESSONS.push({
       hint: "Java ប្រកាន់អក្សរធំ-តូច។ System ត្រូវចាប់ផ្តើមដោយ S ធំ។",
       solutionCode: 'public class Demo {\n    public static void main(String[] args) {\n        System.out.println("Hi");\n    }\n}',
       solution: "កំហុស៖ <code>Class</code> ត្រូវជា <code>class</code>, <code>demo</code> ត្រូវជា <code>Demo</code> (PascalCase), <code>Main</code> ត្រូវជា <code>main</code>, <code>String args</code> ត្រូវជា <code>String[] args</code>, <code>system.out</code> ត្រូវជា <code>System.out</code>, និងខ្វះ Semicolon។"
+    },
+    {
+      level: 1,
+      title: "Escape Sequences",
+      desc: "សរសេរកម្មវិធីដែលបង្ហាញ Tab, Newline និងសញ្ញាសម្រង់ពីរជាន់។",
+      requirements: ["ប្រើ \\t", "ប្រើ \\n ឬ println ច្រើន", "បង្ហាញសញ្ញាសម្រង់"],
+      outputSample: "Name:\tDara\nHe said: \"Hello\"",
+      hint: "ប្រើ <code>\\t</code> សម្រាប់ Tab និង <code>\\\"</code> សម្រាប់សញ្ញាសម្រង់។",
+      solutionCode: `public class EscapeDemo {
+    public static void main(String[] args) {
+        System.out.println("Name:\\tDara");
+        System.out.println("He said: \\"Hello\\"");
+    }
+}`
+    },
+    {
+      level: 2,
+      title: "ប្រភេទ Comment",
+      desc: "សរសេរកម្មវិធីដែលប្រើ Comment បីប្រភេទ៖ Single-line, Multi-line និង Javadoc។",
+      requirements: ["Single-line //", "Multi-line /* */", "Javadoc /** */"],
+      outputSample: "Comments work",
+      hint: "Javadoc ចាប់ផ្តើមដោយ <code>/**</code>។",
+      solutionCode: `/**
+ * Demo សម្រាប់ការប្រើ Comment។
+ */
+public class CommentDemo {
+    public static void main(String[] args) {
+        // Single-line comment
+        /* Multi-line
+           comment */
+        System.out.println("Comments work");
+    }
+}`
     }
   ],
   quiz: [

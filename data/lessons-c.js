@@ -564,6 +564,62 @@ System.out.println(dayName);</code></pre>
         }
     }
 }`
+    },
+    {
+      level: 2,
+      title: "ចាត់ថ្នាក់ BMI",
+      desc: "អាន BMI រួចចាត់ថ្នាក់ជា Underweight, Normal, Overweight ឬ Obese ដោយប្រើ if/else if។",
+      requirements: ["ប្រើ if/else if/else", "កំណត់ចន្លោះតម្លៃ", "បង្ហាញថ្នាក់"],
+      inputSample: "bmi=23.5",
+      outputSample: "Normal",
+      hint: "<code>bmi &lt; 18.5</code>, <code>bmi &lt; 25</code>, <code>bmi &lt; 30</code>, បើមិនដូច្នេះ Obese។",
+      solutionCode: `public class BmiCategory {
+    public static void main(String[] args) {
+        double bmi = 23.5;
+
+        if (bmi < 18.5) {
+            System.out.println("Underweight");
+        } else if (bmi < 25) {
+            System.out.println("Normal");
+        } else if (bmi < 30) {
+            System.out.println("Overweight");
+        } else {
+            System.out.println("Obese");
+        }
+    }
+}`,
+      solution: "if/else if ពិនិត្យតាមលំដាប់ចន្លោះតម្លៃ។ លក្ខខណ្ឌដំបូងដែលពិតនឹងដំណើរការ។"
+    },
+    {
+      level: 3,
+      title: "គណនាតម្លៃសំបុត្រភាពយន្ត",
+      desc: "គណនាតម្លៃសំបុត្រតាមអាយុ៖ ក្រោម 5 ឆ្នាំឥតគិតថ្លៃ, 5–12 កែង, 60 ឆ្នាំឡើងទៅបញ្ចុះ 40%, ផ្សេងទៀតពេញតម្លៃ។ បើចុងសប្តាហ៍បូកបន្ថែម $2។",
+      requirements: ["ប្រើ if/else if", "ប្រើ boolean weekend", "បង្ហាញតម្លៃចុងក្រោយ"],
+      inputSample: "age=65, weekend=false",
+      outputSample: "Ticket: $6.0",
+      hint: "កំណត់ base=10 រួចកែតម្រូវតាមអាយុ បន្ទាប់មកបើ weekend បូក 2។",
+      solutionCode: `public class MovieTicket {
+    public static void main(String[] args) {
+        int age = 65;
+        boolean weekend = false;
+        double price = 10;
+
+        if (age < 5) {
+            price = 0;
+        } else if (age <= 12) {
+            price = 5;
+        } else if (age >= 60) {
+            price = 6;
+        }
+
+        if (weekend) {
+            price += 2;
+        }
+
+        System.out.println("Ticket: $" + price);
+    }
+}`,
+      solution: "កំណត់តម្លៃមូលដ្ឋានមុន រួចកែតម្រូវតាមអាយុ ហើយបូកបន្ថែមបើជាចុងសប្តាហ៍។"
     }
   ],
   quiz: [
